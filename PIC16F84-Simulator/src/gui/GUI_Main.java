@@ -27,7 +27,7 @@ public class GUI_Main extends Application
 	        else 
 	        	System.out.println("NULL");
 	        */
-	        // nicer kommentar lol
+	        // nicer kommentar
 	    }
 	
 	public static void main(String[] args) {
