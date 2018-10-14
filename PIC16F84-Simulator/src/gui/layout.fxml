@@ -12,7 +12,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Open" />
+                  <MenuItem id="menuItem_Open" fx:id="menuItem_Open" mnemonicParsing="false" text="Open" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
@@ -61,32 +61,32 @@
                                     </SplitPane>
                                  </children>
                               </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                            <AnchorPane minHeight="0.0" minWidth="320.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
                                     <Pane layoutX="14.0" layoutY="14.0">
                                        <children>
-                                          <CheckBox layoutX="210.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="254.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="166.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="122.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="100.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="144.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="188.0" mnemonicParsing="false" />
                                           <Label prefHeight="21.0" prefWidth="100.0" text="Port A" wrapText="true" />
+                                          <CheckBox layoutX="100.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="122.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="144.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="166.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="188.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="210.0" mnemonicParsing="false" />
                                           <CheckBox layoutX="232.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="254.0" mnemonicParsing="false" />
                                        </children>
                                     </Pane>
                                     <Pane layoutX="14.0" layoutY="35.0">
                                        <children>
-                                          <CheckBox layoutX="210.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="254.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="166.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="122.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="100.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="144.0" mnemonicParsing="false" />
-                                          <CheckBox layoutX="188.0" mnemonicParsing="false" />
                                           <Label prefHeight="21.0" prefWidth="100.0" text="Port B" wrapText="true" />
+                                          <CheckBox layoutX="100.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="122.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="144.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="166.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="188.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="210.0" mnemonicParsing="false" />
                                           <CheckBox layoutX="232.0" mnemonicParsing="false" />
+                                          <CheckBox layoutX="254.0" mnemonicParsing="false" />
                                        </children>
                                     </Pane>
                                  </children></AnchorPane>
