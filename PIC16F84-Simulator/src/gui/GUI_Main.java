@@ -2,6 +2,7 @@ package gui;
 
 import java.util.Map;
 
+import application.Application_Main;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -12,6 +13,8 @@ import javafx.scene.control.MenuItem;
 
 public class GUI_Main extends Application implements Runnable
 {
+	Application_Main app;
+	
 	@Override
     public void start(Stage stage) throws Exception 
 	{
@@ -42,8 +45,7 @@ public class GUI_Main extends Application implements Runnable
 		if(open != null)
 			open.setOnAction(event -> this.onOpenDocument());
 		else
-			System.out.println("Not found");
-		
+			System.err.println("Not found");
 	}
 
 	private Object onOpenDocument()
@@ -53,7 +55,10 @@ public class GUI_Main extends Application implements Runnable
 		return null;
 	}
 	
-	
+	public void setApp(Application_Main app)
+	{
+		this.app = app;
+	}
 	
 	
 }
