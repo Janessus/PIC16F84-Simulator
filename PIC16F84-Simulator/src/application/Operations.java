@@ -7,8 +7,7 @@ public enum Operations
 	ADDWF  	(0b00011100000000, new ICallback(){
 
 		@Override
-		public void execute()
-		{
+		public void execute(int arguments){
 			// TODO Auto-generated method stub
 			
 		}}),
@@ -16,7 +15,7 @@ public enum Operations
 	ANDWF  	(0b00010100000000, new ICallback(){
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -25,7 +24,7 @@ public enum Operations
 	CLRF 	(0b00000110000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -34,7 +33,7 @@ public enum Operations
 	CLRW 	(0b00000100000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -43,7 +42,7 @@ public enum Operations
 	COMF  	(0b00100100000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -52,7 +51,7 @@ public enum Operations
 	DECF 	(0b00001100000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -61,7 +60,7 @@ public enum Operations
 	DECFSZ  (0b00101100000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -70,7 +69,7 @@ public enum Operations
 	INCF  	(0b00101000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -79,7 +78,7 @@ public enum Operations
 	INCFSZ  (0b00111100000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -88,7 +87,7 @@ public enum Operations
 	IORWF  	(0b00010000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -97,7 +96,7 @@ public enum Operations
 	MOVF  	(0b00100000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -106,7 +105,7 @@ public enum Operations
 	MOVWF 	(0b00000010000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -115,7 +114,7 @@ public enum Operations
 	NOP  	(0b00000000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -124,7 +123,7 @@ public enum Operations
 	RLF 	(0b00110100000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -133,7 +132,7 @@ public enum Operations
 	RRF 	(0b00110000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -142,7 +141,7 @@ public enum Operations
 	SUBWF 	(0b00001000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -151,7 +150,7 @@ public enum Operations
 	SWAPF  	(0b00111000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -160,7 +159,7 @@ public enum Operations
 	XORWF 	(0b00011000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -174,7 +173,7 @@ public enum Operations
 	BCF 	(0b01000000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -183,7 +182,7 @@ public enum Operations
 	BSF 	(0b01010000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -192,7 +191,7 @@ public enum Operations
 	BTFSC 	(0b01100000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -201,7 +200,7 @@ public enum Operations
 	BTFSS 	(0b01110000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -212,7 +211,7 @@ public enum Operations
 	ADDLW  	(0b11111000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -221,7 +220,7 @@ public enum Operations
 	ANDLW  	(0b11100100000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -230,7 +229,7 @@ public enum Operations
 	CALL 	(0b10000000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -239,7 +238,7 @@ public enum Operations
 	CLRWDT 	(0b00000001100100, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -248,7 +247,7 @@ public enum Operations
 	GOTO  	(0b10100000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -257,7 +256,7 @@ public enum Operations
 	IORLW  	(0b11100000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -266,7 +265,7 @@ public enum Operations
 	MOVLW 	(0b11000000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -275,7 +274,7 @@ public enum Operations
 	RETFIE 	(0b00000000001001, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -284,7 +283,7 @@ public enum Operations
 	RETLW 	(0b11010000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -293,7 +292,7 @@ public enum Operations
 	RETURN  (0b00000000001000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -302,7 +301,7 @@ public enum Operations
 	SLEEP 	(0b00000001100011, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -311,7 +310,7 @@ public enum Operations
 	SUBLW 	(0b11110000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -320,7 +319,7 @@ public enum Operations
 	XORLW 	(0b11101000000000, new ICallback() {
 
 		@Override
-		public void execute()
+		public void execute(int arguments)
 		{
 			// TODO Auto-generated method stub
 			
@@ -340,5 +339,10 @@ public enum Operations
 	public int getId()
 	{
 		return id;
+	}
+	
+	public ICallback getCallbackFunction()
+	{
+		return callback;
 	}
 }

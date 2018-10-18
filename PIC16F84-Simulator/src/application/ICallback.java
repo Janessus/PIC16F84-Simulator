@@ -2,5 +2,5 @@ package application;
 
 public interface ICallback
 {
-	public void execute();
+	public void execute(int arguments);
 }

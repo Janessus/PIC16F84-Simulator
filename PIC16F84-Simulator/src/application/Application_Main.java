@@ -19,10 +19,6 @@ public class Application_Main implements Runnable
 		
 		System.out.println("app running");
 		// TODO Auto-generated method stub
-		while(true) {
-			
-		}
-		
 	}
 
 	public void setGui(GUI_Main gui)
