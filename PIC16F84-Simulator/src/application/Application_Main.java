@@ -1,5 +1,7 @@
 package application;
 
+import java.io.File;
+
 import gui.GUI_Main;
 
 public class Application_Main implements Runnable
@@ -10,12 +12,16 @@ public class Application_Main implements Runnable
 	
 
 	@Override
-	public void run()
+	public void run() 
 	{
 		parser = new Parser();
 		simulator = new Simulator();
 		
+		System.out.println("app running");
 		// TODO Auto-generated method stub
+		while(true) {
+			
+		}
 		
 	}
 
@@ -24,7 +30,7 @@ public class Application_Main implements Runnable
 		this.gui = gui;
 	}
 	
-	public void openFile() {
-		parser.parseFile("");
+	public void openFile(File file) {
+		parser.parseFile(file);
 	}
 }
