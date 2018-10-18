@@ -37,11 +37,13 @@ public class Parser
       try {
       	while ((line = reader.readLine()) != null) {
       		//Display Code in GUI
-      		GUI_Main.getMainWindow().appendText(line + "\n");
       		
       		if(line.charAt(5) != ' ') {  // Check if 5th character isn't empty
          		operations.add(Long.parseLong(line.substring(5, 9), 16)); // Parse characters 5 to 8
+         		GUI_Main.getMainWindow().appendText(line + "\n");//Display Code in GUI
          	}
+      		else
+      			GUI_Main.getMainWindow().appendText("\t\t\t    " + line.trim() + "\n");//Display Code in GUI
          }
    	} catch (IOException e) {
    		e.printStackTrace();

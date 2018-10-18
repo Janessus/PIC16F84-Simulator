@@ -11,6 +11,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 
@@ -39,15 +40,27 @@ public class GUI_Main extends Application
 
 	private void setup(Scene scene, Map<String, Object> namespace)
 	{
-	    MenuItem open = (MenuItem) namespace.get("menuItem_Open"); //fx:id
+		mainWindow = (TextArea) namespace.get("mainWindow");
 		
-	    //TODO set up event handlers 
+	    MenuItem open = (MenuItem) namespace.get("menuItem_Open"); //fx:id
 		if(open != null)
 			open.setOnAction(event -> this.onOpenDocument());
 		else
 			System.err.println("Not found");
 		
-		mainWindow = (TextArea) namespace.get("mainWindow");
+		
+		
+		Button btnRun = (Button) namespace.get("btnRun");
+		if(btnRun != null)
+			btnRun.setOnAction(event -> this.onRunClicked());
+		else
+			System.err.println("Not found");
+		
+	}
+	
+	private void onRunClicked()
+	{
+		app.runProgram();
 	}
 
 	private Object onOpenDocument()
@@ -55,7 +68,7 @@ public class GUI_Main extends Application
 		//TODO Open a file
 		System.out.println(this);
 		System.out.println("Open clicked!");
-		System.out.println(app);
+		
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.getExtensionFilters().addAll(
@@ -63,11 +76,8 @@ public class GUI_Main extends Application
 				new ExtensionFilter("Text Files", "*.txt"),
 				new ExtensionFilter("All Files", "*.*"));
 		File selectedFile = fileChooser.showOpenDialog(null);
-		System.out.println(app);
 		
-		//
 		app.openFile(selectedFile);
-		
 		
 		return null;
 	}

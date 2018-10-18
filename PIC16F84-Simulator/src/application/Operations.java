@@ -7,161 +7,161 @@ public enum Operations
 	ADDWF  	(0b00011100000000, new ICallback(){
 
 		@Override
-		public void execute(int arguments){
-			// TODO Auto-generated method stub
+		public void execute(int arguments, Simulator sim)
+		{
+			sim.addlw((byte)arguments);
 			
 		}}),
 	
 	ANDWF  	(0b00010100000000, new ICallback(){
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
-			
+			sim.andwf((byte)arguments);
 		}}),
 	
 	CLRF 	(0b00000110000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.clrf((byte)arguments);
 			
 		}}),
 	
 	CLRW 	(0b00000100000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.clrw((byte)arguments);
 			
 		}}),
 	
 	COMF  	(0b00100100000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.comf((byte)arguments);
 			
 		}}),
 	
 	DECF 	(0b00001100000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.decf((byte)arguments);
 			
 		}}),
 	
 	DECFSZ  (0b00101100000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.decfsz((byte)arguments);
 			
 		}}),
 	
 	INCF  	(0b00101000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.incf((byte)arguments);
 			
 		}}),
 	
 	INCFSZ  (0b00111100000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.incfsz((byte)arguments);
 			
 		}}),
 	
 	IORWF  	(0b00010000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.iorwf((byte)arguments);
 			
 		}}),
 	
 	MOVF  	(0b00100000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.movf((byte)arguments);
 			
 		}}),
 	
 	MOVWF 	(0b00000010000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.movwf((byte)arguments);
 			
 		}}),
 	
 	NOP  	(0b00000000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.nop((byte)arguments);
 			
 		}}),
 	
 	RLF 	(0b00110100000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.rlf((byte)arguments);
 			
 		}}),
 	
 	RRF 	(0b00110000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.rrf((byte)arguments);
 			
 		}}),
 	
 	SUBWF 	(0b00001000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.subwf((byte)arguments);
 			
 		}}),
 	
 	SWAPF  	(0b00111000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.swapf((byte)arguments);
 			
 		}}),
 	
 	XORWF 	(0b00011000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.xorwf((byte)arguments);
 			
 		}}),
 	
@@ -173,36 +173,36 @@ public enum Operations
 	BCF 	(0b01000000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.bcf((byte)arguments);
 			
 		}}),
 	
 	BSF 	(0b01010000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.bsf((byte)arguments);
 			
 		}}),
 	
 	BTFSC 	(0b01100000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.btfsc((byte)arguments);
 			
 		}}),
 	
 	BTFSS 	(0b01110000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.btfss((byte)arguments);
 			
 		}}),
 	
@@ -211,117 +211,117 @@ public enum Operations
 	ADDLW  	(0b11111000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.addlw((byte)arguments);
 			
 		}}),
 	
 	ANDLW  	(0b11100100000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.andlw((byte)arguments);
 			
 		}}),
 	
 	CALL 	(0b10000000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.call((byte)arguments);
 			
 		}}),
 	
 	CLRWDT 	(0b00000001100100, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.clrwdt((byte)arguments);
 			
 		}}),
 	
 	GOTO  	(0b10100000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.goTo((byte)arguments);
 			
 		}}),
 	
 	IORLW  	(0b11100000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.iorlw((byte)arguments);
 			
 		}}),
 	
 	MOVLW 	(0b11000000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.movlw((byte)arguments);
 			
 		}}),
 	
 	RETFIE 	(0b00000000001001, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.retfie((byte)arguments);
 			
 		}}),
 	
 	RETLW 	(0b11010000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.retlw((byte)arguments);
 			
 		}}),
 	
 	RETURN  (0b00000000001000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.reTurn((byte)arguments);
 			
 		}}),
 	
 	SLEEP 	(0b00000001100011, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.sleep((byte)arguments);
 			
 		}}),
 	
 	SUBLW 	(0b11110000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.sublw((byte)arguments);
 			
 		}}),
 	
 	XORLW 	(0b11101000000000, new ICallback() {
 
 		@Override
-		public void execute(int arguments)
+		public void execute(int arguments, Simulator sim)
 		{
-			// TODO Auto-generated method stub
+			sim.xorlw((byte)arguments);
 			
 		}});
 	
@@ -329,6 +329,7 @@ public enum Operations
 	
 	private int id;
 	private ICallback callback;
+	public Simulator sim;
 	
 	Operations(int id, ICallback callback)
 	{
@@ -344,5 +345,10 @@ public enum Operations
 	public ICallback getCallbackFunction()
 	{
 		return callback;
+	}
+	
+	public void setSimulator(Simulator simulator)
+	{
+		sim = simulator;
 	}
 }

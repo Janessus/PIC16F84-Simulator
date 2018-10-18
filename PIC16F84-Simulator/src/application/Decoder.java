@@ -11,11 +11,24 @@ public class Decoder
 	Operations threeBitOperation[] = 		{Operations.CALL, Operations.GOTO, };
 	
 	ICallback callbackFunction;
+	Application_Main main;
+	
 	int mask = 0;
 	
+	
+	public Decoder(Application_Main main)
+	{
+		this.main = main;
+	}
+	
+	
+	/**
+	 * Calls the matching function from opcode
+	 * @param instruction : opcode
+	 * @return true, if instruction was valid
+	 */
 	public boolean decode(int instruction)
 	{
-
 		if(!findInstruction(checkFirst, 0b11111110011111, instruction))
 			if(!findInstruction(fullScaleOperation, 0b11111111111111, instruction))
 				if(!findInstruction(sevenBitOperation, 0b11111110000000, instruction))
@@ -25,7 +38,7 @@ public class Decoder
 								if(!findInstruction(threeBitOperation, 0b11100000000000, instruction))
 									return false;
 		
-		callbackFunction.execute(instruction & mask);
+		callbackFunction.execute(instruction & mask, main.simulator);
 
 		return true;
 	}
