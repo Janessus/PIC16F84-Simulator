@@ -12,11 +12,14 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 
 
 public class GUI_Main extends Application
 {
 	private static Application_Main app;
+	
+	private static TextArea mainWindow;
 	
 	@Override
     public void start(Stage stage) throws Exception 
@@ -43,6 +46,8 @@ public class GUI_Main extends Application
 			open.setOnAction(event -> this.onOpenDocument());
 		else
 			System.err.println("Not found");
+		
+		mainWindow = (TextArea) namespace.get("mainWindow");
 	}
 
 	private Object onOpenDocument()
@@ -60,7 +65,9 @@ public class GUI_Main extends Application
 		File selectedFile = fileChooser.showOpenDialog(null);
 		System.out.println(app);
 		
+		//
 		app.openFile(selectedFile);
+		
 		
 		return null;
 	}
@@ -70,5 +77,8 @@ public class GUI_Main extends Application
 		GUI_Main.app = app;
 	}
 	
-	
+	public static TextArea getMainWindow()
+	{
+		return mainWindow;
+	}
 }

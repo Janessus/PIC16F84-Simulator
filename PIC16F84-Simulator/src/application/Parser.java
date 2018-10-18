@@ -7,6 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+
+import gui.GUI_Main;
+
 import java.util.ArrayList;;
 
 public class Parser
@@ -33,6 +36,9 @@ public class Parser
       String line;
       try {
       	while ((line = reader.readLine()) != null) {
+      		//Display Code in GUI
+      		GUI_Main.getMainWindow().appendText(line + "\n");
+      		
       		if(line.charAt(5) != ' ') {  // Check if 5th character isn't empty
          		operations.add(Long.parseLong(line.substring(5, 9), 16)); // Parse characters 5 to 8
          	}
