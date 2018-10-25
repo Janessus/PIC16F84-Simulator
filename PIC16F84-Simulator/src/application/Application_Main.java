@@ -31,6 +31,8 @@ public class Application_Main implements Runnable
 		{
 			decoder.decode(instruction.intValue());
 		}
+		
+		System.out.println("Program finished");
 	}
 	
 	

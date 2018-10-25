@@ -15,7 +15,6 @@ import java.util.ArrayList;;
 public class Parser
 {
 	/**
-	 * 
 	 * @param file the file to be parsed
 	 * @return List of operations as long value
 	 */

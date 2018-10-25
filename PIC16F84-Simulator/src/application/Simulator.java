@@ -6,6 +6,11 @@ public class Simulator
 	Registers registers;
 	Flags flag;
 	
+	public Simulator()
+	{
+		init();
+	}
+	
 	// Methods
 	public void init() {
 		registers = new Registers();
