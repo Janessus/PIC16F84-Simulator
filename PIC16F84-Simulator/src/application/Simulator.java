@@ -8,8 +8,6 @@ public class Simulator
 	// Properties
 	Registers registers;
 
-	Flags flag;
-
 	List<WrappedOperation> operations = new ArrayList<WrappedOperation>();
 
 	int programCounter = 0;
@@ -36,7 +34,12 @@ public class Simulator
 			currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
 			System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
 			System.out.println("Program Counter: " + programCounter);
-			System.out.println("W= " + String.format("0x%02X", registers.getWorking()));
+			System.out.println("W= " + String.format("0x%02X", registers.getWorking())
+				+ "C= " + registers.getCarryFlag()
+				+ "DC= " + registers.getDigitCarryFlag()
+				+ "Z= " + registers.getZeroFlag());
+			
+			
 			programCounter++;
 		}
 		System.out.println("Simulation finished");
@@ -47,8 +50,8 @@ public class Simulator
 	{
 		this.operations.addAll(operations);
 	}
-
-	//
+	
+	// Operations implementation
 	public void addwf(byte val)
 	{
 		
@@ -161,12 +164,18 @@ public class Simulator
 
 	public void addlw(byte val)
 	{
-		registers.setWorking((byte) (registers.getWorking() + val));
+		int result = registers.getWorking() + val;
+		registers.setDigitCarryFlag((0x00000001 & registers.getWorking()) + (0x00000001 & val) > 0xF);
+		registers.setWorking((byte) result);
+		registers.setZeroFlag(result==0);
+		registers.setCarryFlag(result>0xFF);
 	}
 
 	public void andlw(byte val)
 	{
-		registers.setWorking((byte) (registers.getWorking() & val));
+		int result = registers.getWorking() & val;
+		registers.setWorking((byte) result);
+		registers.setZeroFlag(result==0);
 	}
 
 	public void call(byte val)
@@ -187,7 +196,9 @@ public class Simulator
 
 	public void iorlw(byte val)
 	{
-		registers.setWorking((byte) (registers.getWorking() | val));
+		int result = registers.getWorking() | val;
+		registers.setWorking((byte) result);
+		registers.setZeroFlag(result==0);
 	}
 
 	public void movlw(byte val)
@@ -217,11 +228,17 @@ public class Simulator
 
 	public void sublw(byte val)
 	{
-		registers.setWorking((byte) (val - registers.getWorking()));
+		int result = val - registers.getWorking();
+		registers.setDigitCarryFlag((0x00000001 & val) - (0x00000001 & registers.getWorking()) > 0);
+		registers.setWorking((byte) result);
+		registers.setZeroFlag(result==0);
+		registers.setCarryFlag(result>0);
 	}
 
 	public void xorlw(byte val)
 	{
-		registers.setWorking((byte) (registers.getWorking() ^ val));
+		int result = registers.getWorking() ^ val;
+		registers.setWorking((byte) result);
+		registers.setZeroFlag(result==0);
 	}
 }

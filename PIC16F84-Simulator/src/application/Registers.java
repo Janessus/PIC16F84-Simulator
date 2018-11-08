@@ -47,4 +47,24 @@ public class Registers
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 	}
 	
+	// Helpers
+	// TODO: implement
+	public void setCarryFlag(boolean val) {
+		
+	}
+	public boolean getCarryFlag() {
+		return true;
+	}
+	public void setDigitCarryFlag(boolean val) {
+		
+	}
+	public boolean getDigitCarryFlag() {
+		return true;
+	}
+	public void setZeroFlag(boolean val) {
+		
+	}
+	public boolean getZeroFlag() {
+		return true;
+	}
 }
