@@ -55,15 +55,10 @@ public class Decoder
 	 */
 	public ArrayList<WrappedOperation> decodeList(List<Integer> instructions)
 	{
-		Operation tmpOperation = null;
 		ArrayList<WrappedOperation> operations = new ArrayList<WrappedOperation>();
 		Iterator<Integer> it = instructions.iterator();
-		int instruction = 0;
 		
-		while(it.hasNext())
-		{
-			instruction = it.next();
-			
+		for(int instruction:instructions) {
 			if(!findInstruction(checkFirst, 0b11111110011111, instruction))
 				if(!findInstruction(fullScaleOperation, 0b11111111111111, instruction))
 					if(!findInstruction(sevenBitOperation, 0b11111110000000, instruction))

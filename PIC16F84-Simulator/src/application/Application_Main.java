@@ -29,13 +29,17 @@ public class Application_Main implements Runnable
 	public void runProgram()
 	{
 		System.out.println("decoding " + opcodeList.size() + " operations...");
+		
+		for(Integer opcode:opcodeList) {
+			System.out.println(String.format("0x%08X", opcode));
+		}
+		
 		ArrayList<WrappedOperation> operations = decoder.decodeList(opcodeList);
 		
-		System.out.println("adding " + operations.size() + " operations to simulation...");
-		simulator.addOperations(operations);
+		//simulator.addOperations(operations);
 		
-		System.out.println("Starting simulation");
-		simulator.run();	
+		//System.out.println("Starting simulation");
+		//simulator.run();	
 	}
 	
 	

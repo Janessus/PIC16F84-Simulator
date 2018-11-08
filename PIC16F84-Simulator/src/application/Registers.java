@@ -7,7 +7,7 @@ public class Registers
 
 	private int bank0[] = new int[128];
 	private int bank1[] = new int[128];
-
+	private int banks[][] = {bank0, bank1};
 	
 	
 	// Properties
