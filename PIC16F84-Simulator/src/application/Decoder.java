@@ -56,7 +56,6 @@ public class Decoder
 	public ArrayList<WrappedOperation> decodeList(List<Integer> instructions)
 	{
 		ArrayList<WrappedOperation> operations = new ArrayList<WrappedOperation>();
-		Iterator<Integer> it = instructions.iterator();
 		
 		for(int instruction:instructions) {
 			if(!findInstruction(checkFirst, 0b11111110011111, instruction))
