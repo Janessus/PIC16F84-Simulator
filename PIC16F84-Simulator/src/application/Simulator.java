@@ -34,12 +34,13 @@ public class Simulator
 			WrappedOperation currentOperation = operations.get(programCounter);
 			
 			currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
-			System.out.println("Executed operation + programCounter" );
-			System.out.println("Working register: " + registers.getWorking());
+			System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
+			System.out.println("Program Counter: " + programCounter);
+			System.out.println("W= " + String.format("0x%02X", registers.getWorking()));
 			programCounter++;
 		}
 		System.out.println("Simulation finished");
-		System.out.println("Working register: " + registers.getWorking());
+		System.out.println("W= " + String.format("0x%02X", registers.getWorking()));
 	}
 
 	public void addOperations(ArrayList<WrappedOperation> operations)

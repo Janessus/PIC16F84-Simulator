@@ -68,7 +68,6 @@ public class Decoder
 										return null;
 			
 			operations.add(new WrappedOperation(tmpOperation, instruction & mask));
-			System.out.println("Decoded Operation!");
 		}
 		
 		return operations;

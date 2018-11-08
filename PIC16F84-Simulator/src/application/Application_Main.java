@@ -30,16 +30,12 @@ public class Application_Main implements Runnable
 	{
 		System.out.println("decoding " + opcodeList.size() + " operations...");
 		
-		for(Integer opcode:opcodeList) {
-			System.out.println(String.format("0x%08X", opcode));
-		}
-		
+		// TODO: Error handling
 		ArrayList<WrappedOperation> operations = decoder.decodeList(opcodeList);
+		simulator.addOperations(operations);
 		
-		//simulator.addOperations(operations);
-		
-		//System.out.println("Starting simulation");
-		//simulator.run();	
+		System.out.println("Starting simulation");
+		simulator.run();	
 	}
 	
 	
