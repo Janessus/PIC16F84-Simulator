@@ -28,10 +28,6 @@ public class Application_Main implements Runnable
 
 	public void runProgram()
 	{
-		for(Integer instruction : opcodeList)
-		{
-			decoder.decode(instruction.intValue());
-		}
 		System.out.println("decoding " + opcodeList.size() + " operations...");
 		ArrayList<WrappedOperation> operations = decoder.decodeList(opcodeList);
 		
