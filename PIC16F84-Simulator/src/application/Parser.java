@@ -18,7 +18,7 @@ public class Parser
 	 * @param file the file to be parsed
 	 * @return List of operations as long value
 	 */
-	public List<Long> parseFile(File file) {
+	public List<Integer> parseFile(File file) {
 		System.out.println("parsing file");
 		
 		// Create FileInputStream and BufferedReader
@@ -31,14 +31,14 @@ public class Parser
       BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
       
       // Read lines
-      List<Long> operations = new ArrayList<Long>();
+      List<Integer> operations = new ArrayList<Integer>();
       String line;
       try {
       	while ((line = reader.readLine()) != null) {
       		//Display Code in GUI
       		
       		if(line.charAt(5) != ' ') {  // Check if 5th character isn't empty
-         		operations.add(Long.parseLong(line.substring(5, 9), 16)); // Parse characters 5 to 8
+         		operations.add(Integer.parseInt(line.substring(5, 9), 16)); // Parse characters 5 to 8
          		GUI_Main.getMainWindow().appendText(line + "\n");//Display Code in GUI
          	}
       		else

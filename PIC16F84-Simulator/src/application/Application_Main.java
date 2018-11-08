@@ -11,7 +11,7 @@ public class Application_Main implements Runnable
 	Parser parser;
 	Simulator simulator;
 	Decoder decoder;
-	List<Long> list = null;
+	List<Integer> list = null;
 
 	@Override
 	public void run() 
@@ -27,7 +27,7 @@ public class Application_Main implements Runnable
 
 	public void runProgram()
 	{
-		for(Long instruction : list)
+		for(Integer instruction : list)
 		{
 			decoder.decode(instruction.intValue());
 		}

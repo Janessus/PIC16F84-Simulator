@@ -1,5 +1,9 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Decoder
 {
 	Operations checkFirst[] = 				{Operations.NOP};
@@ -12,6 +16,7 @@ public class Decoder
 	
 	ICallback callbackFunction;
 	Application_Main main;
+	Operations tmpOperation = null;
 	
 	int mask = 0;
 	
@@ -44,6 +49,37 @@ public class Decoder
 	}
 	
 	/**
+	 * 
+	 * @param instructions
+	 * @return
+	 */
+	public WrappedOperation[] decodeList(List<Integer> instructions)
+	{
+		Operations tmpOperation = null;
+		ArrayList<WrappedOperation> operations = new ArrayList<WrappedOperation>();
+		Iterator<Integer> it = instructions.iterator();
+		int instruction = 0;
+		
+		while(it.hasNext())
+		{
+			instruction = it.next();
+			
+			if(!findInstruction(checkFirst, 0b11111110011111, instruction))
+				if(!findInstruction(fullScaleOperation, 0b11111111111111, instruction))
+					if(!findInstruction(sevenBitOperation, 0b11111110000000, instruction))
+						if(!findInstruction(sixBitOperation, 0b11111100000000, instruction))
+							if(!findInstruction(fiveBitOperation, 0b11111000000000, instruction))
+								if(!findInstruction(fourBitOperation, 0b11110000000000, instruction))
+									if(!findInstruction(threeBitOperation, 0b11100000000000, instruction))
+										return null;
+			
+			operations.add(new WrappedOperation(tmpOperation, instruction & mask));
+		}
+
+		return (WrappedOperation[])operations.toArray();
+	}
+	
+	/**
 	 * Find the instruction code from an array of operations with same instructon (!= adress) length (bits)
 	 * 
 	 * @param list :  Operations sixBitOperation[]
@@ -59,6 +95,7 @@ public class Decoder
 			if(list[i].getId() == tmp)
 			{
 				callbackFunction = list[i].getCallbackFunction();
+				tmpOperation = list[i];
 				
 				//invert mask
 				this.mask = (~mask) & 0b11111111111111;
