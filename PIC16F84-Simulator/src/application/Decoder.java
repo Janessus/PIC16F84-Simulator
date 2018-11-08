@@ -9,8 +9,8 @@ public class Decoder
 	Operation checkFirst[] = 				{Operation.NOP};
 	Operation fullScaleOperation[] =		{Operation.CLRWDT, Operation.RETFIE, Operation.RETURN, Operation.SLEEP };
 	Operation sevenBitOperation[] = 		{Operation.CLRF, Operation.CLRW, Operation.MOVWF, };
-	Operation sixBitOperation[] = 			{Operation.ADDWF, Operation.ANDWF, Operation.COMF, Operation.DECF, Operation.DECFSZ, Operation.INCF, Operation.INCFSZ, Operation.IORWF, Operation.MOVF, Operation.NOP, Operation.RLF, Operation.RRF, Operation.SUBWF, Operation.SWAPF, Operation.XORWF, Operation.IORLW};
-	Operation fiveBitOperation[] = 			{Operation.ADDLW, Operation.SUBLW};
+	Operation sixBitOperation[] = 			{Operation.ADDWF, Operation.ANDWF, Operation.COMF, Operation.DECF, Operation.DECFSZ, Operation.INCF, Operation.INCFSZ, Operation.IORWF, Operation.MOVF, Operation.NOP, Operation.RLF, Operation.RRF, Operation.SUBWF, Operation.SWAPF, Operation.XORWF, Operation.IORLW, Operation.XORLW};
+	Operation fiveBitOperation[] = 			{Operation.ADDLW, Operation.SUBLW, Operation.ANDLW};
 	Operation fourBitOperation[] = 			{Operation.BCF, Operation.BSF, Operation.BTFSC, Operation.BTFSS, Operation.MOVLW, Operation.RETLW};
 	Operation threeBitOperation[] = 		{Operation.CALL, Operation.GOTO, };
 	
