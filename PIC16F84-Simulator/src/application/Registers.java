@@ -9,6 +9,7 @@ public class Registers
 	private int bank1[] = new int[80];
 	private int banks[][] = {bank0, bank1};
 	
+	
 	// Properties
 	private int working;
 	
