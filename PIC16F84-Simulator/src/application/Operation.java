@@ -1,6 +1,6 @@
 package application;
 
-public enum Operations
+public enum Operation
 {
 	// #################################################################Byte oriented operations#########################################################
 	
@@ -331,7 +331,7 @@ public enum Operations
 	private ICallback callback;
 	public Simulator sim;
 	
-	Operations(int id, ICallback callback)
+	Operation(int id, ICallback callback)
 	{
 		this.id = id;
 		this.callback = callback;

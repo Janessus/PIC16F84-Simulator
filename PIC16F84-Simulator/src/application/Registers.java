@@ -9,14 +9,14 @@ public class Registers
 	private int bank1[] = new int[80];
 	
 	// Properties
-	private byte working;
+	private int working;
 	
 	// Methods
 	public void init() {
 		
 	}
 	
-	public byte getWorking() {
+	public int getWorking() {
 		return working;	
 	}
 	

@@ -6,17 +6,17 @@ import java.util.List;
 
 public class Decoder
 {
-	Operations checkFirst[] = 				{Operations.NOP};
-	Operations fullScaleOperation[] =		{Operations.CLRWDT, Operations.RETFIE, Operations.RETURN, Operations.SLEEP };
-	Operations sevenBitOperation[] = 		{Operations.CLRF, Operations.CLRW, Operations.MOVWF, };
-	Operations sixBitOperation[] = 			{Operations.ADDWF, Operations.ANDWF, Operations.COMF, Operations.DECF, Operations.DECFSZ, Operations.INCF, Operations.INCFSZ, Operations.IORWF, Operations.MOVF, Operations.NOP, Operations.RLF, Operations.RRF, Operations.SUBWF, Operations.SWAPF, Operations.XORWF, Operations.IORLW};
-	Operations fiveBitOperation[] = 		{Operations.ADDLW, Operations.SUBLW};
-	Operations fourBitOperation[] = 		{Operations.BCF, Operations.BSF, Operations.BTFSC, Operations.BTFSS, Operations.MOVLW, Operations.RETLW};
-	Operations threeBitOperation[] = 		{Operations.CALL, Operations.GOTO, };
+	Operation checkFirst[] = 				{Operation.NOP};
+	Operation fullScaleOperation[] =		{Operation.CLRWDT, Operation.RETFIE, Operation.RETURN, Operation.SLEEP };
+	Operation sevenBitOperation[] = 		{Operation.CLRF, Operation.CLRW, Operation.MOVWF, };
+	Operation sixBitOperation[] = 			{Operation.ADDWF, Operation.ANDWF, Operation.COMF, Operation.DECF, Operation.DECFSZ, Operation.INCF, Operation.INCFSZ, Operation.IORWF, Operation.MOVF, Operation.NOP, Operation.RLF, Operation.RRF, Operation.SUBWF, Operation.SWAPF, Operation.XORWF, Operation.IORLW};
+	Operation fiveBitOperation[] = 			{Operation.ADDLW, Operation.SUBLW};
+	Operation fourBitOperation[] = 			{Operation.BCF, Operation.BSF, Operation.BTFSC, Operation.BTFSS, Operation.MOVLW, Operation.RETLW};
+	Operation threeBitOperation[] = 		{Operation.CALL, Operation.GOTO, };
 	
 	ICallback callbackFunction;
 	Application_Main main;
-	Operations tmpOperation = null;
+	Operation tmpOperation = null;
 	
 	int mask = 0;
 	
@@ -55,8 +55,8 @@ public class Decoder
 	 */
 	public WrappedOperation[] decodeList(List<Integer> instructions)
 	{
-		Operations tmpOperation = null;
-		ArrayList<WrappedOperation> operations = new ArrayList<WrappedOperation>();
+		Operation tmpOperation = null;
+		ArrayList<WrappedOperation> Operation = new ArrayList<WrappedOperation>();
 		Iterator<Integer> it = instructions.iterator();
 		int instruction = 0;
 		
@@ -73,21 +73,21 @@ public class Decoder
 									if(!findInstruction(threeBitOperation, 0b11100000000000, instruction))
 										return null;
 			
-			operations.add(new WrappedOperation(tmpOperation, instruction & mask));
+			Operation.add(new WrappedOperation(tmpOperation, instruction & mask));
 		}
 
-		return (WrappedOperation[])operations.toArray();
+		return (WrappedOperation[])Operation.toArray();
 	}
 	
 	/**
-	 * Find the instruction code from an array of operations with same instructon (!= adress) length (bits)
+	 * Find the instruction code from an array of Operation with same instructon (!= adress) length (bits)
 	 * 
-	 * @param list :  Operations sixBitOperation[]
+	 * @param list :  Operation sixBitOperation[]
 	 * @param mask :  0b11111100000000
 	 * @param instruction
 	 * @return true if callback was set, false if not
 	 */
-	private boolean findInstruction(Operations list[], int mask, int instruction)
+	private boolean findInstruction(Operation list[], int mask, int instruction)
 	{
 		int tmp = (instruction & mask);
 		for(int i = 0; i < list.length; i++)
