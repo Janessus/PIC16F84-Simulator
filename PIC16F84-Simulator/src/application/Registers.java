@@ -7,6 +7,7 @@ public class Registers
 	
 	private int bank0[] = new int[80];
 	private int bank1[] = new int[80];
+	private int banks[][] = {bank0, bank1};
 	
 	// Properties
 	private int working;
@@ -24,26 +25,25 @@ public class Registers
 		working = val;
 	}
 	
-	public int readRegister(int address)
+	public int readRegister(int bank, int address)
 	{
-		//TODO
-		return address;
+		return banks[bank][address];
 	}
 	
-	public void setRegister(int address, int value)
+	public void setRegister(int bank, int address, int value)
 	{
-		//TODO
+		banks[bank][address] = value;
 	}
 	
-	public int readBit(int address, int pos)
+	public int readBit(int bank, int address, int pos)
 	{
-		//TODO
-		return 0;
+		// Get correct register, right shift byte and mask it
+		return (banks[bank][address]>>pos) & 1;
 	}
 	
-	public void setBit(int address, int pos, int value)
+	public void setBit(int bank, int address, int pos, boolean value)
 	{
-		//TODO
+		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 	}
 	
 }

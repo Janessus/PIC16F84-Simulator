@@ -11,7 +11,7 @@ public class Application_Main implements Runnable
 	Parser parser;
 	Simulator simulator;
 	Decoder decoder;
-	List<Integer> list = null;
+	List<Integer> opcodeList = null;
 
 	@Override
 	public void run() 
@@ -27,12 +27,13 @@ public class Application_Main implements Runnable
 
 	public void runProgram()
 	{
-		for(Integer instruction : list)
+		for(Integer instruction : opcodeList)
 		{
 			decoder.decode(instruction.intValue());
 		}
 		
-		System.out.println("Program finished");
+		System.out.println("Starting simulation");
+		simulator.run();	
 	}
 	
 	
@@ -42,6 +43,6 @@ public class Application_Main implements Runnable
 	}
 	
 	public void openFile(File file) {
-		list = parser.parseFile(file);
+		opcodeList = parser.parseFile(file);
 	}
 }
