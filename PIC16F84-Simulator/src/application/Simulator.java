@@ -50,7 +50,7 @@ public class Simulator
 	//
 	public void addwf(byte val)
 	{
-		// TODO
+		
 	}
 
 	public void andwf(byte val)
