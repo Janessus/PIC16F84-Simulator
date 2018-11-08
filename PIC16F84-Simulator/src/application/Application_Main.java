@@ -1,6 +1,7 @@
 package application;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import gui.GUI_Main;
@@ -11,7 +12,7 @@ public class Application_Main implements Runnable
 	Parser parser;
 	Simulator simulator;
 	Decoder decoder;
-	List<Integer> list = null;
+	List<Integer> opcodeList = null;
 
 	@Override
 	public void run() 
@@ -27,12 +28,18 @@ public class Application_Main implements Runnable
 
 	public void runProgram()
 	{
-		for(Integer instruction : list)
+		for(Integer instruction : opcodeList)
 		{
 			decoder.decode(instruction.intValue());
 		}
+		System.out.println("decoding " + opcodeList.size() + " operations...");
+		ArrayList<WrappedOperation> operations = decoder.decodeList(opcodeList);
 		
-		System.out.println("Program finished");
+		System.out.println("adding " + operations.size() + " operations to simulation...");
+		simulator.addOperations(operations);
+		
+		System.out.println("Starting simulation");
+		simulator.run();	
 	}
 	
 	
@@ -42,6 +49,6 @@ public class Application_Main implements Runnable
 	}
 	
 	public void openFile(File file) {
-		list = parser.parseFile(file);
+		opcodeList = parser.parseFile(file);
 	}
 }
