@@ -1,6 +1,7 @@
 package application;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import gui.GUI_Main;
@@ -27,10 +28,11 @@ public class Application_Main implements Runnable
 
 	public void runProgram()
 	{
-		for(Integer instruction : opcodeList)
-		{
-			decoder.decode(instruction.intValue());
-		}
+		System.out.println("decoding " + opcodeList.size() + " operations...");
+		ArrayList<WrappedOperation> operations = decoder.decodeList(opcodeList);
+		
+		System.out.println("adding " + operations.size() + " operations to simulation...");
+		simulator.addOperations(operations);
 		
 		System.out.println("Starting simulation");
 		simulator.run();	

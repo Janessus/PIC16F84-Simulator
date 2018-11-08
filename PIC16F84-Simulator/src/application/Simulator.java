@@ -29,13 +29,17 @@ public class Simulator
 	}
 
 	public void run() {
-		while(programCounter < stack.size()) {
+		while(programCounter < operations.size()) {
 			// Execute current operation
 			WrappedOperation currentOperation = operations.get(programCounter);
 			
 			currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
+			System.out.println("Executed operation + programCounter" );
+			System.out.println("Working register: " + registers.getWorking());
 			programCounter++;
 		}
+		System.out.println("Simulation finished");
+		System.out.println("Working register: " + registers.getWorking());
 	}
 
 	public void addOperations(ArrayList<WrappedOperation> operations)

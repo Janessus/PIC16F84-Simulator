@@ -49,14 +49,14 @@ public class Decoder
 	}
 	
 	/**
-	 * 
+	 * TODO: duplicate code, unify with decode() or delete decode()
 	 * @param instructions
 	 * @return
 	 */
-	public WrappedOperation[] decodeList(List<Integer> instructions)
+	public ArrayList<WrappedOperation> decodeList(List<Integer> instructions)
 	{
 		Operation tmpOperation = null;
-		ArrayList<WrappedOperation> Operation = new ArrayList<WrappedOperation>();
+		ArrayList<WrappedOperation> operations = new ArrayList<WrappedOperation>();
 		Iterator<Integer> it = instructions.iterator();
 		int instruction = 0;
 		
@@ -73,10 +73,11 @@ public class Decoder
 									if(!findInstruction(threeBitOperation, 0b11100000000000, instruction))
 										return null;
 			
-			Operation.add(new WrappedOperation(tmpOperation, instruction & mask));
+			operations.add(new WrappedOperation(tmpOperation, instruction & mask));
+			System.out.println("Decoded Operation!");
 		}
-
-		return (WrappedOperation[])Operation.toArray();
+		
+		return operations;
 	}
 	
 	/**
