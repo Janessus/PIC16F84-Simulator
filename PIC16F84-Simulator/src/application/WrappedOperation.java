@@ -13,7 +13,7 @@ public class WrappedOperation
 	public Operation getOperation() {
 		return this.operation;
 	}
-	public int getParams() {
+	public int getArguments() {
 		return this.arguments;
 	}
 }
