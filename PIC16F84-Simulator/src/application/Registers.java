@@ -13,8 +13,14 @@ public class Registers
 	private int working = 0;
 	
 	// Methods
-	public void init() {
-		
+	public void init() 
+	{
+		//TODO
+	}
+	
+	public int getBank()
+	{
+		return readBit(0, 3, 5);
 	}
 	
 	public int getWorking() {
@@ -31,10 +37,20 @@ public class Registers
 		return banks[bank][address];
 	}
 	
+	public int readRegister(int address)
+	{
+		return banks[getBank()][address];
+	}
+	
 	// same for setRegister
 	public void setRegister(int bank, int address, int value)
 	{
 		banks[bank][address] = value;
+	}
+	
+	public void setRegister(int address, int value)
+	{
+		banks[getBank()][address] = value;
 	}
 	
 	public int readBit(int bank, int address, int pos)
@@ -43,8 +59,20 @@ public class Registers
 		return (banks[bank][address]>>pos) & 1;
 	}
 	
+	public int readBit(int address, int pos)
+	{
+		// Get correct register, right shift byte and mask it
+		return (banks[getBank()][address]>>pos) & 1;
+	}
+	
 	public void setBit(int bank, int address, int pos, boolean value) //TODO overload
 	{
+		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
+	}
+	
+	public void setBit(int address, int pos, boolean value) //TODO overload
+	{
+		int bank = getBank();
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 	}
 	
@@ -75,11 +103,13 @@ public class Registers
 			return true;
 		return false;
 	}
+	
 	public void setZeroFlag(boolean val) 
 	{
 		setBit(0, 3, 2, val);
 		setBit(1, 3, 2, val);
 	}
+	
 	public boolean getZeroFlag() 
 	{
 		if(readBit(0, 3, 2) > 0)
