@@ -68,7 +68,9 @@ public class GUI_Main extends Application
 	
 	private void onStepClicked()
 	{
-		app.runProgram();
+		synchronized(app.simulator) {
+			app.simulator.notify();
+		}
 	}
 
 	private Object onOpenDocument()

@@ -10,7 +10,7 @@ public class Application_Main implements Runnable
 {
 	GUI_Main gui;
 	Parser parser;
-	Simulator simulator;
+	public Simulator simulator;
 	Decoder decoder;
 	List<Integer> opcodeList = null;
 
@@ -35,7 +35,8 @@ public class Application_Main implements Runnable
 		simulator.addOperations(operations);
 		
 		System.out.println("Starting simulation");
-		simulator.run();	
+		Thread simulatorThread = new Thread(simulator);
+		simulatorThread.start();
 	}
 	
 	
