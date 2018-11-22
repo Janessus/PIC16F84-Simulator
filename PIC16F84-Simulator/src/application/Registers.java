@@ -5,6 +5,8 @@ public class Registers
 	//int[] Indirect_Addr, TMR0, PCL, STATUS, FSR, PORTA, PORTB, EEDATA, EEADR, PCLATH, INTCON = new int[8];	//Bank0
 	//int[] Indirect_Addr, OPTION, PCL, STATUS, FSR, TRISA, TRISB, EECON1, EECON2, PCLATH, INTCON = new int[8];	//Bank1
 
+	//indirect = 8 bit -> msb = rp0
+
 	private int banks[][] = {new int[128], new int[128]};
 	
 	// Properties
@@ -41,7 +43,7 @@ public class Registers
 		return (banks[bank][address]>>pos) & 1;
 	}
 	
-	public void setBit(int bank, int address, int pos, boolean value)
+	public void setBit(int bank, int address, int pos, boolean value) //TODO overload
 	{
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 	}
@@ -50,54 +52,37 @@ public class Registers
 	// TODO: implement
 	public void setCarryFlag(boolean val)
 	{
-		banks[0][3] &= 0b11111110;
-		banks[1][3] &= 0b11111110;
-		
-		if(val) 
-		{
-			banks[1][3] |= 0b00000001;
-			banks[0][3] |= 0b00000001;
-		}	
+		setBit(0, 3, 0, val);
+		setBit(1, 3, 0, val);	
 	}
 	
 	public boolean getCarryFlag() 
 	{
-		if((banks[0][3] & 0b00000001) > 0)
+		if(readBit(0, 3, 0) > 0)
 			return true;
 		return false;
 	}
 	
 	public void setDigitCarryFlag(boolean val) 
 	{
-		banks[0][3] &= 0b11111101;
-		banks[1][3] &= 0b11111101;
-		
-		if(val) 
-		{
-			banks[1][3] |= 0b00000010;
-			banks[0][3] |= 0b00000010;
-		}	
+		setBit(0, 3, 1, val);
+		setBit(1, 3, 1, val);	
 	}
+	
 	public boolean getDigitCarryFlag() 
 	{
-		if((banks[0][3] & 0b00000010) > 0)
+		if(readBit(0, 3, 1) > 0)
 			return true;
 		return false;
 	}
 	public void setZeroFlag(boolean val) 
 	{
-		banks[0][3] &= 0b11111011;
-		banks[1][3] &= 0b11111011;
-		
-		if(val) 
-		{
-			banks[1][3] |= 0b00000100;
-			banks[0][3] |= 0b00000100;
-		}	
+		setBit(0, 3, 2, val);
+		setBit(1, 3, 2, val);
 	}
 	public boolean getZeroFlag() 
 	{
-		if((banks[0][3] & 0b00000100) > 0)
+		if(readBit(0, 3, 2) > 0)
 			return true;
 		return false;
 	}
