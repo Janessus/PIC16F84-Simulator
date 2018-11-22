@@ -8,7 +8,7 @@ public class Registers
 	private int banks[][] = {new int[128], new int[128]};
 	
 	// Properties
-	private int working;
+	private int working = 0;
 	
 	// Methods
 	public void init() {
