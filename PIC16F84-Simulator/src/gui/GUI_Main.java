@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 
@@ -20,7 +21,8 @@ public class GUI_Main extends Application
 {
 	private static Application_Main app;
 	
-	private static TextArea mainWindow;
+	public static TextArea mainWindow;
+	public static CheckBox checkBoxStep;
 	
 	@Override
     public void start(Stage stage) throws Exception 
@@ -51,14 +53,20 @@ public class GUI_Main extends Application
 		
 		
 		Button btnRun = (Button) namespace.get("btnRun");
-		if(btnRun != null)
-			btnRun.setOnAction(event -> this.onRunClicked());
-		else
-			System.err.println("Not found");
+		Button btnStep = (Button) namespace.get("btnStep");
+		checkBoxStep = (CheckBox) namespace.get("checkBoxStep");
+		
+		btnRun.setOnAction(event -> this.onRunClicked());
+		btnStep.setOnAction(event -> this.onStepClicked());
 		
 	}
 	
 	private void onRunClicked()
+	{
+		app.runProgram();
+	}
+	
+	private void onStepClicked()
 	{
 		app.runProgram();
 	}
@@ -85,10 +93,5 @@ public class GUI_Main extends Application
 	public static void setApp(Application_Main app)
 	{
 		GUI_Main.app = app;
-	}
-	
-	public static TextArea getMainWindow()
-	{
-		return mainWindow;
 	}
 }
