@@ -3,7 +3,9 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simulator
+import gui.GUI_Main;
+
+public class Simulator implements Runnable
 {
 	// Properties
 	Registers registers;
@@ -27,27 +29,42 @@ public class Simulator
 		registers.init();
 	}
 
+	@Override
 	public void run() {
-		programCounter = 0;
-		while(programCounter < operations.size()) { //TODO condition 
-			// Execute current operation
-			WrappedOperation currentOperation = operations.get(programCounter);
+		
+		synchronized(this) {
 			
-			currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
-			System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
-			System.out.println("Program Counter: " + programCounter);
-			System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
-				+ "C = " + registers.getCarryFlag() + ", "
-				+ "DC= " + registers.getDigitCarryFlag() + ", "
-				+ "Z= " + registers.getZeroFlag());
-			
-			if(skipProgramCounter)
-			{
-				skipProgramCounter = false;
-			} else {
-				programCounter++;
+			programCounter = 0;
+			while(programCounter < operations.size()) { //TODO condition 
+				// Execute current operation
+				WrappedOperation currentOperation = operations.get(programCounter);
+				
+				currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
+				System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
+				System.out.println("Program Counter: " + programCounter);
+				System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
+					+ "C = " + registers.getCarryFlag() + ", "
+					+ "DC= " + registers.getDigitCarryFlag() + ", "
+					+ "Z= " + registers.getZeroFlag());
+				
+				// Dont increment program counter for certain operations
+				if(skipProgramCounter)
+				{
+					skipProgramCounter = false;
+				} else {
+					programCounter++;
+				}
+				
+				// Pause thread if step mode
+				if(GUI_Main.checkBoxStep.isSelected()) {
+					try {
+						this.wait();
+						System.out.println("Pausing thread...");
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
-			
 		}
 		System.out.println("Simulation finished");
 		System.out.println("W= " + String.format("0x%02X", registers.getWorking()));
