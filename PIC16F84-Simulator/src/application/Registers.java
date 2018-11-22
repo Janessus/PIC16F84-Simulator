@@ -48,22 +48,57 @@ public class Registers
 	
 	// Helpers
 	// TODO: implement
-	public void setCarryFlag(boolean val) {
+	public void setCarryFlag(boolean val)
+	{
+		banks[0][3] &= 0b11111110;
+		banks[1][3] &= 0b11111110;
 		
+		if(val) 
+		{
+			banks[1][3] |= 0b00000001;
+			banks[0][3] |= 0b00000001;
+		}	
 	}
-	public boolean getCarryFlag() {
-		return true;
+	
+	public boolean getCarryFlag() 
+	{
+		if((banks[0][3] & 0b00000001) > 0)
+			return true;
+		return false;
 	}
-	public void setDigitCarryFlag(boolean val) {
+	
+	public void setDigitCarryFlag(boolean val) 
+	{
+		banks[0][3] &= 0b11111101;
+		banks[1][3] &= 0b11111101;
 		
+		if(val) 
+		{
+			banks[1][3] |= 0b00000010;
+			banks[0][3] |= 0b00000010;
+		}	
 	}
-	public boolean getDigitCarryFlag() {
-		return true;
+	public boolean getDigitCarryFlag() 
+	{
+		if((banks[0][3] & 0b00000010) > 0)
+			return true;
+		return false;
 	}
-	public void setZeroFlag(boolean val) {
+	public void setZeroFlag(boolean val) 
+	{
+		banks[0][3] &= 0b11111011;
+		banks[1][3] &= 0b11111011;
 		
+		if(val) 
+		{
+			banks[1][3] |= 0b00000100;
+			banks[0][3] |= 0b00000100;
+		}	
 	}
-	public boolean getZeroFlag() {
-		return true;
+	public boolean getZeroFlag() 
+	{
+		if((banks[0][3] & 0b00000100) > 0)
+			return true;
+		return false;
 	}
 }
