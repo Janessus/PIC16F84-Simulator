@@ -61,7 +61,28 @@ public class Simulator
 	// Operations implementation
 	public void addwf(byte val)
 	{
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
 		
+		// Calculate addition
+		int valRegisterF = this.registers.readRegister(f);
+		int valRegisterw = this.registers.getWorking();
+		
+		int result = valRegisterF + valRegisterw;
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		// Set status
+		registers.setDigitCarryFlag((0x00000001 & valRegisterF) + (0x00000001 & valRegisterw) > 0xF);
+		registers.setZeroFlag(result==0);
+		registers.setCarryFlag(result>0xFF);
+		
+		registers.setDigitCarryFlag((0x00000001 & valRegisterF) + (0x00000001 & valRegisterw) > 0xF);
 	}
 
 	public void andwf(byte val)
@@ -71,22 +92,50 @@ public class Simulator
 
 	public void clrf(byte val)
 	{
-		// TODO
+		this.registers.setRegister(val, 0);
+		this.registers.setZeroFlag(true);
 	}
 
 	public void clrw(byte val)
 	{
-		// TODO
+		this.registers.setWorking((byte)0);
+		this.registers.setZeroFlag(true);
 	}
 
 	public void comf(byte val)
 	{
-		// TODO
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
+		
+		// Build complement
+		int result = ~ this.registers.readRegister(f);
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
 	}
 
 	public void decf(byte val)
 	{
-		// TODO
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
+		
+		// Build decrement
+		int result = this.registers.readRegister(f) - 1;
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
 	}
 
 	public void decfsz(byte val)
@@ -96,7 +145,20 @@ public class Simulator
 
 	public void incf(byte val)
 	{
-		// TODO
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
+		
+		// Build increment
+		int result = this.registers.readRegister(f) + 1;
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
 	}
 
 	public void incfsz(byte val)
@@ -106,17 +168,43 @@ public class Simulator
 
 	public void iorwf(byte val)
 	{
-		// TODO
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
+		
+		// Calculate inclusive OR
+		int result = this.registers.readRegister(f) | this.registers.getWorking();
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
 	}
 
 	public void movf(byte val)
 	{
-		// TODO
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
+		
+		// Get register
+		int result = this.registers.readRegister(f);
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
 	}
 
 	public void movwf(byte val)
 	{
-		// TODO
+		this.registers.setRegister(val, this.registers.getWorking());
 	}
 
 	public void nop(byte val)
@@ -136,17 +224,61 @@ public class Simulator
 
 	public void subwf(byte val)
 	{
-		// TODO
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
+		
+		// Calculate substraction
+		int valRegisterF = this.registers.readRegister(f);
+		int valRegisterw = this.registers.getWorking();
+		
+		int result = valRegisterF - valRegisterw;
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		// Set status
+		registers.setDigitCarryFlag((0x00000001 & valRegisterF) - (0x00000001 & valRegisterw) > 0);
+		registers.setZeroFlag(result==0);
+		registers.setCarryFlag(result>0);
 	}
 
 	public void swapf(byte val)
 	{
-		// TODO
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
+		
+		// Get register value and swap nibbles
+		int result = this.registers.readRegister(f);
+		result = ((result & 0x0F)<<4 | (result & 0xF0)>>4);
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
 	}
 
 	public void xorwf(byte val)
 	{
-		// TODO
+		byte d = (byte)(0b10000000 & val);
+		byte f = (byte)(0b00000001 & val);
+		
+		// Calculate inclusive OR
+		int result = this.registers.readRegister(f) ^ this.registers.getWorking();
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
 	}
 
 	public void bcf(byte val)
@@ -187,8 +319,9 @@ public class Simulator
 
 	public void call(byte val)
 	{
+		// Add return point to stack
+		this.stack.add((int)this.programCounter);
 		this.programCounter = val;
-		this.stack.add((int)val);
 		this.skipProgramCounter = true;
 	}
 
@@ -227,8 +360,8 @@ public class Simulator
 
 	public void reTurn(byte val)
 	{
-		// TODO
-		this.skipProgramCounter = true;
+		// Get programCounter from stack
+		this.programCounter = stack.remove(stack.size() -1);
 	}
 
 	public void sleep(byte val)
