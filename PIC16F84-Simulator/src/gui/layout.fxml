@@ -44,7 +44,7 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
-                        <SplitPane dividerPositions="0.6896551724137931" layoutX="376.0" layoutY="-2.0" prefHeight="600.0" prefWidth="880.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.6819923371647509" layoutX="376.0" layoutY="-2.0" prefHeight="600.0" prefWidth="880.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
@@ -64,195 +64,187 @@
                                     </SplitPane>
                                  </children>
                               </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="320.0" prefHeight="160.0" prefWidth="100.0">
+                            <AnchorPane minHeight="0.0" minWidth="340.0" prefHeight="160.0" prefWidth="340.0">
                                  <children>
-                                    <ScrollPane prefHeight="663.0" prefViewportHeight="730.0" prefViewportWidth="320.0" prefWidth="322.0">
+                                    <ScrollPane minWidth="-Infinity" prefHeight="457.0" prefWidth="302.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <content>
-                                          <AnchorPane prefHeight="656.0" prefWidth="322.0">
+                                          <AnchorPane prefHeight="730.0" prefWidth="318.0">
                                              <children>
-                                                <ScrollPane prefHeight="662.0" prefViewportHeight="730.0" prefViewportWidth="320.0" prefWidth="322.0">
-                                                   <content>
-                                                      <AnchorPane maxHeight="-Infinity" prefHeight="609.0" prefWidth="296.0">
+                                                <Pane layoutX="14.0" layoutY="228.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="TRISA" wrapText="true" />
+                                                      <CheckBox layoutX="100.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="122.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="144.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="166.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="188.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="210.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="232.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="254.0" mnemonicParsing="false" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="625.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="FSR" wrapText="true" />
+                                                      <Label fx:id="fsr2" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="394.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="STATUS" wrapText="true" />
+                                                      <Label fx:id="status" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="709.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="INTCON" wrapText="true" />
+                                                      <Label fx:id="intcon2" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="478.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="PCLATH" wrapText="true" />
+                                                      <Label fx:id="pclath" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <AnchorPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <children>
+                                                      <ImageView fitHeight="214.0" fitWidth="320.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-104.0" AnchorPane.topAnchor="0.0">
+                                                         <image>
+                                                            <Image url="@../../res/picScreenshot.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Group>
                                                          <children>
-                                                            <Pane layoutX="14.0" layoutY="228.0">
+                                                            <Group>
                                                                <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="TRISA" wrapText="true" />
-                                                                  <CheckBox layoutX="100.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="122.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="144.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="166.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="188.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="210.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="232.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="254.0" mnemonicParsing="false" />
+                                                                  <CheckBox fx:id="pin5" layoutX="88.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin1" layoutX="88.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin6" layoutX="88.0" layoutY="92.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin3" layoutX="88.0" layoutY="43.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin8" layoutX="88.0" layoutY="124.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin9" layoutX="88.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin7" layoutX="88.0" layoutY="108.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin4" layoutX="88.0" layoutY="59.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin2" layoutX="88.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="625.0" prefHeight="21.0" prefWidth="282.0">
+                                                            </Group>
+                                                            <Group layoutX="98.0">
                                                                <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="FSR" wrapText="true" />
-                                                                  <Label fx:id="fsr2" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                                  <CheckBox fx:id="pin14" layoutX="88.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin18" layoutX="88.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin13" layoutX="88.0" layoutY="92.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin16" layoutX="88.0" layoutY="43.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin11" layoutX="88.0" layoutY="124.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin10" layoutX="88.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin12" layoutX="88.0" layoutY="108.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin15" layoutX="88.0" layoutY="59.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin17" layoutX="88.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="394.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="STATUS" wrapText="true" />
-                                                                  <Label fx:id="status" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="709.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="INTCON" wrapText="true" />
-                                                                  <Label fx:id="intcon2" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="478.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="PCLATH" wrapText="true" />
-                                                                  <Label fx:id="pclath" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <AnchorPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                               <children>
-                                                                  <ImageView fitHeight="214.0" fitWidth="320.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-104.0" AnchorPane.topAnchor="0.0">
-                                                                     <image>
-                                                                        <Image url="@../../res/picScreenshot.png" />
-                                                                     </image>
-                                                                  </ImageView>
-                                                                  <Group>
-                                                                     <children>
-                                                                        <Group>
-                                                                           <children>
-                                                                              <CheckBox layoutX="88.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="92.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="43.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="124.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="108.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="59.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                           </children>
-                                                                        </Group>
-                                                                        <Group layoutX="98.0">
-                                                                           <children>
-                                                                              <CheckBox layoutX="88.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="92.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="43.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="124.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="108.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="59.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                              <CheckBox layoutX="88.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                           </children>
-                                                                        </Group>
-                                                                     </children>
-                                                                  </Group>
-                                                               </children>
-                                                            </AnchorPane>
-                                                            <Pane layoutX="14.0" layoutY="646.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="EECON1" wrapText="true" />
-                                                                  <Label fx:id="eecon1" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="436.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="EEDATA" wrapText="true" />
-                                                                  <Label fx:id="eedata" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="667.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="EECON2" wrapText="true" />
-                                                                  <Label fx:id="eecon2" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="352.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="TMR0" wrapText="true" />
-                                                                  <Label fx:id="tmr0" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="249.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="TRISB" wrapText="true" />
-                                                                  <CheckBox layoutX="100.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="122.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="144.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="166.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="188.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="210.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="232.0" mnemonicParsing="false" />
-                                                                  <CheckBox layoutX="254.0" mnemonicParsing="false" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Label layoutX="14.0" layoutY="520.0" text="Bank1" underline="true" />
-                                                            <Label layoutX="14.0" layoutY="310.0" text="Bank0" underline="true" />
-                                                            <Pane layoutX="14.0" layoutY="562.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="OPTION_REG" wrapText="true" />
-                                                                  <Label fx:id="option_reg" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="331.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="INDF" wrapText="true" />
-                                                                  <Label fx:id="indf" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="499.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="INTCON" wrapText="true" />
-                                                                  <Label fx:id="intcon" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="688.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="PCLATH" wrapText="true" />
-                                                                  <Label fx:id="pclath2" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="583.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="PCL" wrapText="true" />
-                                                                  <Label fx:id="pcl2" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="541.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="INDF" wrapText="true" />
-                                                                  <Label fx:id="indf2" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="604.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="STATUS" wrapText="true" />
-                                                                  <Label fx:id="status2" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="373.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="PCL" wrapText="true" />
-                                                                  <Label fx:id="pcl" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="415.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="FSR" wrapText="true" />
-                                                                  <Label fx:id="fsr" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
-                                                            <Pane layoutX="14.0" layoutY="457.0" prefHeight="21.0" prefWidth="282.0">
-                                                               <children>
-                                                                  <Label prefHeight="21.0" prefWidth="100.0" text="EEADR" wrapText="true" />
-                                                                  <Label fx:id="eeadr" layoutX="100.0" text="RegisterValue(HEX)" />
-                                                               </children>
-                                                            </Pane>
+                                                            </Group>
                                                          </children>
-                                                      </AnchorPane>
-                                                   </content>
-                                                </ScrollPane>
+                                                      </Group>
+                                                   </children>
+                                                </AnchorPane>
+                                                <Pane layoutX="14.0" layoutY="646.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="EECON1" wrapText="true" />
+                                                      <Label fx:id="eecon1" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="436.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="EEDATA" wrapText="true" />
+                                                      <Label fx:id="eedata" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="667.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="EECON2" wrapText="true" />
+                                                      <Label fx:id="eecon2" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="352.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="TMR0" wrapText="true" />
+                                                      <Label fx:id="tmr0" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="249.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="TRISB" wrapText="true" />
+                                                      <CheckBox layoutX="100.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="122.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="144.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="166.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="188.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="210.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="232.0" mnemonicParsing="false" />
+                                                      <CheckBox layoutX="254.0" mnemonicParsing="false" />
+                                                   </children>
+                                                </Pane>
+                                                <Label layoutX="14.0" layoutY="520.0" text="Bank1" underline="true" />
+                                                <Label layoutX="14.0" layoutY="310.0" text="Bank0" underline="true" />
+                                                <Pane layoutX="14.0" layoutY="562.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="OPTION_REG" wrapText="true" />
+                                                      <Label fx:id="option_reg" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="331.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="INDF" wrapText="true" />
+                                                      <Label fx:id="indf" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="499.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="INTCON" wrapText="true" />
+                                                      <Label fx:id="intcon" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="688.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="PCLATH" wrapText="true" />
+                                                      <Label fx:id="pclath2" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="583.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="PCL" wrapText="true" />
+                                                      <Label fx:id="pcl2" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="541.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="INDF" wrapText="true" />
+                                                      <Label fx:id="indf2" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="604.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="STATUS" wrapText="true" />
+                                                      <Label fx:id="status2" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="373.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="PCL" wrapText="true" />
+                                                      <Label fx:id="pcl" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="415.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="FSR" wrapText="true" />
+                                                      <Label fx:id="fsr" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
+                                                <Pane layoutX="14.0" layoutY="457.0" prefHeight="21.0" prefWidth="282.0">
+                                                   <children>
+                                                      <Label prefHeight="21.0" prefWidth="100.0" text="EEADR" wrapText="true" />
+                                                      <Label fx:id="eeadr" layoutX="100.0" text="RegisterValue(HEX)" />
+                                                   </children>
+                                                </Pane>
                                              </children>
                                           </AnchorPane>
                                        </content>

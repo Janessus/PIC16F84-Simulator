@@ -21,7 +21,6 @@ public class Application_Main implements Runnable
 		simulator = new Simulator();
 		decoder = new Decoder(this);
 		
-		
 		System.out.println("app running");
 		// TODO Auto-generated method stub
 	}
