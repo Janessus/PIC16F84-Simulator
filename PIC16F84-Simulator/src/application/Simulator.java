@@ -11,6 +11,7 @@ public class Simulator
 	List<WrappedOperation> operations = new ArrayList<WrappedOperation>();
 
 	int programCounter = 0;
+	boolean skipProgramCounter = false;
 
 	List<Integer> stack = new ArrayList<Integer>();
 
@@ -27,6 +28,7 @@ public class Simulator
 	}
 
 	public void run() {
+		programCounter = 0;
 		while(programCounter < operations.size()) {
 			// Execute current operation
 			WrappedOperation currentOperation = operations.get(programCounter);
@@ -34,13 +36,18 @@ public class Simulator
 			currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
 			System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
 			System.out.println("Program Counter: " + programCounter);
-			System.out.println("W= " + String.format("0x%02X", registers.getWorking())
-				+ "C= " + registers.getCarryFlag()
-				+ "DC= " + registers.getDigitCarryFlag()
-				+ "Z= " + registers.getZeroFlag());
+			System.out.println("W=" + String.format("0x%02X", registers.getWorking())
+				+ " C=" + registers.getCarryFlag()
+				+ " DC=" + registers.getDigitCarryFlag()
+				+ " Z=" + registers.getZeroFlag());
 			
+			if(skipProgramCounter)
+			{
+				skipProgramCounter = false;
+			} else {
+				programCounter++;
+			}
 			
-			programCounter++;
 		}
 		System.out.println("Simulation finished");
 		System.out.println("W= " + String.format("0x%02X", registers.getWorking()));
@@ -182,6 +189,7 @@ public class Simulator
 	{
 		this.programCounter = val;
 		this.stack.add((int)val);
+		this.skipProgramCounter = true;
 	}
 
 	public void clrwdt(byte val)
@@ -192,6 +200,7 @@ public class Simulator
 	public void goTo(byte val)
 	{
 		this.programCounter = val;
+		this.skipProgramCounter = true;
 	}
 
 	public void iorlw(byte val)
@@ -219,6 +228,7 @@ public class Simulator
 	public void reTurn(byte val)
 	{
 		// TODO
+		this.skipProgramCounter = true;
 	}
 
 	public void sleep(byte val)
