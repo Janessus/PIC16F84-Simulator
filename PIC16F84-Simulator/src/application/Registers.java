@@ -11,7 +11,7 @@ public class Registers
 	
 	
 	// Properties
-	private int working;
+	private int working = 0;
 	
 	// Methods
 	public void init() {

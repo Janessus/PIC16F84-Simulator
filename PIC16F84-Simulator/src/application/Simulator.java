@@ -27,16 +27,16 @@ public class Simulator
 	}
 
 	public void run() {
-		while(programCounter < operations.size()) {
+		while(programCounter < operations.size()) { //TODO condition 
 			// Execute current operation
 			WrappedOperation currentOperation = operations.get(programCounter);
 			
 			currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
 			System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
 			System.out.println("Program Counter: " + programCounter);
-			System.out.println("W= " + String.format("0x%02X", registers.getWorking())
-				+ "C= " + registers.getCarryFlag()
-				+ "DC= " + registers.getDigitCarryFlag()
+			System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
+				+ "C = " + registers.getCarryFlag() + ", "
+				+ "DC= " + registers.getDigitCarryFlag() + ", "
 				+ "Z= " + registers.getZeroFlag());
 			
 			
