@@ -59,6 +59,8 @@ public class GUI_Main extends Application
 		btnRun.setOnAction(event -> this.onRunClicked());
 		btnStep.setOnAction(event -> this.onStepClicked());
 		
+		//TODO Gui updater 
+		
 	}
 	
 	private void onRunClicked()

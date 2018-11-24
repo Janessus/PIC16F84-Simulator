@@ -4,6 +4,25 @@ public class Registers
 {
 	//int[] Indirect_Addr, TMR0, PCL, STATUS, FSR, PORTA, PORTB, EEDATA, EEADR, PCLATH, INTCON = new int[8];	//Bank0
 	//int[] Indirect_Addr, OPTION, PCL, STATUS, FSR, TRISA, TRISB, EECON1, EECON2, PCLATH, INTCON = new int[8];	//Bank1
+	
+	public static final int INDIRECT_ADDR = 0;
+	public static final int TMR0 = 1;
+	public static final int OPTION = 1;
+	public static final int PCL = 2;
+	public static final int STATUS = 3;
+	public static final int FSR = 4;
+	public static final int PORTA = 5;
+	public static final int TRISA = 5;
+	public static final int PORTB = 6;
+	public static final int TRISB = 6;
+	
+	public static final int EEDATA = 8;
+	public static final int EECON1 = 8;
+	public static final int EEADR = 9;
+	public static final int EECON2 = 9;
+	public static final int PCLATH = 10;
+	public static final int INTCON = 11;
+
 
 	//indirect = 8 bit -> msb = rp0
 
