@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 
 
 public class GUI_Main extends Application
@@ -32,12 +33,13 @@ public class GUI_Main extends Application
 	{
 	 	FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
 	    Parent root = loader.load();
-	    
+	    root.autosize();
 	    Map<String, Object> namespace = loader.getNamespace();
 
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
         
         setup(scene, namespace);
@@ -88,7 +90,7 @@ public class GUI_Main extends Application
 		pins[15].setOnAction(event -> this.pinChanged(16));
 		pins[16].setOnAction(event -> this.pinChanged(17));
 		pins[17].setOnAction(event -> this.pinChanged(18));
-		
+
 		
 		//TODO Gui updater 
 	}
