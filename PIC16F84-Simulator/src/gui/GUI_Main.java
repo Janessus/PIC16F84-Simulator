@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +24,8 @@ public class GUI_Main extends Application
 	
 	public static TextArea mainWindow;
 	public static CheckBox checkBoxStep;
+	public static CheckBox pins[] = new CheckBox[18];
+	
 	
 	@Override
     public void start(Stage stage) throws Exception 
@@ -59,7 +62,42 @@ public class GUI_Main extends Application
 		btnRun.setOnAction(event -> this.onRunClicked());
 		btnStep.setOnAction(event -> this.onStepClicked());
 		
+		
+		//Checkbox grafik 
+		for(int i = 0; i < 18; i++)
+		{
+			String name = "pin" + (i+1);
+			pins[i] = (CheckBox) namespace.get(name);
+		}
+		
+		pins[0].setOnAction(event -> this.pinChanged(1));
+		pins[1].setOnAction(event -> this.pinChanged(2));
+		pins[2].setOnAction(event -> this.pinChanged(3));
+		pins[3].setOnAction(event -> this.pinChanged(4));
+		pins[4].setOnAction(event -> this.pinChanged(5));
+		pins[5].setOnAction(event -> this.pinChanged(6));
+		pins[6].setOnAction(event -> this.pinChanged(7));
+		pins[7].setOnAction(event -> this.pinChanged(8));
+		pins[8].setOnAction(event -> this.pinChanged(9));
+		pins[9].setOnAction(event -> this.pinChanged(10));
+		pins[10].setOnAction(event -> this.pinChanged(11));
+		pins[11].setOnAction(event -> this.pinChanged(12));
+		pins[12].setOnAction(event -> this.pinChanged(13));
+		pins[13].setOnAction(event -> this.pinChanged(14));
+		pins[14].setOnAction(event -> this.pinChanged(15));
+		pins[15].setOnAction(event -> this.pinChanged(16));
+		pins[16].setOnAction(event -> this.pinChanged(17));
+		pins[17].setOnAction(event -> this.pinChanged(18));
+		
+		
 		//TODO Gui updater 
+	}
+	
+	private void pinChanged(int i)
+	{
+		//TODO
+		System.out.println("\nPIN_CHANGED " + i);
+		System.out.println("Selected = " + pins[i-1].isSelected());
 		
 	}
 	
