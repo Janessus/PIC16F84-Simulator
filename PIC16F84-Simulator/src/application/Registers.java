@@ -1,5 +1,8 @@
 package application;
 
+import gui.GUI_Main;
+import javafx.application.Platform;
+
 public class Registers
 {
 	//int[] Indirect_Addr, TMR0, PCL, STATUS, FSR, PORTA, PORTB, EEDATA, EEADR, PCLATH, INTCON = new int[8];	//Bank0
@@ -57,6 +60,7 @@ public class Registers
 	
 	public void setWorking(byte val) {
 		working = val;
+		Platform.runLater(() -> GUI_Main.update());
 	}
 	
 	// TODO: fix this, bank parameter is useless, also implement wraparound
@@ -74,11 +78,13 @@ public class Registers
 	public void setRegister(int bank, int address, int value)
 	{
 		banks[bank][address] = value;
+		Platform.runLater(() -> GUI_Main.update(address));
 	}
 	
 	public void setRegister(int address, int value)
 	{
 		banks[address == 0?getIndirectBank():getBank()][address] = value;
+		Platform.runLater(() -> GUI_Main.update(address));
 	}
 	
 	public int readBit(int bank, int address, int pos)
@@ -96,11 +102,14 @@ public class Registers
 	public void setBit(int bank, int address, int pos, boolean value) //TODO overload
 	{
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
+		Platform.runLater(() -> GUI_Main.update(address));
 	}
 	
 	public void setBit(int address, int pos, boolean value) //TODO overload
 	{
 		setBit(address == 0?getIndirectBank():getBank(), address, pos, value);
+		
+		Platform.runLater(() -> GUI_Main.update(address));
 	}
 	
 	// Helpers
@@ -109,6 +118,8 @@ public class Registers
 	{
 		setBit(0, 3, 0, val);
 		setBit(1, 3, 0, val);	
+		
+		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
 	
 	public boolean getCarryFlag() 
@@ -122,6 +133,8 @@ public class Registers
 	{
 		setBit(0, 3, 1, val);
 		setBit(1, 3, 1, val);	
+		
+		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
 	
 	public boolean getDigitCarryFlag() 
@@ -135,6 +148,8 @@ public class Registers
 	{
 		setBit(0, 3, 2, val);
 		setBit(1, 3, 2, val);
+		
+		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
 	
 	public boolean getZeroFlag() 

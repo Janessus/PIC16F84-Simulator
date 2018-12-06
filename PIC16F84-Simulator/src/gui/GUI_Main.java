@@ -123,17 +123,17 @@ public class GUI_Main extends Application
 		for(int i = 0; i < 18; i++)
 		{
 			if(i < 9)
-				labels[i].label.setText(""+ app.simulator.registers.readRegister(0, labels[i].adress));
+				labels[i].label.setText("" + app.simulator.registers.readRegister(0, labels[i].adress));
 			else
-				labels[i].label.setText(""+ app.simulator.registers.readRegister(1, labels[i].adress));
+				labels[i].label.setText("" + app.simulator.registers.readRegister(1, labels[i].adress));
 		}
 	}
 	
-	public static void update(int adress)
+	public static void update(int address)
 	{
 		for(int i = 0; i < 18; i++)
 		{
-			if(adress == labels[i].adress)
+			if(address == labels[i].adress)
 				if(i < 9)
 					labels[i].label.setText(""+ app.simulator.registers.readRegister(0, labels[i].adress));
 				else
