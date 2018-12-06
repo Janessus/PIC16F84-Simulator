@@ -76,7 +76,7 @@ public class Simulator implements Runnable
 	}
 	
 	// Operations implementation
-	public void addwf(byte val)
+	public void addwf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -102,24 +102,24 @@ public class Simulator implements Runnable
 		registers.setDigitCarryFlag((0x00000001 & valRegisterF) + (0x00000001 & valRegisterw) > 0xF);
 	}
 
-	public void andwf(byte val)
+	public void andwf(int val)
 	{
 		// TODO
 	}
 
-	public void clrf(byte val)
+	public void clrf(int val)
 	{
 		this.registers.setRegister(val, 0);
 		this.registers.setZeroFlag(true);
 	}
 
-	public void clrw(byte val)
+	public void clrw(int val)
 	{
 		this.registers.setWorking((byte)0);
 		this.registers.setZeroFlag(true);
 	}
 
-	public void comf(byte val)
+	public void comf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -137,7 +137,7 @@ public class Simulator implements Runnable
 		registers.setZeroFlag(result==0);
 	}
 
-	public void decf(byte val)
+	public void decf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -155,12 +155,12 @@ public class Simulator implements Runnable
 		registers.setZeroFlag(result==0);
 	}
 
-	public void decfsz(byte val)
+	public void decfsz(int val)
 	{
 		// TODO
 	}
 
-	public void incf(byte val)
+	public void incf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -178,12 +178,12 @@ public class Simulator implements Runnable
 		registers.setZeroFlag(result==0);
 	}
 
-	public void incfsz(byte val)
+	public void incfsz(int val)
 	{
 		// TODO
 	}
 
-	public void iorwf(byte val)
+	public void iorwf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -201,7 +201,7 @@ public class Simulator implements Runnable
 		registers.setZeroFlag(result==0);
 	}
 
-	public void movf(byte val)
+	public void movf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -219,27 +219,27 @@ public class Simulator implements Runnable
 		registers.setZeroFlag(result==0);
 	}
 
-	public void movwf(byte val)
+	public void movwf(int val)
 	{
 		this.registers.setRegister(val, this.registers.getWorking());
 	}
 
-	public void nop(byte val)
+	public void nop(int val)
 	{
 		// TODO
 	}
 
-	public void rlf(byte val)
+	public void rlf(int val)
 	{
 		// TODO
 	}
 
-	public void rrf(byte val)
+	public void rrf(int val)
 	{
 		// TODO
 	}
 
-	public void subwf(byte val)
+	public void subwf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -263,7 +263,7 @@ public class Simulator implements Runnable
 		registers.setCarryFlag(result>0);
 	}
 
-	public void swapf(byte val)
+	public void swapf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -280,7 +280,7 @@ public class Simulator implements Runnable
 		}
 	}
 
-	public void xorwf(byte val)
+	public void xorwf(int val)
 	{
 		byte d = (byte)(0b10000000 & val);
 		byte f = (byte)(0b00000001 & val);
@@ -298,27 +298,27 @@ public class Simulator implements Runnable
 		registers.setZeroFlag(result==0);
 	}
 
-	public void bcf(byte val)
+	public void bcf(int val)
 	{
 		// TODO
 	}
 
-	public void bsf(byte val)
+	public void bsf(int val)
 	{
 		// TODO
 	}
 
-	public void btfsc(byte val)
+	public void btfsc(int val)
 	{
 		// TODO
 	}
 
-	public void btfss(byte val)
+	public void btfss(int val)
 	{
 		// TODO
 	}
 
-	public void addlw(byte val)
+	public void addlw(int val)
 	{
 		int result = registers.getWorking() + val;
 		registers.setDigitCarryFlag((0x00000001 & registers.getWorking()) + (0x00000001 & val) > 0xF);
@@ -327,14 +327,14 @@ public class Simulator implements Runnable
 		registers.setCarryFlag(result>0xFF);
 	}
 
-	public void andlw(byte val)
+	public void andlw(int val)
 	{
 		int result = registers.getWorking() & val;
 		registers.setWorking((byte) result);
 		registers.setZeroFlag(result==0);
 	}
 
-	public void call(byte val)
+	public void call(int val)
 	{
 		// Add return point to stack
 		this.stack.add((int)this.programCounter);
@@ -342,51 +342,51 @@ public class Simulator implements Runnable
 		this.skipProgramCounter = true;
 	}
 
-	public void clrwdt(byte val)
+	public void clrwdt(int val)
 	{
 		// TODO
 	}
 
-	public void goTo(byte val)
+	public void goTo(int val)
 	{
 		this.programCounter = val;
 		this.skipProgramCounter = true;
 	}
 
-	public void iorlw(byte val)
+	public void iorlw(int val)
 	{
 		int result = registers.getWorking() | val;
 		registers.setWorking((byte) result);
 		registers.setZeroFlag(result==0);
 	}
 
-	public void movlw(byte val)
+	public void movlw(int val)
 	{
-		registers.setWorking(val);
+		registers.setWorking((byte)val);
 	}
 
-	public void retfie(byte val)
-	{
-		// TODO
-	}
-
-	public void retlw(byte val)
+	public void retfie(int val)
 	{
 		// TODO
 	}
 
-	public void reTurn(byte val)
+	public void retlw(int val)
+	{
+		// TODO
+	}
+
+	public void reTurn(int val)
 	{
 		// Get programCounter from stack
 		this.programCounter = stack.remove(stack.size() -1);
 	}
 
-	public void sleep(byte val)
+	public void sleep(int val)
 	{
 		// TODO
 	}
 
-	public void sublw(byte val)
+	public void sublw(int val)
 	{
 		int result = val - registers.getWorking();
 		registers.setDigitCarryFlag((0x00000001 & val) >= (0x00000001 & registers.getWorking()));
@@ -395,7 +395,7 @@ public class Simulator implements Runnable
 		registers.setCarryFlag(result>0);
 	}
 
-	public void xorlw(byte val)
+	public void xorlw(int val)
 	{
 		int result = registers.getWorking() ^ val;
 		registers.setWorking((byte) result);
