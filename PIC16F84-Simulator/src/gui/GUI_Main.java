@@ -32,7 +32,7 @@ public class GUI_Main extends Application
 	
 	
 	@Override
-    public void start(Stage stage) throws Exception 
+   public void start(Stage stage) throws Exception 
 	{
 	 	FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
 	    Parent root = loader.load();

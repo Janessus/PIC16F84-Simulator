@@ -9,7 +9,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.addlw((byte)arguments);
+			sim.addlw(arguments);
 			
 		}}),
 	
@@ -18,7 +18,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.andwf((byte)arguments);
+			sim.andwf(arguments);
 		}}),
 	
 	CLRF 	(0b00000110000000, new ICallback() {
@@ -26,7 +26,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.clrf((byte)arguments);
+			sim.clrf(arguments);
 			
 		}}),
 	
@@ -35,7 +35,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.clrw((byte)arguments);
+			sim.clrw(arguments);
 			
 		}}),
 	
@@ -44,7 +44,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.comf((byte)arguments);
+			sim.comf(arguments);
 			
 		}}),
 	
@@ -53,7 +53,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.decf((byte)arguments);
+			sim.decf(arguments);
 			
 		}}),
 	
@@ -62,7 +62,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.decfsz((byte)arguments);
+			sim.decfsz(arguments);
 			
 		}}),
 	
@@ -71,7 +71,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.incf((byte)arguments);
+			sim.incf(arguments);
 			
 		}}),
 	
@@ -80,7 +80,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.incfsz((byte)arguments);
+			sim.incfsz(arguments);
 			
 		}}),
 	
@@ -89,7 +89,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.iorwf((byte)arguments);
+			sim.iorwf(arguments);
 			
 		}}),
 	
@@ -98,7 +98,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.movf((byte)arguments);
+			sim.movf(arguments);
 			
 		}}),
 	
@@ -107,7 +107,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.movwf((byte)arguments);
+			sim.movwf(arguments);
 			
 		}}),
 	
@@ -116,7 +116,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.nop((byte)arguments);
+			sim.nop(arguments);
 			
 		}}),
 	
@@ -125,7 +125,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.rlf((byte)arguments);
+			sim.rlf(arguments);
 			
 		}}),
 	
@@ -134,7 +134,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.rrf((byte)arguments);
+			sim.rrf(arguments);
 			
 		}}),
 	
@@ -143,7 +143,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.subwf((byte)arguments);
+			sim.subwf(arguments);
 			
 		}}),
 	
@@ -152,7 +152,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.swapf((byte)arguments);
+			sim.swapf(arguments);
 			
 		}}),
 	
@@ -161,7 +161,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.xorwf((byte)arguments);
+			sim.xorwf(arguments);
 			
 		}}),
 	
@@ -175,7 +175,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.bcf((byte)arguments);
+			sim.bcf(arguments);
 			
 		}}),
 	
@@ -184,7 +184,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.bsf((byte)arguments);
+			sim.bsf(arguments);
 			
 		}}),
 	
@@ -193,7 +193,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.btfsc((byte)arguments);
+			sim.btfsc(arguments);
 			
 		}}),
 	
@@ -202,7 +202,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.btfss((byte)arguments);
+			sim.btfss(arguments);
 			
 		}}),
 	
@@ -213,7 +213,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.addlw((byte)arguments);
+			sim.addlw(arguments);
 			
 		}}),
 	
@@ -222,7 +222,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.andlw((byte)arguments);
+			sim.andlw(arguments);
 			
 		}}),
 	
@@ -231,7 +231,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.call((byte)arguments);
+			sim.call(arguments);
 			
 		}}),
 	
@@ -240,7 +240,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.clrwdt((byte)arguments);
+			sim.clrwdt(arguments);
 			
 		}}),
 	
@@ -249,7 +249,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.goTo((byte)arguments);
+			sim.goTo(arguments);
 			
 		}}),
 	
@@ -258,7 +258,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.iorlw((byte)arguments);
+			sim.iorlw(arguments);
 			
 		}}),
 	
@@ -267,7 +267,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.movlw((byte)arguments);
+			sim.movlw(arguments);
 			
 		}}),
 	
@@ -276,7 +276,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.retfie((byte)arguments);
+			sim.retfie(arguments);
 			
 		}}),
 	
@@ -285,7 +285,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.retlw((byte)arguments);
+			sim.retlw(arguments);
 			
 		}}),
 	
@@ -294,7 +294,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.reTurn((byte)arguments);
+			sim.reTurn(arguments);
 			
 		}}),
 	
@@ -303,7 +303,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.sleep((byte)arguments);
+			sim.sleep(arguments);
 			
 		}}),
 	
@@ -312,7 +312,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.sublw((byte)arguments);
+			sim.sublw(arguments);
 			
 		}}),
 	
@@ -321,7 +321,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.xorlw((byte)arguments);
+			sim.xorlw(arguments);
 			
 		}});
 	

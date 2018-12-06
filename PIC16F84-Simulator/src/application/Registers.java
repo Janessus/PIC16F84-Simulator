@@ -39,9 +39,16 @@ public class Registers
 		//TODO
 	}
 	
+	// Read RP0 bit for selecting bank for direct adressing
 	public int getBank()
 	{
 		return readBit(0, 3, 5);
+	}
+
+	// Read IRP bit for selecting bank for direct adressing
+	public int getIndirectBank()
+	{
+		return readBit(0, 3, 7);
 	}
 	
 	public int getWorking() {
@@ -71,7 +78,7 @@ public class Registers
 	
 	public void setRegister(int address, int value)
 	{
-		banks[getBank()][address] = value;
+		banks[address == 0?getIndirectBank():getBank()][address] = value;
 	}
 	
 	public int readBit(int bank, int address, int pos)
@@ -82,8 +89,8 @@ public class Registers
 	
 	public int readBit(int address, int pos)
 	{
-		// Get correct register, right shift byte and mask it
-		return (banks[getBank()][address]>>pos) & 1;
+		// Get bank from correct bit depending on adressing method
+		return readBit(address == 0?getIndirectBank():getBank(), address, pos);
 	}
 	
 	public void setBit(int bank, int address, int pos, boolean value) //TODO overload
@@ -93,8 +100,7 @@ public class Registers
 	
 	public void setBit(int address, int pos, boolean value) //TODO overload
 	{
-		int bank = getBank();
-		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
+		setBit(address == 0?getIndirectBank():getBank(), address, pos, value);
 	}
 	
 	// Helpers
