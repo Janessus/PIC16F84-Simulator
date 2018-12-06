@@ -258,7 +258,7 @@ public class Simulator implements Runnable
 		}
 		
 		// Set status
-		registers.setDigitCarryFlag((0x00000001 & valRegisterF) - (0x00000001 & valRegisterw) > 0);
+		registers.setDigitCarryFlag((0x00000001 & valRegisterF) >= (0x00000001 & valRegisterw));
 		registers.setZeroFlag(result==0);
 		registers.setCarryFlag(result>0);
 	}
@@ -389,7 +389,7 @@ public class Simulator implements Runnable
 	public void sublw(byte val)
 	{
 		int result = val - registers.getWorking();
-		registers.setDigitCarryFlag((0x00000001 & val) - (0x00000001 & registers.getWorking()) > 0);
+		registers.setDigitCarryFlag((0x00000001 & val) >= (0x00000001 & registers.getWorking()));
 		registers.setWorking((byte) result);
 		registers.setZeroFlag(result==0);
 		registers.setCarryFlag(result>0);
