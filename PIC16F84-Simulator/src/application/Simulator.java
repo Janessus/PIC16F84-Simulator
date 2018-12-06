@@ -7,6 +7,8 @@ import gui.GUI_Main;
 
 public class Simulator implements Runnable
 {
+	// TODO: implement breakpoints
+	// TODO: implement PCL/PCLATH ?
 	// Properties
 	public Registers registers;
 
