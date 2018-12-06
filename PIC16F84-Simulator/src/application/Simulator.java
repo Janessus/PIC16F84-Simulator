@@ -8,7 +8,7 @@ import gui.GUI_Main;
 public class Simulator implements Runnable
 {
 	// Properties
-	Registers registers;
+	public Registers registers;
 
 	List<WrappedOperation> operations = new ArrayList<WrappedOperation>();
 

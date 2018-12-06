@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Map;
 
 import application.Application_Main;
+import application.Registers;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.FileChooser;
@@ -14,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +28,7 @@ public class GUI_Main extends Application
 	public static TextArea mainWindow;
 	public static CheckBox checkBoxStep;
 	public static CheckBox pins[] = new CheckBox[18];
+	public static LabelWrapper labels[] = new LabelWrapper[18];
 	
 	
 	@Override
@@ -50,12 +53,9 @@ public class GUI_Main extends Application
 		mainWindow = (TextArea) namespace.get("mainWindow");
 		
 	    MenuItem open = (MenuItem) namespace.get("menuItem_Open"); //fx:id
-		if(open != null)
-			open.setOnAction(event -> this.onOpenDocument());
-		else
-			System.err.println("Not found");
 		
-		
+	    open.setOnAction(event -> this.onOpenDocument());
+
 		
 		Button btnRun = (Button) namespace.get("btnRun");
 		Button btnStep = (Button) namespace.get("btnStep");
@@ -91,8 +91,54 @@ public class GUI_Main extends Application
 		pins[16].setOnAction(event -> this.pinChanged(17));
 		pins[17].setOnAction(event -> this.pinChanged(18));
 
+
+		//Bank0
+		labels[0] = new LabelWrapper((Label) namespace.get("indf"), Registers.INDIRECT_ADDR);
+		labels[1] = new LabelWrapper((Label) namespace.get("tmr0"), Registers.TMR0);
+		labels[2] = new LabelWrapper((Label) namespace.get("pcl"), Registers.PCL);
+		labels[3] = new LabelWrapper((Label) namespace.get("status"), Registers.STATUS);
+		labels[4] = new LabelWrapper((Label) namespace.get("fsr"), Registers.FSR);
+		labels[5] = new LabelWrapper((Label) namespace.get("eedata"), Registers.EEDATA);
+		labels[6] = new LabelWrapper((Label) namespace.get("eeadr"), Registers.EEADR);
+		labels[7] = new LabelWrapper((Label) namespace.get("pclath"), Registers.PCLATH);
+		labels[8] = new LabelWrapper((Label) namespace.get("intcon"), Registers.INTCON);
+		
+		//Bank1
+		labels[9] = new LabelWrapper((Label) namespace.get("indf2"), Registers.INDIRECT_ADDR);
+		labels[10] = new LabelWrapper((Label) namespace.get("option_reg"), Registers.OPTION);
+		labels[11] = new LabelWrapper((Label) namespace.get("pcl2"), Registers.PCL);
+		labels[12] = new LabelWrapper((Label) namespace.get("status2"), Registers.STATUS);
+		labels[13] = new LabelWrapper((Label) namespace.get("fsr2"), Registers.FSR);
+		labels[14] = new LabelWrapper((Label) namespace.get("eecon1"), Registers.EECON1);
+		labels[15] = new LabelWrapper((Label) namespace.get("eecon2"), Registers.EECON2);
+		labels[16] = new LabelWrapper((Label) namespace.get("pclath2"), Registers.PCLATH);
+		labels[17] = new LabelWrapper((Label) namespace.get("intcon2"), Registers.INTCON);
+		
 		
 		//TODO Gui updater 
+	}
+	
+	public static void update()
+	{
+		for(int i = 0; i < 18; i++)
+		{
+			if(i < 9)
+				labels[i].label.setText(""+ app.simulator.registers.readRegister(0, labels[i].adress));
+			else
+				labels[i].label.setText(""+ app.simulator.registers.readRegister(1, labels[i].adress));
+		}
+	}
+	
+	public static void update(int adress)
+	{
+		for(int i = 0; i < 18; i++)
+		{
+			if(adress == labels[i].adress)
+				if(i < 9)
+					labels[i].label.setText(""+ app.simulator.registers.readRegister(0, labels[i].adress));
+				else
+					labels[i].label.setText(""+ app.simulator.registers.readRegister(1, labels[i].adress));	
+		}
 	}
 	
 	private void pinChanged(int i)
@@ -100,7 +146,6 @@ public class GUI_Main extends Application
 		//TODO
 		System.out.println("\nPIN_CHANGED " + i);
 		System.out.println("Selected = " + pins[i-1].isSelected());
-		
 	}
 	
 	private void onRunClicked()
