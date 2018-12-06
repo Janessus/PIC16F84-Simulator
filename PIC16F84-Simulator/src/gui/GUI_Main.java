@@ -33,35 +33,38 @@ public class GUI_Main extends Application
 	@Override
    public void start(Stage stage) throws Exception 
 	{
-	 	FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
-	    Parent root = loader.load();
-	    root.autosize();
-	    Map<String, Object> namespace = loader.getNamespace();
-
-        Scene scene = new Scene(root);
-
-        stage.setScene(scene);
-        stage.setMaximized(true);
-        stage.show();
-        
-        setup(scene, namespace);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
+		Parent root = loader.load();
+		root.autosize();
+		Map<String, Object> namespace = loader.getNamespace();
+		
+		Scene scene = new Scene(root);
+		
+		stage.setScene(scene);
+		stage.setMaximized(true);
+		stage.show();
+		  
+		setup(scene, namespace);
     }
 
 	private void setup(Scene scene, Map<String, Object> namespace)
 	{
 		mainWindow = (TextArea) namespace.get("mainWindow");
 		
-	    MenuItem open = (MenuItem) namespace.get("menuItem_Open"); //fx:id
+		MenuItem open = (MenuItem) namespace.get("menuItem_Open"); //fx:id
 		
-	    open.setOnAction(event -> this.onOpenDocument());
+		open.setOnAction(event -> this.onOpenDocument());
 
 		
 		Button btnRun = (Button) namespace.get("btnRun");
 		Button btnStep = (Button) namespace.get("btnStep");
+		Button btnViewSram = (Button) namespace.get("btnViewSram");
+		
 		checkBoxStep = (CheckBox) namespace.get("checkBoxStep");
 		
 		btnRun.setOnAction(event -> this.onRunClicked());
 		btnStep.setOnAction(event -> this.onStepClicked());
+		btnViewSram.setOnAction(event -> this.onViewSramClicked());
 		
 		
 		//Checkbox grafik 
@@ -227,6 +230,11 @@ public class GUI_Main extends Application
 		synchronized(app.simulator) {
 			app.simulator.notify();
 		}
+	}
+
+	private void onViewSramClicked()
+	{
+		// TODO: Show sram in new window
 	}
 
 	private Object onOpenDocument()

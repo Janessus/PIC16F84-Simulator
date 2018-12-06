@@ -43,17 +43,12 @@ public class Registers
 	}
 	
 	// Read RP0 bit for selecting bank for direct adressing
+	// TODO: handle mirrored registers
 	public int getBank()
 	{
 		return readBit(0, 3, 5);
 	}
 
-	// Read IRP bit for selecting bank for direct adressing
-	public int getIndirectBank()
-	{
-		return readBit(0, 3, 7);
-	}
-	
 	public int getWorking() {
 		return working;	
 	}
@@ -63,7 +58,7 @@ public class Registers
 		Platform.runLater(() -> GUI_Main.update());
 	}
 	
-	// TODO: fix this, bank parameter is useless, also implement wraparound
+	// TODO: implement wraparound
 	public int readRegister(int bank, int address)
 	{
 		return banks[bank][address];
@@ -71,7 +66,15 @@ public class Registers
 	
 	public int readRegister(int address)
 	{
-		return banks[getBank()][address];
+		// Check for INDF access
+		if(address!=0)
+		{
+			// Direct addressing, get bank from RP0
+			return readRegister(getBank(), address);
+		}
+		// Indirect addressing, get bank and address from fsr
+		int fsr = banks[0][4];
+		return readRegister((0b10000000 & fsr) >> 7, 0b01111111 & fsr);
 	}
 	
 	// same for setRegister
@@ -83,8 +86,16 @@ public class Registers
 	
 	public void setRegister(int address, int value)
 	{
-		banks[address == 0?getIndirectBank():getBank()][address] = value;
-		Platform.runLater(() -> GUI_Main.update(address));
+		// Check for INDF access
+		if(address!=0)
+		{
+			// Direct addressing, get bank from RP0
+			setRegister(getBank(), address, value);
+			return;
+		}
+		// Indirect addressing, get bank and address from fsr
+		int fsr = banks[0][4];
+		setRegister((0b10000000 & fsr) >> 7, 0b01111111 & fsr, value);
 	}
 	
 	public int readBit(int bank, int address, int pos)
@@ -95,25 +106,38 @@ public class Registers
 	
 	public int readBit(int address, int pos)
 	{
-		// Get bank from correct bit depending on adressing method
-		return readBit(address == 0?getIndirectBank():getBank(), address, pos);
+		// Check for INDF access
+		if(address!=0)
+		{
+			// Direct addressing, get bank from RP0
+			return readBit(getBank(), address, pos);
+		}
+		// Indirect addressing, get bank and address from fsr
+		int fsr = banks[0][4];
+		return readBit((0b10000000 & fsr) >> 7, 0b01111111 & fsr, pos);
 	}
 	
-	public void setBit(int bank, int address, int pos, boolean value) //TODO overload
+	public void setBit(int bank, int address, int pos, boolean value)
 	{
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 		Platform.runLater(() -> GUI_Main.update(address));
 	}
 	
-	public void setBit(int address, int pos, boolean value) //TODO overload
+	public void setBit(int address, int pos, boolean value)
 	{
-		setBit(address == 0?getIndirectBank():getBank(), address, pos, value);
-		
-		Platform.runLater(() -> GUI_Main.update(address));
+		// Check for INDF access
+		if(address!=0)
+		{
+			// Direct addressing, get bank from RP0
+			setBit(getBank(), address, pos, value);
+			return;
+		}
+		// Indirect addressing, get bank and address from fsr
+		int fsr = banks[0][4];
+		setBit((0b10000000 & fsr) >> 7, 0b01111111 & fsr, value);
 	}
 	
 	// Helpers
-	// TODO: implement
 	public void setCarryFlag(boolean val)
 	{
 		setBit(0, 3, 0, val);
