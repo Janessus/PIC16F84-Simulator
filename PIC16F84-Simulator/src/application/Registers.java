@@ -43,6 +43,7 @@ public class Registers
 	}
 	
 	// Read RP0 bit for selecting bank for direct adressing
+	// TODO: handle mirrored registers
 	public int getBank()
 	{
 		return readBit(0, 3, 5);
