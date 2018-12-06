@@ -372,7 +372,8 @@ public class Simulator implements Runnable
 
 	public void retlw(int val)
 	{
-		// TODO
+		registers.setWorking((byte) val);
+		this.programCounter = stack.remove(stack.size() -1);
 	}
 
 	public void reTurn(int val)
