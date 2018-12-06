@@ -52,7 +52,8 @@ public class Simulator implements Runnable
 				{
 					skipProgramCounter = false;
 				} else {
-					programCounter++;
+					// Simulator overflow
+					programCounter = programCounter > 0x3FE ? 0 : programCounter+1;
 				}
 				
 				// Pause thread if step mode
