@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.application.Platform;
 
 
 public class GUI_Main extends Application
@@ -127,9 +128,9 @@ public class GUI_Main extends Application
 		for(int i = 0; i < 18; i++)
 		{
 			if(i < 9)
-				labels[i].label.setText("" + app.simulator.registers.readRegister(0, labels[i].adress));
+				labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
 			else
-				labels[i].label.setText("" + app.simulator.registers.readRegister(1, labels[i].adress));
+				labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
 		}
 	}
 	
@@ -139,14 +140,85 @@ public class GUI_Main extends Application
 		{
 			if(address == labels[i].adress)
 				if(i < 9)
-					labels[i].label.setText(""+ app.simulator.registers.readRegister(0, labels[i].adress));
+					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
 				else
-					labels[i].label.setText(""+ app.simulator.registers.readRegister(1, labels[i].adress));	
+					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
 		}
 	}
 	
 	private void pinChanged(int i)
 	{
+		switch (i)
+		{
+		case 1:
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 2, pins[i-1].isSelected()));
+			break;
+			
+		case 2:
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 3, pins[i-1].isSelected()));
+			break;
+			
+		case 3: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 4, pins[i-1].isSelected()));
+			break;
+			
+		case 4: 
+			break;
+			
+		case 5: 
+			break;
+			
+		case 6: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 0, pins[i-1].isSelected()));
+			break;
+			
+		case 7: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 1, pins[i-1].isSelected()));
+			break;
+			
+		case 8: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 2, pins[i-1].isSelected()));
+			break;
+			
+		case 9: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 3, pins[i-1].isSelected()));
+			break;
+			
+		case 10: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 4, pins[i-1].isSelected()));
+			break;
+			
+		case 11: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 5, pins[i-1].isSelected()));
+			break;
+			
+		case 12: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 6, pins[i-1].isSelected()));
+			break;
+			
+		case 13: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 7, pins[i-1].isSelected()));
+			break;
+			
+		case 14: 
+			
+			break;
+			
+		case 15: 
+			break;
+			
+		case 16: 
+			
+			break;
+			
+		case 17: 
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 0, pins[i-1].isSelected()));
+			break;
+			
+		case 18:
+			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 1, pins[i-1].isSelected()));
+			break;
+		}
 		//TODO
 		System.out.println("\nPIN_CHANGED " + i);
 		System.out.println("Selected = " + pins[i-1].isSelected());
