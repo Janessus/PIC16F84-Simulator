@@ -245,12 +245,6 @@
                                                       <Label fx:id="eeadr" layoutX="100.0" text="RegisterValue(HEX)" />
                                                    </children>
                                                 </Pane>
-                                                <Pane layoutX="14.0" layoutY="739.0" prefHeight="21.0" prefWidth="282.0">
-                                                   <children>
-                                                      <Label prefHeight="21.0" prefWidth="100.0" text="SRAM" underline="true" wrapText="true" />
-                                                      <Button fx:id="btnViewSram" layoutX="100.0" layoutY="-2.0" mnemonicParsing="false" text="View..." />
-                                                   </children>
-                                                </Pane>
                                              </children>
                                           </AnchorPane>
                                        </content>

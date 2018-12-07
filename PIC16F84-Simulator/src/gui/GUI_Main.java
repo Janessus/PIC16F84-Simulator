@@ -6,11 +6,8 @@ import java.util.Map;
 import application.Application_Main;
 import application.Registers;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,8 +15,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+<<<<<<< HEAD
 import javafx.scene.layout.AnchorPane;
 import javafx.application.Platform;
+=======
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
+>>>>>>> branch 'master' of https://github.com/Janessus/PIC16F84-Simulator
 
 
 public class GUI_Main extends Application
@@ -117,8 +120,7 @@ public class GUI_Main extends Application
 		labels[14] = new LabelWrapper((Label) namespace.get("eecon1"), Registers.EECON1);
 		labels[15] = new LabelWrapper((Label) namespace.get("eecon2"), Registers.EECON2);
 		labels[16] = new LabelWrapper((Label) namespace.get("pclath2"), Registers.PCLATH);
-		labels[17] = new LabelWrapper((Label) namespace.get("intcon2"), Registers.INTCON);
-		
+		labels[17] = new LabelWrapper((Label) namespace.get("intcon2"), Registers.INTCON);		
 		
 		//TODO Gui updater 
 	}
