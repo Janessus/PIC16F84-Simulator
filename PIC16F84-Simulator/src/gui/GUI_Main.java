@@ -15,14 +15,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-<<<<<<< HEAD
-import javafx.scene.layout.AnchorPane;
-import javafx.application.Platform;
-=======
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
->>>>>>> branch 'master' of https://github.com/Janessus/PIC16F84-Simulator
+
 
 
 public class GUI_Main extends Application
