@@ -20,6 +20,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 
+
 public class GUI_Main extends Application
 {
 	private static Application_Main app;
@@ -29,12 +30,13 @@ public class GUI_Main extends Application
 	public static CheckBox pins[] = new CheckBox[18];
 	public static LabelWrapper labels[] = new LabelWrapper[18];
 	
+	private Parent root;
 	
 	@Override
    public void start(Stage stage) throws Exception 
 	{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
-		Parent root = loader.load();
+		root = loader.load();
 		root.autosize();
 		Map<String, Object> namespace = loader.getNamespace();
 		
@@ -236,6 +238,10 @@ public class GUI_Main extends Application
 	private void onViewSramClicked()
 	{
 		// TODO: Show sram in new window
+      Stage stage = new Stage();
+      stage.setTitle("My New Stage Title");
+      stage.setScene(new Scene(root, 450, 450));
+      stage.show();
 	}
 
 	private Object onOpenDocument()
