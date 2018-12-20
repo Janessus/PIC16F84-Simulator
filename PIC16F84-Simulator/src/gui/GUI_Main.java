@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import application.Application_Main;
@@ -237,12 +238,23 @@ public class GUI_Main extends Application
 
 	private void onViewSramClicked()
 	{
-		// TODO: Show sram in new window
-      Stage stage = new Stage();
-      stage.setTitle("My New Stage Title");
-      stage.setScene(new Scene(root, 450, 450));
-      stage.show();
+		try {
+			// TODO: Show sram in new window
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(getClass().getResource("view_sram.fxml"));
+					
+			Stage stage = new Stage();
+			stage.setTitle("My New Stage Title");
+			
+			stage.setScene(new Scene(fxmlLoader.load(), 450, 450));
+			
+			stage.show();
+      } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
 
 	private Object onOpenDocument()
 	{
