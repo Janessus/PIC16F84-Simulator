@@ -30,6 +30,8 @@ public class GUI_Main extends Application
 	public static CheckBox checkBoxStep;
 	public static CheckBox pins[] = new CheckBox[18];
 	public static LabelWrapper labels[] = new LabelWrapper[18];
+	public static TextArea sramView = null;
+	public static Stage sramViewStage = null;
 	
 	private Parent root;
 	
@@ -125,6 +127,11 @@ public class GUI_Main extends Application
 	
 	public static void update()
 	{
+		// Populate Sram Viewer
+		if(sramViewStage.isShowing()) {
+			sramView.setText(getSramString());
+		}
+			
 		for(int i = 0; i < 18; i++)
 		{
 			if(i < 9)
@@ -136,6 +143,12 @@ public class GUI_Main extends Application
 	
 	public static void update(int address)
 	{
+		// Populate Sram Viewer
+		if(sramViewStage!=null && sramViewStage.isShowing()) {
+			sramView.setText(getSramString());
+		}
+		
+		// Update Labels
 		for(int i = 0; i < 18; i++)
 		{
 			if(address == labels[i].adress)
@@ -144,6 +157,20 @@ public class GUI_Main extends Application
 				else
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
 		}
+		
+	}
+	
+	public static String getSramString() {
+		String ret = "";
+		
+		for(int i=0xC; i<=0x4F; i++)
+		{
+			ret += "0x" + String.format("%02X", i) + ": " + String.format("%02X", app.simulator.registers.readRegister(0, i));
+			ret += i%8==0 ? "\n" : "\t";
+			
+		}
+		
+		return ret;
 	}
 	
 	private void pinChanged(int i)
@@ -238,17 +265,26 @@ public class GUI_Main extends Application
 
 	private void onViewSramClicked()
 	{
+		// Check if window already exists
 		try {
-			// TODO: Show sram in new window
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(getClass().getResource("view_sram.fxml"));
-					
-			Stage stage = new Stage();
-			stage.setTitle("My New Stage Title");
+			if(sramViewStage == null) {
+				// TODO: Show sram in new window
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(getClass().getResource("view_sram.fxml"));
+				
+				sramViewStage = new Stage();
+				sramViewStage.setTitle("My New Stage Title");
+				
+				sramViewStage.setScene(new Scene(fxmlLoader.load(), 450, 450));
+				
+				sramView = (TextArea) fxmlLoader.getNamespace().get("sramView");
+				
+				// Update GUI once to populate sram viewer
+				update();
+			}
 			
-			stage.setScene(new Scene(fxmlLoader.load(), 450, 450));
-			
-			stage.show();
+			sramViewStage.show();
+				
       } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
