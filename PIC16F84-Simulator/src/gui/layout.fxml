@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1157.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1157.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar prefHeight="32.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -116,29 +116,29 @@
                                                       </ImageView>
                                                       <Group layoutX="-3.0" layoutY="-2.0">
                                                          <children>
-                                                            <Group fx:id="pins1" layoutX="6.0" layoutY="2.0">
+                                                            <Group fx:id="pins1" layoutX="9.0" layoutY="3.0">
                                                                <children>
-                                                                  <CheckBox fx:id="pin5" layoutX="88.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin5" disable="true" layoutX="88.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin1" layoutX="88.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin6" layoutX="88.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin3" layoutX="88.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin8" layoutX="88.0" layoutY="129.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin9" layoutX="88.0" layoutY="146.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin7" layoutX="88.0" layoutY="112.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                  <CheckBox fx:id="pin4" layoutX="88.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin4" disable="true" layoutX="88.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin2" layoutX="88.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                </children>
                                                             </Group>
-                                                            <Group fx:id="pins2" layoutX="98.0" layoutY="2.0">
+                                                            <Group fx:id="pins2" layoutX="102.0" layoutY="3.0">
                                                                <children>
-                                                                  <CheckBox fx:id="pin14" layoutX="88.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin14" disable="true" layoutX="88.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin18" layoutX="88.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin13" layoutX="88.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                  <CheckBox fx:id="pin16" layoutX="88.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin16" disable="true" layoutX="88.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin11" layoutX="88.0" layoutY="129.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin10" layoutX="88.0" layoutY="146.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin12" layoutX="88.0" layoutY="112.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
-                                                                  <CheckBox fx:id="pin15" layoutX="88.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
+                                                                  <CheckBox fx:id="pin15" disable="true" layoutX="88.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                   <CheckBox fx:id="pin17" layoutX="88.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" />
                                                                </children>
                                                             </Group>

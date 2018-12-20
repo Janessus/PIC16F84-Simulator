@@ -64,8 +64,9 @@ public class GUI_Main extends Application
 		
 		btnRun.setOnAction(event -> this.onRunClicked());
 		btnStep.setOnAction(event -> this.onStepClicked());
-		btnViewSram.setOnAction(event -> this.onViewSramClicked());
 		
+		if(btnViewSram != null)
+			btnViewSram.setOnAction(event -> this.onViewSramClicked());
 		
 		//Checkbox grafik 
 		for(int i = 0; i < 18; i++)
