@@ -81,14 +81,17 @@ public class Simulator implements Runnable
 	// Operations implementation
 	public void addwf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Calculate addition
 		int valRegisterF = this.registers.readRegister(f);
 		int valRegisterw = this.registers.getWorking();
 		
 		int result = valRegisterF + valRegisterw;
+		
+		//System.out.println("d: "+d);
+		//System.out.println("f: "+f);
 		
 		// Write to correct register
 		if(d == 1) {
@@ -107,7 +110,20 @@ public class Simulator implements Runnable
 
 	public void andwf(int val)
 	{
-		// TODO
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
+		
+		// Calculate inclusive OR
+		int result = this.registers.readRegister(f) & this.registers.getWorking();
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
 	}
 
 	public void clrf(int val)
@@ -124,8 +140,8 @@ public class Simulator implements Runnable
 
 	public void comf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Build complement
 		int result = ~ this.registers.readRegister(f);
@@ -142,8 +158,8 @@ public class Simulator implements Runnable
 
 	public void decf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Build decrement
 		int result = this.registers.readRegister(f) - 1;
@@ -165,8 +181,8 @@ public class Simulator implements Runnable
 
 	public void incf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Build increment
 		int result = this.registers.readRegister(f) + 1;
@@ -188,8 +204,8 @@ public class Simulator implements Runnable
 
 	public void iorwf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Calculate inclusive OR
 		int result = this.registers.readRegister(f) | this.registers.getWorking();
@@ -206,8 +222,8 @@ public class Simulator implements Runnable
 
 	public void movf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Get register
 		int result = this.registers.readRegister(f);
@@ -244,8 +260,8 @@ public class Simulator implements Runnable
 
 	public void subwf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Calculate substraction
 		int valRegisterF = this.registers.readRegister(f);
@@ -268,8 +284,8 @@ public class Simulator implements Runnable
 
 	public void swapf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Get register value and swap nibbles
 		int result = this.registers.readRegister(f);
@@ -285,8 +301,8 @@ public class Simulator implements Runnable
 
 	public void xorwf(int val)
 	{
-		byte d = (byte)(0b10000000 & val);
-		byte f = (byte)(0b00000001 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
 		
 		// Calculate inclusive OR
 		int result = this.registers.readRegister(f) ^ this.registers.getWorking();

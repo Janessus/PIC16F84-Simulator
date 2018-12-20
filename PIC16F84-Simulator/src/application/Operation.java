@@ -9,7 +9,7 @@ public enum Operation
 		@Override
 		public void execute(int arguments, Simulator sim)
 		{
-			sim.addlw(arguments);
+			sim.addwf(arguments);
 			
 		}}),
 	
