@@ -50,9 +50,9 @@
                                  <children>
                                     <SplitPane dividerPositions="0.803030303030303" layoutX="304.0" layoutY="298.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <items>
-                                        <AnchorPane fx:id="CodePane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
-                                                <TextArea fx:id="mainWindow" editable="false" prefHeight="138.0" prefWidth="533.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <ScrollPane fx:id="CodePane" prefHeight="622.0" prefWidth="605.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

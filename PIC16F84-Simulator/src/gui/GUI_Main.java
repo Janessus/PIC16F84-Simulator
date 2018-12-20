@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.File;
+import javafx.scene.control.ScrollPane;
 import java.io.IOException;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -30,13 +32,14 @@ public class GUI_Main extends Application
 	public static CheckBox checkBoxStep;
 	public static CheckBox pins[] = new CheckBox[18];
 	public static LabelWrapper labels[] = new LabelWrapper[18];
-	
+	CodePanel codePanel;
+
 	private Parent root;
 	
 	@Override
    public void start(Stage stage) throws Exception 
 	{
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("layout.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("layout2.fxml"));
 		root = loader.load();
 		root.autosize();
 		Map<String, Object> namespace = loader.getNamespace();
@@ -53,6 +56,7 @@ public class GUI_Main extends Application
 	private void setup(Scene scene, Map<String, Object> namespace)
 	{
 		mainWindow = (TextArea) namespace.get("mainWindow");
+		codePanel = new CodePanel();
 		
 		MenuItem open = (MenuItem) namespace.get("menuItem_Open"); //fx:id
 		
@@ -63,13 +67,17 @@ public class GUI_Main extends Application
 		Button btnStep = (Button) namespace.get("btnStep");
 		Button btnViewSram = (Button) namespace.get("btnViewSram");
 		
+		codePanel.pane = (ScrollPane) namespace.get("CodePane");
 		checkBoxStep = (CheckBox) namespace.get("checkBoxStep");
 		
 		btnRun.setOnAction(event -> this.onRunClicked());
 		btnStep.setOnAction(event -> this.onStepClicked());
+
 		
 		if(btnViewSram != null)
 			btnViewSram.setOnAction(event -> this.onViewSramClicked());
+		
+		codePanel.init();
 		
 		//Checkbox grafik 
 		for(int i = 0; i < 18; i++)
@@ -119,9 +127,9 @@ public class GUI_Main extends Application
 		labels[15] = new LabelWrapper((Label) namespace.get("eecon2"), Registers.EECON2);
 		labels[16] = new LabelWrapper((Label) namespace.get("pclath2"), Registers.PCLATH);
 		labels[17] = new LabelWrapper((Label) namespace.get("intcon2"), Registers.INTCON);		
-		
-		//TODO Gui updater 
 	}
+	
+	
 	
 	public static void update()
 	{
@@ -139,10 +147,13 @@ public class GUI_Main extends Application
 		for(int i = 0; i < 18; i++)
 		{
 			if(address == labels[i].adress)
+			{
 				if(i < 9)
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
 				else
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
+				return;
+			}
 		}
 	}
 	
