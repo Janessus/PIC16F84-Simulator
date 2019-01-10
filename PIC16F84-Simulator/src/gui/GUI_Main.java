@@ -33,7 +33,7 @@ public class GUI_Main extends Application
 	public static TextArea mainWindow;
 	public static CheckBox checkBoxStep;
 	public static CheckBox pins[] = new CheckBox[18];
-	public static LabelWrapper labels[] = new LabelWrapper[18];
+	public static LabelWrapper labels[] = new LabelWrapper[20];
 	public static CodePanel codePanel;
 
 	private Parent root;
@@ -124,6 +124,8 @@ public class GUI_Main extends Application
 		labels[2] = new LabelWrapper((Label) namespace.get("pcl"), Registers.PCL);
 		labels[3] = new LabelWrapper((Label) namespace.get("status"), Registers.STATUS);
 		labels[4] = new LabelWrapper((Label) namespace.get("fsr"), Registers.FSR);
+		labels[18] = new LabelWrapper((Label) namespace.get("porta"), Registers.PORTA);
+		labels[19] = new LabelWrapper((Label) namespace.get("portb"), Registers.PORTB);
 		labels[5] = new LabelWrapper((Label) namespace.get("eedata"), Registers.EEDATA);
 		labels[6] = new LabelWrapper((Label) namespace.get("eeadr"), Registers.EEADR);
 		labels[7] = new LabelWrapper((Label) namespace.get("pclath"), Registers.PCLATH);
@@ -145,7 +147,7 @@ public class GUI_Main extends Application
 	
 	public static void update()
 	{
-		for(int i = 0; i < 18; i++)
+		for(int i = 0; i < 20; i++)
 		{
 			if(i < 9)
 				labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
@@ -156,7 +158,7 @@ public class GUI_Main extends Application
 	
 	public static void update(int address)
 	{
-		for(int i = 0; i < 18; i++)
+		for(int i = 0; i < 20; i++)
 		{
 			if(address == labels[i].adress)
 			{
@@ -273,7 +275,6 @@ public class GUI_Main extends Application
 			
 			stage.show();
       } catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

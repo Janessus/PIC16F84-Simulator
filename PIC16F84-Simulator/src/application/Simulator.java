@@ -37,11 +37,12 @@ public class Simulator implements Runnable
 		synchronized(this) {
 			
 			programCounter = 0;
-			while(programCounter < operations.size()) { //TODO condition 
+			while(programCounter < operations.size()) {
 				// Execute current operation
 				WrappedOperation currentOperation = operations.get(programCounter);
 				
 				currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
+				
 				System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
 				System.out.println("Program Counter: " + programCounter);
 				System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
@@ -250,12 +251,50 @@ public class Simulator implements Runnable
 
 	public void rlf(int val)
 	{
-		// TODO
+		byte f = (byte)(0b01111111 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		boolean carry = false;
+		
+		int valRegisterF = this.registers.readRegister(f);
+		
+		if((valRegisterF & 0b10000000) > 1)
+			carry = true;
+		
+		int result = valRegisterF << 1;
+		
+		if(this.registers.getCarryFlag())
+			result |= 0b00000001;
+		
+		this.registers.setCarryFlag(carry);
+		
+		if(d == 0)
+			this.registers.setWorking((byte) result);
+		else
+			this.registers.setRegister(f, (result & 0b11111111));
 	}
 
 	public void rrf(int val)
 	{
-		// TODO
+		byte f = (byte)(0b01111111 & val);
+		byte d = (byte)((0b10000000 & val) >> 7);
+		boolean carry = false;
+		
+		int valRegisterF = this.registers.readRegister(f);
+		
+		if((valRegisterF & 0b00000001) == 1)
+			carry = true;
+		
+		int result = valRegisterF >> 1;
+		
+		if(this.registers.getCarryFlag())
+			result |= 0b10000000;
+		
+		this.registers.setCarryFlag(carry);
+		
+		if(d == 0)
+			this.registers.setWorking((byte) result);
+		else
+			this.registers.setRegister(f, (result & 0b11111111));
 	}
 
 	public void subwf(int val)
