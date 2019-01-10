@@ -9,6 +9,8 @@ import application.Application_Main;
 import application.Registers;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +34,7 @@ public class GUI_Main extends Application
 	public static CheckBox checkBoxStep;
 	public static CheckBox pins[] = new CheckBox[18];
 	public static LabelWrapper labels[] = new LabelWrapper[18];
-	CodePanel codePanel;
+	public static CodePanel codePanel;
 
 	private Parent root;
 	
@@ -48,8 +50,21 @@ public class GUI_Main extends Application
 		
 		stage.setScene(scene);
 		stage.setMaximized(true);
+
+		stage.widthProperty().addListener((obs, oldVal, newVal) -> 
+		{
+			if(codePanel != null)
+				Platform.runLater(() -> CodePanel.onResizeWindow());
+		});
+
+		stage.maximizedProperty().addListener((obs, oldVal, newVal) -> 
+		{
+			if(codePanel != null)
+		        Platform.runLater(() -> CodePanel.onResizeWindow());
+		});
+		
 		stage.show();
-		  
+
 		setup(scene, namespace);
     }
 
@@ -62,24 +77,22 @@ public class GUI_Main extends Application
 		
 		open.setOnAction(event -> this.onOpenDocument());
 
-		
 		Button btnRun = (Button) namespace.get("btnRun");
 		Button btnStep = (Button) namespace.get("btnStep");
 		Button btnViewSram = (Button) namespace.get("btnViewSram");
 		
-		codePanel.pane = (ScrollPane) namespace.get("CodePane");
+		CodePanel.pane = (ScrollPane) namespace.get("CodePane");
 		checkBoxStep = (CheckBox) namespace.get("checkBoxStep");
 		
 		btnRun.setOnAction(event -> this.onRunClicked());
 		btnStep.setOnAction(event -> this.onStepClicked());
 
-		
 		if(btnViewSram != null)
 			btnViewSram.setOnAction(event -> this.onViewSramClicked());
 		
 		codePanel.init();
 		
-		//Checkbox grafik 
+		//CheckBox grafik 
 		for(int i = 0; i < 18; i++)
 		{
 			String name = "pin" + (i+1);
@@ -104,7 +117,6 @@ public class GUI_Main extends Application
 		pins[15].setOnAction(event -> this.pinChanged(16));
 		pins[16].setOnAction(event -> this.pinChanged(17));
 		pins[17].setOnAction(event -> this.pinChanged(18));
-
 
 		//Bank0
 		labels[0] = new LabelWrapper((Label) namespace.get("indf"), Registers.INDIRECT_ADDR);
@@ -231,8 +243,8 @@ public class GUI_Main extends Application
 			break;
 		}
 		//TODO
-		System.out.println("\nPIN_CHANGED " + i);
-		System.out.println("Selected = " + pins[i-1].isSelected());
+//		System.out.println("\nPIN_CHANGED " + i);
+//		System.out.println("Selected = " + pins[i-1].isSelected());
 	}
 	
 	private void onRunClicked()
@@ -253,7 +265,7 @@ public class GUI_Main extends Application
 			// TODO: Show sram in new window
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(getClass().getResource("view_sram.fxml"));
-					
+			
 			Stage stage = new Stage();
 			stage.setTitle("My New Stage Title");
 			
@@ -266,13 +278,8 @@ public class GUI_Main extends Application
 		}
 	}
 
-
 	private Object onOpenDocument()
 	{
-		//TODO Open a file
-		System.out.println(this);
-		System.out.println("Open clicked!");
-		
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.getExtensionFilters().addAll(
@@ -280,6 +287,8 @@ public class GUI_Main extends Application
 				new ExtensionFilter("Text Files", "*.txt"),
 				new ExtensionFilter("All Files", "*.*"));
 		File selectedFile = fileChooser.showOpenDialog(null);
+		
+		codePanel.init();
 		
 		app.openFile(selectedFile);
 		
