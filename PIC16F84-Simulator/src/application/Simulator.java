@@ -358,12 +358,16 @@ public class Simulator implements Runnable
 
 	public void bcf(int val)
 	{
-		// TODO
+		byte f = (byte)(0b01111111 & val);
+		byte bitPos = (byte)(val & 0b1110000000);
+		this.registers.setBit(f, bitPos, false);
 	}
 
 	public void bsf(int val)
 	{
-		// TODO
+		byte f = (byte)(0b01111111 & val);
+		byte bitPos = (byte)(val & 0b1110000000);
+		this.registers.setBit(f, bitPos, true);
 	}
 
 	public void btfsc(int val)
