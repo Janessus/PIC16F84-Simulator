@@ -50,7 +50,7 @@ public class Registers
 	}
 	
 	public void setWorking(byte val) {
-		working = val;
+		working = val%256;
 		// TODO: show working register value in GUI
 		// Platform.runLater(() -> GUI_Main.update());
 	}
@@ -77,7 +77,7 @@ public class Registers
 	// same for setRegister
 	public void setRegister(int bank, int address, int value)
 	{
-		banks[bank][address] = value;
+		banks[bank][address] = value%256;
 		Platform.runLater(() -> GUI_Main.update(address));
 	}
 	

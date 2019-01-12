@@ -16,6 +16,7 @@ public class Simulator implements Runnable
 
 	int programCounter = 0;
 	boolean skipProgramCounter = false;
+	boolean skipNextInstruction = false;
 
 	List<Integer> stack = new ArrayList<Integer>();
 
@@ -37,17 +38,22 @@ public class Simulator implements Runnable
 		synchronized(this) {
 			
 			programCounter = 0;
-			while(programCounter < operations.size()) { //TODO condition 
-				// Execute current operation
-				WrappedOperation currentOperation = operations.get(programCounter);
+			while(programCounter < operations.size()) { //TODO condition
+				// Skip instruction for DECFSZ,INCFSZ etc
+				if(!skipNextInstruction) {
+					// Execute current operation
+					WrappedOperation currentOperation = operations.get(programCounter);
+					
+					currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
+					System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
+					System.out.println("Program Counter: " + programCounter);
+					System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
+						+ "C = " + registers.getCarryFlag() + ", "
+						+ "DC= " + registers.getDigitCarryFlag() + ", "
+						+ "Z= " + registers.getZeroFlag());
+				}
 				
-				currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
-				System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
-				System.out.println("Program Counter: " + programCounter);
-				System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
-					+ "C = " + registers.getCarryFlag() + ", "
-					+ "DC= " + registers.getDigitCarryFlag() + ", "
-					+ "Z= " + registers.getZeroFlag());
+				
 				
 				// Dont increment program counter for certain operations
 				if(skipProgramCounter)
@@ -113,7 +119,7 @@ public class Simulator implements Runnable
 		byte d = (byte)((0b10000000 & val) >> 7);
 		byte f = (byte)(0b01111111 & val);
 		
-		// Calculate inclusive OR
+		// Calculate logical AND
 		int result = this.registers.readRegister(f) & this.registers.getWorking();
 		
 		// Write to correct register
@@ -176,7 +182,21 @@ public class Simulator implements Runnable
 
 	public void decfsz(int val)
 	{
-		// TODO
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
+		
+		// Build decrement
+		int result = this.registers.readRegister(f) - 1;
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
+		this.skipNextInstruction = result == 0;
 	}
 
 	public void incf(int val)
@@ -199,7 +219,21 @@ public class Simulator implements Runnable
 
 	public void incfsz(int val)
 	{
-		// TODO
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
+		
+		// Build increment
+		int result = this.registers.readRegister(f) + 1;
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		registers.setZeroFlag(result==0);
+		this.skipNextInstruction = result == 0;
 	}
 
 	public void iorwf(int val)
@@ -250,12 +284,51 @@ public class Simulator implements Runnable
 
 	public void rlf(int val)
 	{
-		// TODO
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
+		
+		// Calculate left rotation
+		int valRegisterF = this.registers.readRegister(f);
+		
+		int result = (valRegisterF << 1);
+		if(registers.getCarryFlag()) {
+			result++;
+		}
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
+		
+		// Set carry flag
+		registers.setCarryFlag((0b10000000 & valRegisterF)>>7 == 1);
 	}
 
 	public void rrf(int val)
 	{
-		// TODO
+		byte d = (byte)((0b10000000 & val) >> 7);
+		byte f = (byte)(0b01111111 & val);
+		
+		// Calculate right rotation
+		int valRegisterF = this.registers.readRegister(f);
+		boolean valCarry = registers.getCarryFlag();
+		
+		// Set carry flag
+		registers.setCarryFlag((0b00000001 & valRegisterF) == 1);
+		
+		int result = (valRegisterF >> 1);
+		if(valCarry) {
+			result += 0b10000000;
+		}
+		
+		// Write to correct register
+		if(d == 1) {
+			this.registers.setRegister(f, result);
+		} else {
+			this.registers.setWorking((byte)result);
+		}
 	}
 
 	public void subwf(int val)
@@ -319,12 +392,25 @@ public class Simulator implements Runnable
 
 	public void bcf(int val)
 	{
-		// TODO
+		// TODO: Check if function does what its supposed to do
+		byte b = (byte)((0b1110000000 & val) >> 7);
+		byte f = (byte)(0b00001111111 & val);
+		
+		// Get register
+		int result = this.registers.readRegister(f);
+		
+		// Write to correct register
+		this.registers.setBit(f, b, false);
+		
+		registers.setZeroFlag(result==0);
 	}
 
 	public void bsf(int val)
 	{
-		// TODO
+		// TODO: Check this
+		byte f = (byte)(0b01111111 & val);
+		byte bitPos = (byte)(val & 0b1110000000);
+		this.registers.setBit(f, bitPos, true);
 	}
 
 	public void btfsc(int val)
