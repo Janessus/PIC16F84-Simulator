@@ -1,6 +1,9 @@
 package gui;
 
+import java.util.Iterator;
+
 import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
@@ -10,58 +13,89 @@ import javafx.scene.layout.Background;
 
 public class CodePanel
 {
-	ScrollPane pane;
-	Pane tmp, tmp2;
+	static ScrollPane pane;
+	Pane lineNumbers;
+	static Pane codePane;
 	int lineHeight = 20;
-	int lineNumberWidth = 40;
+	static int lineNumberWidth = 40;
+	int i = 0;
 	
 	public void init()
 	{
-		tmp = new Pane();
-		tmp2 = new Pane();
-		for(int i = 1; i < 200 ; i++) 
-		{
-			Label lbl = new Label(i + " ");
-			lbl.setLayoutY((i - 1) * lineHeight);	
-			lbl.setMaxWidth(lineNumberWidth);
-			lbl.setMinWidth(lineNumberWidth);
-			lbl.setStyle("-fx-border-color:lightgrey; -fx-background-color: #aaaaff;");
-			lbl.setId("" + i);
-			lbl.setOnMouseClicked(event -> this.onLblClicked(event));
-			tmp.getChildren().add(lbl);
-		}
+		i = 0;
 		
-		for(int i = 1; i < 200 ; i++) 
-		{
-			Label lbl2 = new Label("CODE");
-			lbl2.setLayoutY((i - 1) * lineHeight);
-			lbl2.setMaxHeight(20);
-			lbl2.setPrefWidth(((AnchorPane)(pane.getParent())).getWidth() - lineNumberWidth-20);
-			lbl2.setStyle("-fx-border-color: #aaaaff; -fx-background-color: #aaaaff;");
-			lbl2.setId("" + i);
-			lbl2.setOnMouseClicked(event -> this.onLblClicked(event));
-			tmp2.getChildren().add(lbl2);
-		}
-		
-		tmp2.setLayoutX(35);
+		lineNumbers = new Pane();
+		codePane = new Pane();
+		codePane.setLayoutX(40);
 		
 		pane.setPrefWidth(((AnchorPane)(pane.getParent())).getWidth());
 		pane.setPrefHeight(((AnchorPane)(pane.getParent())).getHeight());
 
-		tmp.getChildren().add(tmp2);
+		lineNumbers.getChildren().add(codePane);
 		
-		pane.setContent(tmp);
+		pane.setContent(lineNumbers);
 	}
 	
 	public void onLblClicked(Event e)
 	{
-		Label lbl = (Label)e.getSource();
-		Label lbl2 = (Label)((Pane)lbl.getParent().getParent()).getChildren().get(Integer.parseInt(lbl.getId())-1);
+		Label lbl = (Label) e.getSource();
+		int id = Integer.parseInt(lbl.getId());
 		
-		//print line number
-		//System.out.println(lbl.getId());
+		lbl = (Label) codePane.getChildren().get(id);
+		Label lbl2 = (Label) lineNumbers.getChildren().get(id + 1);
+		
+		Iterator<Node> it = ((Pane)lbl.getParent()).getChildren().iterator();
+		//reset all labels to standard color
+		for(int k = 0; k < 2; k++)
+		{
+			while(it.hasNext())
+			{
+				Node next = it.next();
+//				System.out.println("it.next = " + next.toString());
+				next.setStyle("-fx-border-color: #444444; -fx-background-color: #404040;");
+			}
+			it = ((Pane)lbl2.getParent()).getChildren().iterator();
+		}
 		
 		lbl.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
 		lbl2.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
+	}
+
+	public void appendText(String s)
+	{
+		//Line numbers
+		Label lbl = new Label(i + 1 + " ");
+		lbl.setLayoutY((i) * lineHeight);	
+		lbl.setMaxWidth(lineNumberWidth);
+		lbl.setMinWidth(lineNumberWidth);
+		lbl.setTextFill(Color.web("#fafafa"));
+		lbl.setStyle("-fx-border-color: #444444; -fx-background-color: #404040;");
+		lbl.setId("" + i);
+		lbl.setOnMouseClicked(event -> this.onLblClicked(event));
+		lineNumbers.getChildren().add(lbl);
+		
+		//Code
+		Label lbl2 = new Label("CODE");
+		lbl2.setLayoutY((i) * lineHeight);
+		lbl2.setMaxHeight(20);
+		lbl2.setPrefWidth(((AnchorPane)(pane.getParent())).getWidth() - lineNumberWidth-20);
+		lbl2.setTextFill(Color.web("#fafafa"));
+		lbl2.setStyle("-fx-border-color: #444444; -fx-background-color: #404040;");
+		lbl2.setId("" + i);
+		lbl2.setOnMouseClicked(event -> this.onLblClicked(event));
+		codePane.getChildren().add(lbl2);
+		
+		((Label)codePane.getChildren().get(i)).setText(s);
+		i++;
+	}
+	
+	public static void onResizeWindow()
+	{
+		Iterator<Node> it = codePane.getChildren().iterator();
+		while(it.hasNext())
+		{
+			Label tmp = (Label)it.next();
+			tmp.setMinWidth(((AnchorPane)(pane.getParent())).getWidth() - lineNumberWidth-20);
+		}
 	}
 }

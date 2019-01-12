@@ -34,15 +34,15 @@ public class Parser
       List<Integer> operations = new ArrayList<Integer>();
       String line;
       try {
-      	while ((line = reader.readLine()) != null) {
+      	while ((line = reader.readLine()) != null) 
+      	{
       		//Display Code in GUI
-      		
       		if(line.charAt(5) != ' ') {  // Check if 5th character isn't empty
          		operations.add(Integer.parseInt(line.substring(5, 9), 16)); // Parse characters 5 to 8
-         		GUI_Main.mainWindow.appendText(line + "\n");//Display Code in GUI
+         		GUI_Main.codePanel.appendText(line + "\n");//Display Code in GUI
          	}
       		else
-      			GUI_Main.mainWindow.appendText("\t\t\t    " + line.trim() + "\n");//Display Code in GUI
+      			GUI_Main.codePanel.appendText("\t\t\t    " + line.trim() + "\n");//Display Code in GUI
          }
    	} catch (IOException e) {
    		e.printStackTrace();

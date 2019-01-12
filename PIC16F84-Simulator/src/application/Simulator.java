@@ -54,7 +54,6 @@ public class Simulator implements Runnable
 				}
 				
 				
-				
 				// Dont increment program counter for certain operations
 				if(skipProgramCounter)
 				{
@@ -403,6 +402,11 @@ public class Simulator implements Runnable
 		this.registers.setBit(f, b, false);
 		
 		registers.setZeroFlag(result==0);
+		/*
+		byte f = (byte)(0b01111111 & val);
+		byte bitPos = (byte)(val & 0b1110000000);
+		this.registers.setBit(f, bitPos, false);
+		*/
 	}
 
 	public void bsf(int val)
