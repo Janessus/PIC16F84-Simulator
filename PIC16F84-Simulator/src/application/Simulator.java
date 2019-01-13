@@ -75,7 +75,6 @@ public class Simulator implements Runnable
 			}
 		}
 		System.out.println("Simulation finished");
-		System.out.println("W= " + String.format("0x%02X", registers.getWorking()));
 	}
 
 	public void addOperations(ArrayList<WrappedOperation> operations)

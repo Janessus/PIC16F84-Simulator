@@ -291,7 +291,10 @@ public class GUI_Main extends Application
 		
 		codePanel.init();
 		
-		app.openFile(selectedFile);
+		if(selectedFile != null) {
+			app.openFile(selectedFile);
+		}
+		
 		
 		return null;
 	}
