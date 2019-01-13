@@ -28,9 +28,13 @@ public class Application_Main implements Runnable
 
 	public void runProgram()
 	{
+		if(opcodeList.isEmpty())
+		{
+			return;
+		}
+		
 		System.out.println("decoding " + opcodeList.size() + " operations...");
 		
-		// TODO: Error handling
 		LinkedHashMap<Integer, WrappedOperation> operations = decoder.decodeList(opcodeList);
 		simulator.addOperations(operations);
 		
