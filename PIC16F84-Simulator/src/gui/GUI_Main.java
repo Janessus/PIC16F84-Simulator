@@ -50,6 +50,7 @@ public class GUI_Main extends Application
 		Map<String, Object> namespace = loader.getNamespace();
 		
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add("gui/style.css");
 		
 		stage.setScene(scene);
 		stage.setMaximized(true);

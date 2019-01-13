@@ -28,7 +28,7 @@ public class Application_Main implements Runnable
 
 	public void runProgram()
 	{
-		if(opcodeList.isEmpty())
+		if(opcodeList==null || opcodeList.isEmpty())
 		{
 			return;
 		}

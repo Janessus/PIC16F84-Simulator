@@ -6,6 +6,7 @@ import java.util.List;
 
 import gui.CodePanel;
 import gui.GUI_Main;
+import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
@@ -46,9 +47,21 @@ public class Simulator implements Runnable
 				WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
 				
 				// Highlight current line in codepanel
-				// TODO: Use CSS classes instead
-				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()+1	).setStyle("-fx-border-color: #000000; -fx-background-color: #9999dd;");;
-				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()).setStyle("-fx-border-color: #000000; -fx-background-color: #9999dd;");
+				Node lastLineNumber = GUI_Main.codePanel.lineNumbers.lookup(".currentOperation");
+				if(lastLineNumber!=null) {
+					System.out.println("REMOVING LINE NUMBER CSS");
+					lastLineNumber.getStyleClass().clear();
+				}
+				Node lastOperation = CodePanel.codePane.lookup(".currentOperation");
+				System.out.println("Last operation node:");
+				System.out.println(lastOperation);
+				if(lastOperation!=null) {
+					System.out.println("REMOVING OPERATION CSS");
+					lastOperation.getStyleClass().clear();
+				}
+				
+				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()+1	).getStyleClass().add("currentOperation");
+				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("currentOperation");
 				
 				// Pause thread if step mode
 				if(GUI_Main.checkBoxStep.isSelected() && !skipNextInstruction) {
