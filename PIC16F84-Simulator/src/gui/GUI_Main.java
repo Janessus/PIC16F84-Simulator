@@ -287,8 +287,8 @@ public class GUI_Main extends Application
 			break;
 		}
 		//TODO
-//		System.out.println("\nPIN_CHANGED " + i);
-//		System.out.println("Selected = " + pins[i-1].isSelected());
+		//System.out.println("\nPIN_CHANGED " + i);
+		//System.out.println("Selected = " + pins[i-1].isSelected());
 	}
 	
 	private void onRunClicked()

@@ -16,6 +16,7 @@ public class Simulator implements Runnable
 	// TODO: implement PCL/PCLATH ?
 	// TODO: autoscroll codepanel
 	// TODO: make viewsram focus the window if active
+	// TODO: runtime counter
 	// Properties
 	public Registers registers;
 
