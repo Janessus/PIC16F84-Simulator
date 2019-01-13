@@ -38,6 +38,7 @@ public class Simulator implements Runnable
 		synchronized(this) {
 			
 			programCounter = 0;
+			System.out.println("Operations: " + operations.size());
 			while(programCounter < operations.size()) { //TODO condition
 				// Skip instruction for DECFSZ,INCFSZ etc
 				if(!skipNextInstruction) {
@@ -51,6 +52,8 @@ public class Simulator implements Runnable
 						+ "C = " + registers.getCarryFlag() + ", "
 						+ "DC= " + registers.getDigitCarryFlag() + ", "
 						+ "Z= " + registers.getZeroFlag());
+				} else {
+					skipNextInstruction = false;
 				}
 				
 				
@@ -75,6 +78,7 @@ public class Simulator implements Runnable
 			}
 		}
 		System.out.println("Simulation finished");
+		System.out.println("Program Counter: " + programCounter);
 	}
 
 	public void addOperations(ArrayList<WrappedOperation> operations)
