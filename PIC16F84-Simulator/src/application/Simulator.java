@@ -94,9 +94,6 @@ public class Simulator implements Runnable
 		
 		int result = valRegisterF + valRegisterw;
 		
-		//System.out.println("d: "+d);
-		//System.out.println("f: "+f);
-		
 		// Write to correct register
 		if(d == 1) {
 			this.registers.setRegister(f, result);
