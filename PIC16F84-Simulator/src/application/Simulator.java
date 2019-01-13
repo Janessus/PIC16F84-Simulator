@@ -246,7 +246,7 @@ public class Simulator implements Runnable
 
 	public void nop(int val)
 	{
-		// TODO
+		// no Command
 	}
 
 	public void rlf(int val)
