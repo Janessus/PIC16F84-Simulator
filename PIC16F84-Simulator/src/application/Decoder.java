@@ -1,8 +1,10 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class Decoder
 {
@@ -53,11 +55,13 @@ public class Decoder
 	 * @param instructions
 	 * @return
 	 */
-	public ArrayList<WrappedOperation> decodeList(List<Integer> instructions)
+	public LinkedHashMap<Integer, WrappedOperation> decodeList(LinkedHashMap<Integer, Integer> instructions)
 	{
-		ArrayList<WrappedOperation> operations = new ArrayList<WrappedOperation>();
+		LinkedHashMap<Integer, WrappedOperation> operations = new LinkedHashMap<Integer, WrappedOperation>();
 		
-		for(int instruction:instructions) {
+		for(Map.Entry<Integer, Integer> entry:instructions.entrySet()) {
+			int instruction = entry.getValue();
+			int lineNumber = entry.getKey();
 			if(!findInstruction(checkFirst, 0b11111110011111, instruction))
 				if(!findInstruction(fullScaleOperation, 0b11111111111111, instruction))
 					if(!findInstruction(sevenBitOperation, 0b11111110000000, instruction))
@@ -67,7 +71,7 @@ public class Decoder
 									if(!findInstruction(threeBitOperation, 0b11100000000000, instruction))
 										return null;
 			
-			operations.add(new WrappedOperation(tmpOperation, instruction & mask));
+			operations.put(lineNumber, new WrappedOperation(tmpOperation, instruction & mask));
 		}
 		
 		return operations;

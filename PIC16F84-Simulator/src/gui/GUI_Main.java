@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 
 public class GUI_Main extends Application
 {
+	// TODO: Render INDF in GUI properly
 	private static Application_Main app;
 	
 	public static TextArea mainWindow;
@@ -35,6 +36,8 @@ public class GUI_Main extends Application
 	public static CheckBox pins[] = new CheckBox[18];
 	public static LabelWrapper labels[] = new LabelWrapper[20];
 	public static CodePanel codePanel;
+	public static TextArea sramView = null;
+	public static Stage sramViewStage = null;
 
 	private Parent root;
 	
@@ -140,13 +143,35 @@ public class GUI_Main extends Application
 		labels[14] = new LabelWrapper((Label) namespace.get("eecon1"), Registers.EECON1);
 		labels[15] = new LabelWrapper((Label) namespace.get("eecon2"), Registers.EECON2);
 		labels[16] = new LabelWrapper((Label) namespace.get("pclath2"), Registers.PCLATH);
-		labels[17] = new LabelWrapper((Label) namespace.get("intcon2"), Registers.INTCON);		
+		labels[17] = new LabelWrapper((Label) namespace.get("intcon2"), Registers.INTCON);
+		
+		// Sram viewer
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		fxmlLoader.setLocation(getClass().getResource("view_sram.fxml"));
+
+		sramViewStage = new Stage();
+		sramViewStage.setTitle("My New Stage Title");
+
+		try {
+			sramViewStage.setScene(new Scene(fxmlLoader.load(), 450, 450));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		sramView = (TextArea) fxmlLoader.getNamespace().get("sramView");
+
+		// Update GUI once to populate sram viewer
+		update();
 	}
 	
 	
 	
 	public static void update()
 	{
+		// Populate Sram Viewer
+		if(sramViewStage.isShowing()) {
+			sramView.setText(getSramString());
+		}
 		for(int i = 0; i < 20; i++)
 		{
 			if(i < 9)
@@ -158,6 +183,12 @@ public class GUI_Main extends Application
 	
 	public static void update(int address)
 	{
+		// Populate Sram Viewer
+		if(sramViewStage!=null && sramViewStage.isShowing()) {
+			sramView.setText(getSramString());
+		}
+
+		// Update Labels
 		for(int i = 0; i < 20; i++)
 		{
 			if(address == labels[i].adress)
@@ -169,6 +200,19 @@ public class GUI_Main extends Application
 				return;
 			}
 		}
+	}
+	
+	public static String getSramString() {
+		String ret = "";
+
+		for(int i=0xC; i<=0x4F; i++)
+		{
+			ret += "0x" + String.format("%02X", i) + ": " + String.format("%02X", app.simulator.registers.readRegister(0, i));
+			ret += i%8==0 ? "\n" : "\t";
+
+		}
+
+		return ret;
 	}
 	
 	private void pinChanged(int i)
@@ -263,20 +307,8 @@ public class GUI_Main extends Application
 
 	private void onViewSramClicked()
 	{
-		try {
-			// TODO: Show sram in new window
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(getClass().getResource("view_sram.fxml"));
-			
-			Stage stage = new Stage();
-			stage.setTitle("My New Stage Title");
-			
-			stage.setScene(new Scene(fxmlLoader.load(), 450, 450));
-			
-			stage.show();
-      } catch (IOException e) {
-			e.printStackTrace();
-		}
+		sramViewStage.show();
+		update();
 	}
 
 	private Object onOpenDocument()
@@ -291,7 +323,10 @@ public class GUI_Main extends Application
 		
 		codePanel.init();
 		
-		app.openFile(selectedFile);
+		if(selectedFile != null) {
+			app.openFile(selectedFile);
+		}
+		
 		
 		return null;
 	}

@@ -10,15 +10,16 @@ import java.util.List;
 
 import gui.GUI_Main;
 
-import java.util.ArrayList;;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;;
 
 public class Parser
 {
 	/**
 	 * @param file the file to be parsed
-	 * @return List of operations as long value
+	 * @return List of operations as a Hashmap (Line number -> opcode)
 	 */
-	public List<Integer> parseFile(File file) {
+	public LinkedHashMap<Integer, Integer> parseFile(File file) {
 		System.out.println("parsing file");
 		
 		// Create FileInputStream and BufferedReader
@@ -31,18 +32,21 @@ public class Parser
       BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
       
       // Read lines
-      List<Integer> operations = new ArrayList<Integer>();
+      LinkedHashMap<Integer, Integer> operations = new LinkedHashMap<Integer, Integer>();
       String line;
+      Integer lineNumber = 0;
       try {
       	while ((line = reader.readLine()) != null) 
       	{
       		//Display Code in GUI
       		if(line.charAt(5) != ' ') {  // Check if 5th character isn't empty
-         		operations.add(Integer.parseInt(line.substring(5, 9), 16)); // Parse characters 5 to 8
+         		operations.put(lineNumber, Integer.parseInt(line.substring(5, 9), 16)); // Parse characters 5 to 8
          		GUI_Main.codePanel.appendText(line + "\n");//Display Code in GUI
          	}
       		else
       			GUI_Main.codePanel.appendText("\t\t\t    " + line.trim() + "\n");//Display Code in GUI
+      		
+      		lineNumber++;
          }
    	} catch (IOException e) {
    		e.printStackTrace();
