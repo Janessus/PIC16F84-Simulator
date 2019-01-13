@@ -2,6 +2,7 @@ package gui;
 
 import java.util.Iterator;
 
+import application.Application_Main;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -38,13 +39,13 @@ public class CodePanel
 	
 	public void onLblClicked(Event e)
 	{
-		Label lbl = (Label) e.getSource();
-		int id = Integer.parseInt(lbl.getId());
+		int index = Integer.parseInt(((Label) e.getSource()).getId());
 		
-		lbl = (Label) codePane.getChildren().get(id); // TODO: isnt this the same label as above?
-		Label lbl2 = (Label) lineNumbers.getChildren().get(id + 1);
+		Label lblCode = (Label) codePane.getChildren().get(index);
+		Label lblLineNumber = (Label) lineNumbers.getChildren().get(index + 1);
 		
-		Iterator<Node> it = ((Pane)lbl.getParent()).getChildren().iterator();
+		/*
+		Iterator<Node> it = ((Pane)lblCode.getParent()).getChildren().iterator();
 		//reset all labels to standard color
 		for(int k = 0; k < 2; k++)
 		{
@@ -55,11 +56,12 @@ public class CodePanel
 				next.setStyle("-fx-border-color: #444444; -fx-background-color: #404040;");
 				//((Label)next).getStylesheets().add("default.css");
 			}
-			it = ((Pane)lbl2.getParent()).getChildren().iterator();
+			it = ((Pane)lblLineNumber.getParent()).getChildren().iterator();
 		}
-		//lbl.getStylesheets().add("breakpoint.css");
-		lbl.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
-		lbl2.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
+		
+		lblCode.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
+		lblLineNumber.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
+		*/
 	}
 	
 	public void appendText(String s)

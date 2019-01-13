@@ -5,6 +5,7 @@ public class WrappedOperation
 	private Operation operation;
 	private int arguments;
 	private int lineNumber;
+	public boolean hasBreakPoint = false;
 	
 	public WrappedOperation(Operation operation, int arguments, int lineNumber) {
 		this.operation = operation;

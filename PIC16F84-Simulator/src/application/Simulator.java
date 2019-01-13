@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -48,14 +49,14 @@ public class Simulator implements Runnable
 				WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
 				
 				// Remove highlighting for old nodes
-				Set<Node> lastNodes = CodePanel.pane.lookupAll(".currentOperation");
+				Set<Node> lastNodes = CodePanel.pane.lookupAll(".current-operation");
 				for(Node node:lastNodes) {
-					node.getStyleClass().clear();
+					node.getStyleClass().removeAll(Collections.singleton("current-operation"));
 				}
 				
 				// Highlight current line in codepanel
-				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()+1	).getStyleClass().add("currentOperation");
-				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("currentOperation");
+				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()+1	).getStyleClass().add("current-operation");
+				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("current-operation");
 				
 				// Pause thread if step mode
 				if(GUI_Main.checkBoxStep.isSelected() && !skipNextInstruction) {
