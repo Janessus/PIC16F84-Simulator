@@ -7,6 +7,8 @@ public class Main
 	static GUI_Main gui;
 	static Application_Main app;
 	
+	//Test
+	
 	public static void main(String args[])
 	{
 		app = new Application_Main();
