@@ -160,9 +160,6 @@ public class GUI_Main extends Application
 		}
 
 		sramView = (TextArea) fxmlLoader.getNamespace().get("sramView");
-
-		// Update GUI once to populate sram viewer
-		update();
 	}
 	
 	
