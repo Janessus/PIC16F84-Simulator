@@ -44,7 +44,7 @@ public class Simulator implements Runnable
 			
 			programCounter = 0;
 			System.out.println("Operations: " + operations.size());
-			while(programCounter < operations.size()) { //TODO condition
+			while(programCounter < operations.size()) {
 				// TODO: bad performance, maybe fix
 				WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
 				
@@ -76,9 +76,9 @@ public class Simulator implements Runnable
 				if(!skipNextInstruction) {
 					// Execute current operation
 					currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
-					System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
-					System.out.println("Program Counter: " + programCounter);
-					System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
+					this.log("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
+					this.log("Program Counter: " + programCounter);
+					this.log("W = " + String.format("0x%02X, ", registers.getWorking())
 						+ "C = " + registers.getCarryFlag() + ", "
 						+ "DC= " + registers.getDigitCarryFlag() + ", "
 						+ "Z= " + registers.getZeroFlag());
@@ -551,5 +551,10 @@ public class Simulator implements Runnable
 			return null;
 		}
 		return operation.hasBreakPoint;
+	}
+	
+	public void log(String log) {
+		System.out.println(log);
+		GUI_Main.console.appendText(log + "\n");
 	}
 }

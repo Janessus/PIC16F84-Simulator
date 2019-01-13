@@ -56,6 +56,7 @@ public class Registers
 	
 	public void setWorking(byte val) {
 		working = val%256;
+		
 		// TODO: show working register value in GUI
 		// Platform.runLater(() -> GUI_Main.update());
 	}

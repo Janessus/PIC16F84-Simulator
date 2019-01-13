@@ -28,30 +28,7 @@ public class Decoder
 		this.main = main;
 	}
 	
-	
 	/**
-	 * Calls the matching function from opcode
-	 * @param instruction : opcode
-	 * @return true, if instruction was valid
-	 */
-	public boolean decode(int instruction)
-	{
-		if(!findInstruction(checkFirst, 0b11111110011111, instruction))
-			if(!findInstruction(fullScaleOperation, 0b11111111111111, instruction))
-				if(!findInstruction(sevenBitOperation, 0b11111110000000, instruction))
-					if(!findInstruction(sixBitOperation, 0b11111100000000, instruction))
-						if(!findInstruction(fiveBitOperation, 0b11111000000000, instruction))
-							if(!findInstruction(fourBitOperation, 0b11110000000000, instruction))
-								if(!findInstruction(threeBitOperation, 0b11100000000000, instruction))
-									return false;
-		
-		callbackFunction.execute(instruction & mask, main.simulator);
-
-		return true;
-	}
-	
-	/**
-	 * TODO: duplicate code, unify with decode() or delete decode()
 	 * @param instructions
 	 * @return
 	 */

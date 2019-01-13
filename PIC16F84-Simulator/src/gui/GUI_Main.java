@@ -38,6 +38,7 @@ public class GUI_Main extends Application
 	public static CodePanel codePanel;
 	public static TextArea sramView = null;
 	public static Stage sramViewStage = null;
+	public static TextArea console = null;
 
 	private Parent root;
 	
@@ -87,6 +88,7 @@ public class GUI_Main extends Application
 		
 		CodePanel.pane = (ScrollPane) namespace.get("CodePane");
 		checkBoxStep = (CheckBox) namespace.get("checkBoxStep");
+		console = (TextArea) namespace.get("console");
 		
 		btnRun.setOnAction(event -> this.onRunClicked());
 		btnStep.setOnAction(event -> this.onStepClicked());
