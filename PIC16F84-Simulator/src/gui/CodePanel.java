@@ -54,10 +54,11 @@ public class CodePanel
 				Node next = it.next();
 //				System.out.println("it.next = " + next.toString());
 				next.setStyle("-fx-border-color: #444444; -fx-background-color: #404040;");
+				//((Label)next).getStylesheets().add("default.css");
 			}
 			it = ((Pane)lbl2.getParent()).getChildren().iterator();
 		}
-		
+		//lbl.getStylesheets().add("breakpoint.css");
 		lbl.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
 		lbl2.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
 	}

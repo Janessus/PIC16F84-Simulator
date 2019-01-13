@@ -34,7 +34,7 @@
         <items>
           <Button fx:id="btnRun" mnemonicParsing="false" text="Run" />
             <Button fx:id="btnStep" mnemonicParsing="false" text="Step" />
-            <CheckBox fx:id="checkBoxStep" mnemonicParsing="false" text="StepEnable" selected="true" />
+            <CheckBox fx:id="checkBoxStep" mnemonicParsing="false" selected="true" text="StepEnable" />
         </items>
       </ToolBar>
       <AnchorPane prefHeight="200.0" prefWidth="543.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
