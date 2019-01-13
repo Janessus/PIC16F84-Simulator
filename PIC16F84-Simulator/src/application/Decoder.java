@@ -71,7 +71,7 @@ public class Decoder
 									if(!findInstruction(threeBitOperation, 0b11100000000000, instruction))
 										return null;
 			
-			operations.put(lineNumber, new WrappedOperation(tmpOperation, instruction & mask));
+			operations.put(lineNumber, new WrappedOperation(tmpOperation, instruction & mask, lineNumber));
 		}
 		
 		return operations;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import gui.CodePanel;
 import gui.GUI_Main;
 
 public class Simulator implements Runnable
@@ -41,6 +42,14 @@ public class Simulator implements Runnable
 			programCounter = 0;
 			System.out.println("Operations: " + operations.size());
 			while(programCounter < operations.size()) { //TODO condition
+				// TODO: bad performance, maybe fix
+				WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
+				
+				// Highlight current line in codepanel
+				// TODO: Use CSS classes instead
+				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()+1	).setStyle("-fx-border-color: #000000; -fx-background-color: #9999dd;");;
+				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()).setStyle("-fx-border-color: #000000; -fx-background-color: #9999dd;");
+				
 				// Pause thread if step mode
 				if(GUI_Main.checkBoxStep.isSelected() && !skipNextInstruction) {
 					try {
@@ -54,9 +63,6 @@ public class Simulator implements Runnable
 				// Skip instruction for DECFSZ,INCFSZ etc
 				if(!skipNextInstruction) {
 					// Execute current operation
-					// TODO: bad performance, maybe fix
-					WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
-					
 					currentOperation.getOperation().getCallbackFunction().execute(0x000000FF & currentOperation.getArguments(), this);
 					System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
 					System.out.println("Program Counter: " + programCounter);

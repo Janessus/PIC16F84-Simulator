@@ -14,8 +14,8 @@ import javafx.scene.layout.Background;
 public class CodePanel
 {
 	static ScrollPane pane;
-	Pane lineNumbers;
-	static Pane codePane;
+	public Pane lineNumbers;
+	public static Pane codePane;
 	int lineHeight = 20;
 	static int lineNumberWidth = 40;
 	int i = 0;
@@ -41,7 +41,7 @@ public class CodePanel
 		Label lbl = (Label) e.getSource();
 		int id = Integer.parseInt(lbl.getId());
 		
-		lbl = (Label) codePane.getChildren().get(id);
+		lbl = (Label) codePane.getChildren().get(id); // TODO: isnt this the same label as above?
 		Label lbl2 = (Label) lineNumbers.getChildren().get(id + 1);
 		
 		Iterator<Node> it = ((Pane)lbl.getParent()).getChildren().iterator();
@@ -61,7 +61,7 @@ public class CodePanel
 		lbl.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
 		lbl2.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
 	}
-
+	
 	public void appendText(String s)
 	{
 		//Line numbers
