@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import gui.GUI_Main;
@@ -12,7 +13,7 @@ public class Application_Main implements Runnable
 	Parser parser;
 	public Simulator simulator;
 	Decoder decoder;
-	List<Integer> opcodeList = null;
+	LinkedHashMap<Integer, Integer> opcodeList = null;
 
 	@Override
 	public void run() 
@@ -30,7 +31,7 @@ public class Application_Main implements Runnable
 		System.out.println("decoding " + opcodeList.size() + " operations...");
 		
 		// TODO: Error handling
-		ArrayList<WrappedOperation> operations = decoder.decodeList(opcodeList);
+		LinkedHashMap<Integer, WrappedOperation> operations = decoder.decodeList(opcodeList);
 		simulator.addOperations(operations);
 		
 		System.out.println("Starting simulation");

@@ -46,6 +46,7 @@ public class CodePanel
 		
 		Iterator<Node> it = ((Pane)lbl.getParent()).getChildren().iterator();
 		//reset all labels to standard color
+		// TODO: whats the purpose of the outer loop?
 		for(int k = 0; k < 2; k++)
 		{
 			while(it.hasNext())

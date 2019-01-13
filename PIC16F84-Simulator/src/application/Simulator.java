@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import gui.GUI_Main;
@@ -12,7 +13,7 @@ public class Simulator implements Runnable
 	// Properties
 	public Registers registers;
 
-	List<WrappedOperation> operations = new ArrayList<WrappedOperation>();
+	LinkedHashMap<Integer, WrappedOperation> operations = new LinkedHashMap<Integer, WrappedOperation>();
 
 	int programCounter = 0;
 	boolean skipProgramCounter = false;
@@ -53,7 +54,8 @@ public class Simulator implements Runnable
 				// Skip instruction for DECFSZ,INCFSZ etc
 				if(!skipNextInstruction) {
 					// Execute current operation
-					WrappedOperation currentOperation = operations.get(programCounter);
+					// TODO: bad performance, maybe fix
+					WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
 					
 					currentOperation.getOperation().getCallbackFunction().execute(0x000000FF & currentOperation.getArguments(), this);
 					System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
@@ -81,9 +83,9 @@ public class Simulator implements Runnable
 		System.out.println("Program Counter: " + programCounter);
 	}
 
-	public void addOperations(ArrayList<WrappedOperation> operations)
+	public void addOperations(LinkedHashMap<Integer, WrappedOperation> operations)
 	{
-		this.operations.addAll(operations);
+		this.operations.putAll(operations);
 	}
 	
 	// Operations implementation
