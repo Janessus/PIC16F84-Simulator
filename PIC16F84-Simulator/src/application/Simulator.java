@@ -391,40 +391,46 @@ public class Simulator implements Runnable
 
 	public void bcf(int val)
 	{
-		// TODO: Check if function does what its supposed to do
 		byte b = (byte)((0b1110000000 & val) >> 7);
 		byte f = (byte)(0b00001111111 & val);
 		
-		// Get register
-		int result = this.registers.readRegister(f);
-		
 		// Write to correct register
 		this.registers.setBit(f, b, false);
-		
-		registers.setZeroFlag(result==0);
-		/*
-		byte f = (byte)(0b01111111 & val);
-		byte bitPos = (byte)(val & 0b1110000000);
-		this.registers.setBit(f, bitPos, false);
-		*/
 	}
 
 	public void bsf(int val)
 	{
-		// TODO: Check this
-		byte f = (byte)(0b01111111 & val);
-		byte bitPos = (byte)(val & 0b1110000000);
-		this.registers.setBit(f, bitPos, true);
+		byte b = (byte)((0b1110000000 & val) >> 7);
+		byte f = (byte)(0b00001111111 & val);
+		
+		// Write to correct register
+		this.registers.setBit(f, b, true);
 	}
 
 	public void btfsc(int val)
 	{
-		// TODO
+		byte b = (byte)((0b1110000000 & val) >> 7);
+		byte f = (byte)(0b00001111111 & val);
+		
+		// Get register
+		int result = this.registers.readBit(f, b);
+		
+		if(result==0) {
+			this.skipNextInstruction = true;
+		}
 	}
 
 	public void btfss(int val)
 	{
-		// TODO
+		byte b = (byte)((0b1110000000 & val) >> 7);
+		byte f = (byte)(0b00001111111 & val);
+		
+		// Get register
+		int result = this.registers.readBit(f, b);
+		
+		if(result==1) {
+			this.skipNextInstruction = true;
+		}
 	}
 
 	public void addlw(int val)
