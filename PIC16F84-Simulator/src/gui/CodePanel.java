@@ -13,7 +13,7 @@ import javafx.scene.layout.Background;
 
 public class CodePanel
 {
-	static ScrollPane pane;
+	public static ScrollPane pane;
 	public Pane lineNumbers;
 	public static Pane codePane;
 	int lineHeight = 20;

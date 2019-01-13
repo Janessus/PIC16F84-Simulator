@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import gui.CodePanel;
 import gui.GUI_Main;
@@ -46,20 +47,13 @@ public class Simulator implements Runnable
 				// TODO: bad performance, maybe fix
 				WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
 				
-				// Highlight current line in codepanel
-				Node lastLineNumber = GUI_Main.codePanel.lineNumbers.lookup(".currentOperation");
-				if(lastLineNumber!=null) {
-					System.out.println("REMOVING LINE NUMBER CSS");
-					lastLineNumber.getStyleClass().clear();
-				}
-				Node lastOperation = CodePanel.codePane.lookup(".currentOperation");
-				System.out.println("Last operation node:");
-				System.out.println(lastOperation);
-				if(lastOperation!=null) {
-					System.out.println("REMOVING OPERATION CSS");
-					lastOperation.getStyleClass().clear();
+				// Remove highlighting for old nodes
+				Set<Node> lastNodes = CodePanel.pane.lookupAll(".currentOperation");
+				for(Node node:lastNodes) {
+					node.getStyleClass().clear();
 				}
 				
+				// Highlight current line in codepanel
 				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()+1	).getStyleClass().add("currentOperation");
 				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("currentOperation");
 				
