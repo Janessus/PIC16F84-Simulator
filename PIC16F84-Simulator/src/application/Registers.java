@@ -5,6 +5,11 @@ import javafx.application.Platform;
 
 public class Registers
 {	
+	// TODO: implement direct reading/writing of INDF
+	// "Reading INDF itself indirectly (FSR = 0) will produce
+	//  00h. Writing to the INDF register indirectly results in a
+	//  no-operation (although STATUS bits may be affected)."
+	
 	//Register addresses
 	public static final int INDIRECT_ADDR = 0;
 	public static final int TMR0 = 1;
@@ -74,7 +79,7 @@ public class Registers
 		return readRegister((0b10000000 & fsr) >> 7, 0b01111111 & fsr);
 	}
 	
-	// same for setRegister
+	// TODO: same for setRegister
 	public void setRegister(int bank, int address, int value)
 	{
 		banks[bank][address] = value%256;
@@ -131,7 +136,7 @@ public class Registers
 		}
 		// Indirect addressing, get bank and address from fsr
 		int fsr = banks[0][4];
-		setBit((0b10000000 & fsr) >> 7, 0b01111111 & fsr, value);
+		setBit((0b10000000 & fsr) >> 7, 0b01111111 & fsr, pos, value);
 	}
 	
 	// Helpers

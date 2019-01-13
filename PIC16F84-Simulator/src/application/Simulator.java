@@ -40,12 +40,22 @@ public class Simulator implements Runnable
 			programCounter = 0;
 			System.out.println("Operations: " + operations.size());
 			while(programCounter < operations.size()) { //TODO condition
+				// Pause thread if step mode
+				if(GUI_Main.checkBoxStep.isSelected() && !skipNextInstruction) {
+					try {
+						this.wait();
+						System.out.println("Pausing thread...");
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				
 				// Skip instruction for DECFSZ,INCFSZ etc
 				if(!skipNextInstruction) {
 					// Execute current operation
 					WrappedOperation currentOperation = operations.get(programCounter);
 					
-					currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
+					currentOperation.getOperation().getCallbackFunction().execute(0x000000FF & currentOperation.getArguments(), this);
 					System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
 					System.out.println("Program Counter: " + programCounter);
 					System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
@@ -64,16 +74,6 @@ public class Simulator implements Runnable
 				} else {
 					// Simulator overflow
 					programCounter = programCounter > 0x3FE ? 0 : programCounter+1;
-				}
-				
-				// Pause thread if step mode
-				if(GUI_Main.checkBoxStep.isSelected()) {
-					try {
-						this.wait();
-						System.out.println("Pausing thread...");
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 				}
 			}
 		}

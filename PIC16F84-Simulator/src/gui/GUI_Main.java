@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 
 public class GUI_Main extends Application
 {
+	// TODO: Render INDF in GUI properly
 	private static Application_Main app;
 	
 	public static TextArea mainWindow;
