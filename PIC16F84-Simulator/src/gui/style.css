@@ -1,0 +1,9 @@
+.currentOperation {
+  -fx-border-color: #000000!important;
+  -fx-background-color: #9999dd!important;
+}
+
+.breakPoint {
+  -fx-border-color: #000000!important;
+  -fx-background-color: #dd9999!important;
+}
