@@ -306,6 +306,9 @@ public class GUI_Main extends Application
 	private void onViewSramClicked()
 	{
 		sramViewStage.show();
+		// Force window in foreground
+		sramViewStage.setAlwaysOnTop(true);
+		sramViewStage.setAlwaysOnTop(false);
 		update();
 	}
 

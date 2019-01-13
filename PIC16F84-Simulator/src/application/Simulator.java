@@ -12,10 +12,7 @@ import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
-	// TODO: implement breakpoints
 	// TODO: implement PCL/PCLATH ?
-	// TODO: autoscroll codepanel
-	// TODO: make viewsram focus the window if active
 	// TODO: runtime counter
 	// Properties
 	public Registers registers;
@@ -59,7 +56,11 @@ public class Simulator implements Runnable
 				
 				// Highlight current line in codepanel
 				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("current-operation");
-				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()-1).getStyleClass().add("current-operation");
+				Node operationNode = CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()-1);
+				operationNode.getStyleClass().add("current-operation");
+				
+				// Scroll to correct line
+				CodePanel.pane.setVvalue(operationNode.getBoundsInParent().getMaxY() / CodePanel.pane.getContent().getBoundsInLocal().getHeight());
 				
 				// Pause thread if step mode
 				if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
