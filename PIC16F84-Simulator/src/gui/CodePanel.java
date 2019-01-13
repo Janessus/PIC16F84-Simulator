@@ -24,7 +24,7 @@ public class CodePanel
 	
 	public void init()
 	{
-		i = 0;
+		i = 1;
 		
 		lineNumbers = new Pane();
 		codePane = new Pane();
@@ -42,11 +42,16 @@ public class CodePanel
 	{
 		int index = Integer.parseInt(((Label) e.getSource()).getId());
 		
-		Label lblCode = (Label) codePane.getChildren().get(index);
-		Label lblLineNumber = (Label) lineNumbers.getChildren().get(index + 1);
+		Label lblCode = (Label) codePane.getChildren().get(index - 1);
+		Label lblLineNumber = (Label) lineNumbers.getChildren().get(index);
 		
-		if(GUI_Main.getApp().simulator.hasBreakpoint(index)) {
-			System.out.println("REMOVING BREAKPOINT");
+		Boolean hasBreakpoint = GUI_Main.getApp().simulator.hasBreakpoint(index);
+		
+		if(hasBreakpoint == null) {
+			return;
+		}
+		
+		if(hasBreakpoint) {
 			GUI_Main.getApp().simulator.setBreakpoint(index, false);
 			lblCode.getStyleClass().removeAll(Collections.singleton("breakpoint"));
 			lblLineNumber.getStyleClass().removeAll(Collections.singleton("breakpoint"));
@@ -55,37 +60,13 @@ public class CodePanel
 			lblCode.getStyleClass().add("breakpoint");
 			lblLineNumber.getStyleClass().add("breakpoint");
 		}
-		
-		
-		
-		
-		
-		
-		/*
-		Iterator<Node> it = ((Pane)lblCode.getParent()).getChildren().iterator();
-		//reset all labels to standard color
-		for(int k = 0; k < 2; k++)
-		{
-			while(it.hasNext())
-			{
-				Node next = it.next();
-//				System.out.println("it.next = " + next.toString());
-				next.setStyle("-fx-border-color: #444444; -fx-background-color: #404040;");
-				//((Label)next).getStylesheets().add("default.css");
-			}
-			it = ((Pane)lblLineNumber.getParent()).getChildren().iterator();
-		}
-		
-		lblCode.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
-		lblLineNumber.setStyle("-fx-border-color: #000000; -fx-background-color: #dd9999;");
-		*/
 	}
 	
 	public void appendText(String s)
 	{
 		//Line numbers
-		Label lbl = new Label(i + 1 + " ");
-		lbl.setLayoutY((i) * lineHeight);	
+		Label lbl = new Label(i + " ");
+		lbl.setLayoutY((i-1) * lineHeight);	
 		lbl.setMaxWidth(lineNumberWidth);
 		lbl.setMinWidth(lineNumberWidth);
 		lbl.setTextFill(Color.web("#fafafa"));
@@ -96,16 +77,16 @@ public class CodePanel
 		
 		//Code
 		Label lbl2 = new Label("CODE");
-		lbl2.setLayoutY((i) * lineHeight);
+		lbl2.setLayoutY((i-1) * lineHeight);
 		lbl2.setMaxHeight(20);
 		lbl2.setPrefWidth(((AnchorPane)(pane.getParent())).getWidth() - lineNumberWidth-20);
 		lbl2.setTextFill(Color.web("#fafafa"));
 		lbl2.setStyle("-fx-border-color: #444444; -fx-background-color: #404040;");
 		lbl2.setId("" + i);
 		lbl2.setOnMouseClicked(event -> this.onLblClicked(event));
+		lbl2.setText(s);
 		codePane.getChildren().add(lbl2);
 		
-		((Label)codePane.getChildren().get(i)).setText(s);
 		i++;
 	}
 	

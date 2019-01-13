@@ -34,7 +34,7 @@ public class Parser
       // Read lines
       LinkedHashMap<Integer, Integer> operations = new LinkedHashMap<Integer, Integer>();
       String line;
-      Integer lineNumber = 0;
+      Integer lineNumber = 1;
       try {
       	while ((line = reader.readLine()) != null) 
       	{

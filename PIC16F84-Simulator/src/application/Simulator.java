@@ -14,6 +14,8 @@ public class Simulator implements Runnable
 {
 	// TODO: implement breakpoints
 	// TODO: implement PCL/PCLATH ?
+	// TODO: autoscroll codepanel
+	// TODO: make viewsram focus the window if active
 	// Properties
 	public Registers registers;
 
@@ -55,8 +57,8 @@ public class Simulator implements Runnable
 				}
 				
 				// Highlight current line in codepanel
-				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()+1	).getStyleClass().add("current-operation");
-				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("current-operation");
+				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("current-operation");
+				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()-1).getStyleClass().add("current-operation");
 				
 				// Pause thread if step mode
 				if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
@@ -71,7 +73,7 @@ public class Simulator implements Runnable
 				// Skip instruction for DECFSZ,INCFSZ etc
 				if(!skipNextInstruction) {
 					// Execute current operation
-					currentOperation.getOperation().getCallbackFunction().execute(0x000000FF & currentOperation.getArguments(), this);
+					currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
 					System.out.println("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
 					System.out.println("Program Counter: " + programCounter);
 					System.out.println("W = " + String.format("0x%02X, ", registers.getWorking())
@@ -541,10 +543,10 @@ public class Simulator implements Runnable
 		}
 	}
 
-	public boolean hasBreakpoint(int lineNumber) {
+	public Boolean hasBreakpoint(int lineNumber) {
 		WrappedOperation operation = operations.get(lineNumber);
 		if(operation==null) {
-			return false;
+			return null;
 		}
 		return operation.hasBreakPoint;
 	}
