@@ -333,4 +333,8 @@ public class GUI_Main extends Application
 	{
 		GUI_Main.app = app;
 	}
+	public static Application_Main getApp()
+	{
+		return GUI_Main.app;
+	}
 }

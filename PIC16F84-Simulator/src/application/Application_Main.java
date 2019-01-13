@@ -33,11 +33,6 @@ public class Application_Main implements Runnable
 			return;
 		}
 		
-		System.out.println("decoding " + opcodeList.size() + " operations...");
-		
-		LinkedHashMap<Integer, WrappedOperation> operations = decoder.decodeList(opcodeList);
-		simulator.addOperations(operations);
-		
 		System.out.println("Starting simulation");
 		Thread simulatorThread = new Thread(simulator);
 		simulatorThread.start();
@@ -51,5 +46,9 @@ public class Application_Main implements Runnable
 	
 	public void openFile(File file) {
 		opcodeList = parser.parseFile(file);
+		
+		System.out.println("decoding " + opcodeList.size() + " operations...");
+		LinkedHashMap<Integer, WrappedOperation> operations = decoder.decodeList(opcodeList);
+		simulator.addOperations(operations);
 	}
 }

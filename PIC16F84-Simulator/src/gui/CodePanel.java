@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 import application.Application_Main;
@@ -43,6 +44,22 @@ public class CodePanel
 		
 		Label lblCode = (Label) codePane.getChildren().get(index);
 		Label lblLineNumber = (Label) lineNumbers.getChildren().get(index + 1);
+		
+		if(GUI_Main.getApp().simulator.hasBreakpoint(index)) {
+			System.out.println("REMOVING BREAKPOINT");
+			GUI_Main.getApp().simulator.setBreakpoint(index, false);
+			lblCode.getStyleClass().removeAll(Collections.singleton("breakpoint"));
+			lblLineNumber.getStyleClass().removeAll(Collections.singleton("breakpoint"));
+		} else {
+			GUI_Main.getApp().simulator.setBreakpoint(index, true);
+			lblCode.getStyleClass().add("breakpoint");
+			lblLineNumber.getStyleClass().add("breakpoint");
+		}
+		
+		
+		
+		
+		
 		
 		/*
 		Iterator<Node> it = ((Pane)lblCode.getParent()).getChildren().iterator();

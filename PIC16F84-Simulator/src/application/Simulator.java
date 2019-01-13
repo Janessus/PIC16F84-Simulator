@@ -59,7 +59,7 @@ public class Simulator implements Runnable
 				CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("current-operation");
 				
 				// Pause thread if step mode
-				if(GUI_Main.checkBoxStep.isSelected() && !skipNextInstruction) {
+				if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
 					try {
 						this.wait();
 						System.out.println("Pausing thread...");
@@ -532,5 +532,20 @@ public class Simulator implements Runnable
 		int result = registers.getWorking() ^ val;
 		registers.setWorking((byte) result);
 		registers.setZeroFlag(result==0);
+	}
+	
+	public void setBreakpoint(int lineNumber, boolean val) {
+		WrappedOperation operation = operations.get(lineNumber);
+		if(operation!=null) {
+			operation.hasBreakPoint = val;
+		}
+	}
+
+	public boolean hasBreakpoint(int lineNumber) {
+		WrappedOperation operation = operations.get(lineNumber);
+		if(operation==null) {
+			return false;
+		}
+		return operation.hasBreakPoint;
 	}
 }
