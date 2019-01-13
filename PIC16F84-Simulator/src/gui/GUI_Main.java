@@ -38,7 +38,7 @@ public class GUI_Main extends Application
 	public static CodePanel codePanel;
 	public static TextArea sramView = null;
 	public static Stage sramViewStage = null;
-	public static TextArea console = null;
+	public TextArea console = null;
 
 	private Parent root;
 	
@@ -70,6 +70,8 @@ public class GUI_Main extends Application
 		
 		stage.show();
 
+		app.setGui(this);
+		
 		setup(scene, namespace);
     }
 
@@ -341,5 +343,9 @@ public class GUI_Main extends Application
 	public static Application_Main getApp()
 	{
 		return GUI_Main.app;
+	}
+	public void log(String log) {
+		System.out.println(log);
+		Platform.runLater(() -> console.appendText(log + "\n"));
 	}
 }

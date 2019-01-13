@@ -76,9 +76,9 @@ public class Simulator implements Runnable
 				if(!skipNextInstruction) {
 					// Execute current operation
 					currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
-					this.log("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
-					this.log("Program Counter: " + programCounter);
-					this.log("W = " + String.format("0x%02X, ", registers.getWorking())
+					GUI_Main.getApp().gui.log("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
+					GUI_Main.getApp().gui.log("Program Counter: " + programCounter);
+					GUI_Main.getApp().gui.log("W = " + String.format("0x%02X, ", registers.getWorking())
 						+ "C = " + registers.getCarryFlag() + ", "
 						+ "DC= " + registers.getDigitCarryFlag() + ", "
 						+ "Z= " + registers.getZeroFlag());
@@ -551,10 +551,5 @@ public class Simulator implements Runnable
 			return null;
 		}
 		return operation.hasBreakPoint;
-	}
-	
-	public void log(String log) {
-		System.out.println(log);
-		GUI_Main.console.appendText(log + "\n");
 	}
 }
