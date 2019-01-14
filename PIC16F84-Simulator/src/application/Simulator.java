@@ -20,6 +20,8 @@ public class Simulator implements Runnable
 	OperationList operationList;
 
 	int programCounter = 0;
+	int instructionCycles = 0;
+	int frequency = 4; // frequency in mhz
 	boolean skipProgramCounter = false;
 	boolean skipNextInstruction = false;
 
@@ -82,9 +84,10 @@ public class Simulator implements Runnable
 						+ "DC= " + registers.getDigitCarryFlag() + ", "
 						+ "Z= " + registers.getZeroFlag());
 				} else {
+					this.nop(0);
 					skipNextInstruction = false;
 				}
-				
+				increaseInstructionCycles();
 				
 				// Dont increment program counter for certain operations
 				if(skipProgramCounter)
@@ -478,6 +481,9 @@ public class Simulator implements Runnable
 		registers.setPclDirectly(programCounter & 0b11111111);
 		
 		this.skipProgramCounter = true;
+		
+		// Additional instruction cycle
+		increaseInstructionCycles();
 	}
 
 	public void clrwdt(int val)
@@ -492,6 +498,9 @@ public class Simulator implements Runnable
 		this.programCounter = val | upperPc;
 		registers.setPclDirectly(programCounter & 0b11111111);
 		this.skipProgramCounter = true;
+		
+		// Additional instruction cycle
+		increaseInstructionCycles();
 	}
 
 	public void iorlw(int val)
@@ -509,18 +518,26 @@ public class Simulator implements Runnable
 	public void retfie(int val)
 	{
 		// TODO
+		// Additional instruction cycle
+		increaseInstructionCycles();
 	}
 
 	public void retlw(int val)
 	{
 		registers.setWorking((byte) val);
 		this.programCounter = stack.remove(stack.size() -1);
+		
+		// Additional instruction cycle
+		increaseInstructionCycles();
 	}
 
 	public void reTurn(int val)
 	{
 		// Get programCounter from stack
 		this.programCounter = stack.remove(stack.size() -1);
+		
+		// Additional instruction cycle
+		increaseInstructionCycles();
 	}
 
 	public void sleep(int val)
@@ -561,5 +578,14 @@ public class Simulator implements Runnable
 	
 	public void setProgramCounter(int pc) {
 		this.programCounter = pc;
+	}
+	private void increaseInstructionCycles() {
+		this.instructionCycles++;
+		
+		// Check if T0CS is set
+		if(registers.readBit(1, Registers.OPTION, 5)==0) {
+			int val = registers.readRegister(0, Registers.TMR0);
+			registers.setRegister(0, Registers.TMR0, val+1); // TODO: interrupt on overflow
+		} // TODO: Count from RA4 if T0CS is set
 	}
 }
