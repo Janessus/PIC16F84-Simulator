@@ -12,7 +12,6 @@ import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
-	// TODO: implement PCL/PCLATH ?
 	// TODO: runtime counter
 	// TODO: fix opening multiple files or pressing run multiple times
 	// Properties
@@ -46,8 +45,6 @@ public class Simulator implements Runnable
 			programCounter = 0;
 			System.out.println("Operations: " + operationList.getProgramMemory().size());
 			while(true) {
-				// TODO: bad performance, maybe fix
-				// WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
 				WrappedOperation currentOperation = operationList.getOperationAtAddress(programCounter);
 				
 				// Remove highlighting for old nodes
