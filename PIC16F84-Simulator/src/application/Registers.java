@@ -10,6 +10,8 @@ public class Registers
 	//  00h. Writing to the INDF register indirectly results in a
 	//  no-operation (although STATUS bits may be affected)."
 	
+	// TODO: implement default values for startup, reset and wakeup
+	
 	//Register addresses
 	public static final int INDIRECT_ADDR = 0;
 	public static final int TMR0 = 1;
@@ -87,6 +89,10 @@ public class Registers
 		if(address==PCL) {
 			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
 			GUI_Main.getApp().simulator.setProgramCounter(upperPc | value);
+		} else if (address==TMR0 && bank==0) {
+			// TMR0 manipulation delays by two instruction cycles
+			GUI_Main.getApp().simulator.increaseInstructionCycles();
+			GUI_Main.getApp().simulator.increaseInstructionCycles();
 		}
 		banks[bank][address] = value%256;
 		Platform.runLater(() -> GUI_Main.update(address));
@@ -127,6 +133,16 @@ public class Registers
 	
 	public void setBit(int bank, int address, int pos, boolean value)
 	{
+		// Check for PCL manipulation
+		if(address==PCL) {
+			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
+			int lowerPc = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
+			GUI_Main.getApp().simulator.setProgramCounter(upperPc | lowerPc);
+		} else if (address==TMR0 && bank==0) {
+			// TMR0 manipulation delays by two instruction cycles
+			GUI_Main.getApp().simulator.increaseInstructionCycles();
+			GUI_Main.getApp().simulator.increaseInstructionCycles();
+		}
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 		Platform.runLater(() -> GUI_Main.update(address));
 	}

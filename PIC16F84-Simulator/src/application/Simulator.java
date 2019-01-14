@@ -22,6 +22,7 @@ public class Simulator implements Runnable
 	int programCounter = 0;
 	int instructionCycles = 0;
 	int frequency = 4; // frequency in mhz
+	int wdtCounter = 0; // cycle when the wdt was cleared 
 	boolean skipProgramCounter = false;
 	boolean skipNextInstruction = false;
 
@@ -579,7 +580,7 @@ public class Simulator implements Runnable
 	public void setProgramCounter(int pc) {
 		this.programCounter = pc;
 	}
-	private void increaseInstructionCycles() {
+	public void increaseInstructionCycles() {
 		this.instructionCycles++;
 		
 		// Check if T0CS is set
