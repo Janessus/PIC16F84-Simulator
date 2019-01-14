@@ -42,7 +42,12 @@ public class Registers
 	// Methods
 	public void init() 
 	{
-		//TODO
+		this.setRegister(PCL, 0);
+		this.setBit(STATUS, 3, true);
+		this.setBit(STATUS, 4, true);
+		this.setBit(STATUS, 5, false);
+		this.setBit(STATUS, 6, false);
+		this.setBit(STATUS, 7, false);
 	}
 	
 	// Read RP0 bit for selecting bank for direct adressing
