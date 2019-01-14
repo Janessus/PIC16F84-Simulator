@@ -133,7 +133,13 @@ public class Simulator implements Runnable
 							GUI_Main.getApp().gui.log("Watchdog Timer triggered wakeup!");
 						} else {
 							// TODO: properly reset
+							System.out.println("WDT trigger..");
 							
+							// Set PD bit
+							registers.setBit(1, Registers.STATUS, 3, true);
+							
+							// Clear TO bit
+							registers.setBit(1, Registers.STATUS, 4, false);
 						}
 					}
 				}
@@ -282,10 +288,11 @@ public class Simulator implements Runnable
 		byte f = (byte)(0b01111111 & val);
 		
 		// Build increment
-		int result = this.registers.readRegister(f) + 1;
+		int result = (this.registers.readRegister(f) + 1)%256;
 		
 		// Write to correct register
 		if(d == 1) {
+			System.out.println("saving " + result);
 			this.registers.setRegister(f, result);
 		} else {
 			this.registers.setWorking((byte)result);
