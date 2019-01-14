@@ -66,7 +66,9 @@ public class Registers
 	// TODO: implement wraparound
 	public int readRegister(int bank, int address)
 	{
-		return banks[bank][address];
+		if(!(address == PORTA || address == PORTB)) //IO Registers can only be read pinwise
+			return banks[bank][address];
+		return 0;
 	}
 	
 	public int readRegister(int address)
@@ -143,6 +145,10 @@ public class Registers
 		}
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 		Platform.runLater(() -> GUI_Main.update(address));
+		if( address == PORTA || address == PORTB) {
+			System.out.println("PORT Register set:\nPORTA = " + this.readRegister(PORTA) + "\n" + "PORTB = " + this.readRegister(PORTB));
+			
+		}
 	}
 	
 	public void setBit(int address, int pos, boolean value)
