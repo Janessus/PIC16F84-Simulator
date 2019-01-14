@@ -70,19 +70,24 @@ public class Registers
 	public int readRegister(int address)
 	{
 		// Check for INDF access
-		if(address!=0)
+		if(address!=INDIRECT_ADDR)
 		{
 			// Direct addressing, get bank from RP0
 			return readRegister(getBank(), address);
 		}
 		// Indirect addressing, get bank and address from fsr
-		int fsr = banks[0][4];
+		int fsr = banks[0][FSR];
 		return readRegister((0b10000000 & fsr) >> 7, 0b01111111 & fsr);
 	}
 	
 	// TODO: same for setRegister
 	public void setRegister(int bank, int address, int value)
 	{
+		// Check for PCL manipulation
+		if(address==PCL) {
+			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
+			GUI_Main.getApp().simulator.setProgramCounter(upperPc | value);
+		}
 		banks[bank][address] = value%256;
 		Platform.runLater(() -> GUI_Main.update(address));
 	}
@@ -90,14 +95,14 @@ public class Registers
 	public void setRegister(int address, int value)
 	{
 		// Check for INDF access
-		if(address!=0)
+		if(address!=INDIRECT_ADDR)
 		{
 			// Direct addressing, get bank from RP0
 			setRegister(getBank(), address, value);
 			return;
 		}
 		// Indirect addressing, get bank and address from fsr
-		int fsr = banks[0][4];
+		int fsr = banks[0][FSR];
 		setRegister((0b10000000 & fsr) >> 7, 0b01111111 & fsr, value);
 	}
 	
@@ -110,13 +115,13 @@ public class Registers
 	public int readBit(int address, int pos)
 	{
 		// Check for INDF access
-		if(address!=0)
+		if(address!=INDIRECT_ADDR)
 		{
 			// Direct addressing, get bank from RP0
 			return readBit(getBank(), address, pos);
 		}
 		// Indirect addressing, get bank and address from fsr
-		int fsr = banks[0][4];
+		int fsr = banks[0][FSR];
 		return readBit((0b10000000 & fsr) >> 7, 0b01111111 & fsr, pos);
 	}
 	
@@ -129,14 +134,14 @@ public class Registers
 	public void setBit(int address, int pos, boolean value)
 	{
 		// Check for INDF access
-		if(address!=0)
+		if(address!=INDIRECT_ADDR)
 		{
 			// Direct addressing, get bank from RP0
 			setBit(getBank(), address, pos, value);
 			return;
 		}
 		// Indirect addressing, get bank and address from fsr
-		int fsr = banks[0][4];
+		int fsr = banks[0][FSR];
 		setBit((0b10000000 & fsr) >> 7, 0b01111111 & fsr, pos, value);
 	}
 	
@@ -184,5 +189,13 @@ public class Registers
 		if(readBit(0, 3, 2) > 0)
 			return true;
 		return false;
+	}
+	
+	// Sets the PCL without manipulating the PC
+	public void setPclDirectly(int value) {
+		banks[0][PCL] = value%256;
+		banks[1][PCL] = value%256;
+		
+		Platform.runLater(() -> GUI_Main.update(Registers.PCL));
 	}
 }

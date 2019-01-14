@@ -346,6 +346,8 @@ public class GUI_Main extends Application
 	}
 	public void log(String log) {
 		System.out.println(log);
-		Platform.runLater(() -> console.appendText(log + "\n"));
+		
+		// TODO: for some reason this causes errors
+		//Platform.runLater(() -> console.appendText(log + "\n"));
 	}
 }

@@ -14,6 +14,7 @@ public class Simulator implements Runnable
 {
 	// TODO: implement PCL/PCLATH ?
 	// TODO: runtime counter
+	// TODO: fix opening multiple files or pressing run multiple times
 	// Properties
 	public Registers registers;
 
@@ -59,12 +60,12 @@ public class Simulator implements Runnable
 				Node operationNode = CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()-1);
 				operationNode.getStyleClass().add("current-operation");
 				
-				// Scroll to correct line
-				CodePanel.pane.setVvalue(operationNode.getBoundsInParent().getMaxY() / CodePanel.pane.getContent().getBoundsInLocal().getHeight());
-				
 				// Pause thread if step mode
 				if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
 					try {
+						// Scroll to correct line
+						CodePanel.pane.setVvalue(operationNode.getBoundsInParent().getMaxY() / CodePanel.pane.getContent().getBoundsInLocal().getHeight());
+						// Pause thread
 						this.wait();
 						System.out.println("Pausing thread...");
 					} catch (InterruptedException e) {
@@ -92,8 +93,9 @@ public class Simulator implements Runnable
 				{
 					skipProgramCounter = false;
 				} else {
-					// Simulator overflow
-					programCounter = programCounter > 0x3FE ? 0 : programCounter+1;
+					// Wraparound
+					programCounter = programCounter >= 0x3FF ? 0 : programCounter+1;
+					registers.setPclDirectly(programCounter & 0b11111111);
 				}
 			}
 		}
@@ -473,7 +475,12 @@ public class Simulator implements Runnable
 	{
 		// Add return point to stack
 		this.stack.add((int)this.programCounter);
-		this.programCounter = val;
+		
+		// Shift 8 more bits so there is 11 bits free for the argument
+		int upperPc = (registers.readRegister(Registers.PCLATH) & 0b11000) << 8;
+		this.programCounter = val | upperPc;
+		registers.setPclDirectly(programCounter & 0b11111111);
+		
 		this.skipProgramCounter = true;
 	}
 
@@ -484,7 +491,10 @@ public class Simulator implements Runnable
 
 	public void goTo(int val)
 	{
-		this.programCounter = val;
+		// Shift 8 more bits so there is 11 bits free for the argument
+		int upperPc = (registers.readRegister(Registers.PCLATH) & 0b11000) << 8;
+		this.programCounter = val | upperPc;
+		registers.setPclDirectly(programCounter & 0b11111111);
 		this.skipProgramCounter = true;
 	}
 
@@ -551,5 +561,9 @@ public class Simulator implements Runnable
 			return null;
 		}
 		return operation.hasBreakPoint;
+	}
+	
+	public void setProgramCounter(int pc) {
+		this.programCounter = pc;
 	}
 }
