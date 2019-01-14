@@ -90,9 +90,8 @@ public class Registers
 			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
 			GUI_Main.getApp().simulator.setProgramCounter(upperPc | value);
 		} else if (address==TMR0 && bank==0) {
-			// TMR0 manipulation delays by two instruction cycles
-			GUI_Main.getApp().simulator.increaseInstructionCycles();
-			GUI_Main.getApp().simulator.increaseInstructionCycles();
+			// TMR0 manipulation inhibits TMR0 increment for two cycles
+			GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 		}
 		banks[bank][address] = value%256;
 		Platform.runLater(() -> GUI_Main.update(address));
@@ -139,9 +138,8 @@ public class Registers
 			int lowerPc = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 			GUI_Main.getApp().simulator.setProgramCounter(upperPc | lowerPc);
 		} else if (address==TMR0 && bank==0) {
-			// TMR0 manipulation delays by two instruction cycles
-			GUI_Main.getApp().simulator.increaseInstructionCycles();
-			GUI_Main.getApp().simulator.increaseInstructionCycles();
+			// TMR0 manipulation inhibits TMR0 increment for two cycles
+			GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 		}
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 		Platform.runLater(() -> GUI_Main.update(address));
@@ -207,11 +205,9 @@ public class Registers
 		return false;
 	}
 	
-	// Sets the PCL without manipulating the PC
-	public void setPclDirectly(int value) {
-		banks[0][PCL] = value%256;
-		banks[1][PCL] = value%256;
-		
-		Platform.runLater(() -> GUI_Main.update(Registers.PCL));
+	// Set a register without triggering checks; e.g.: set PCL without manipulating the PC
+	public void setRegisterDirectly(int bank, int address, int value) {
+		banks[bank][address] = value%256;
+		Platform.runLater(() -> GUI_Main.update(address));
 	}
 }

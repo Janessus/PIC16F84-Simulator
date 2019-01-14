@@ -271,6 +271,7 @@
                                                       <Label fx:id="portb" layoutX="100.0" text="RegisterValue(HEX)" />
                                                    </children>
                                                 </Pane>
+                                                <CheckBox fx:id="wdte" layoutX="14.0" layoutY="281.0" mnemonicParsing="false" text="Watchdog Timer" />
                                              </children>
                                           </AnchorPane>
                                        </content>

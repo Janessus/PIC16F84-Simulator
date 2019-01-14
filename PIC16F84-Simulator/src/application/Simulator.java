@@ -8,12 +8,14 @@ import java.util.Set;
 
 import gui.CodePanel;
 import gui.GUI_Main;
+import javafx.application.Platform;
 import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
 	// TODO: runtime counter
 	// TODO: fix opening multiple files or pressing run multiple times
+	// TODO: implement reset
 	// Properties
 	public Registers registers;
 
@@ -23,6 +25,9 @@ public class Simulator implements Runnable
 	int instructionCycles = 0;
 	int frequency = 4; // frequency in mhz
 	int wdtCounter = 0; // cycle when the wdt was cleared 
+	int skipTmr0Increments = 0;
+	
+	boolean isSleep = false;
 	boolean skipProgramCounter = false;
 	boolean skipNextInstruction = false;
 
@@ -48,56 +53,89 @@ public class Simulator implements Runnable
 			programCounter = 0;
 			System.out.println("Operations: " + operationList.getProgramMemory().size());
 			while(true) {
-				WrappedOperation currentOperation = operationList.getOperationAtAddress(programCounter);
-				
-				// Remove highlighting for old nodes
-				Set<Node> lastNodes = CodePanel.pane.lookupAll(".current-operation");
-				for(Node node:lastNodes) {
-					node.getStyleClass().removeAll(Collections.singleton("current-operation"));
-				}
-				
-				// Highlight current line in codepanel
-				GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("current-operation");
-				Node operationNode = CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()-1);
-				operationNode.getStyleClass().add("current-operation");
-				
-				// Pause thread if step mode
-				if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
-					try {
-						// Scroll to correct line
-						CodePanel.pane.setVvalue(operationNode.getBoundsInParent().getMaxY() / CodePanel.pane.getContent().getBoundsInLocal().getHeight());
-						// Pause thread
-						this.wait();
-						System.out.println("Pausing thread...");
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+				if(!isSleep) {
+					WrappedOperation currentOperation = operationList.getOperationAtAddress(programCounter);
+					
+					// Remove highlighting for old nodes
+					Set<Node> lastNodes = CodePanel.pane.lookupAll(".current-operation");
+					for(Node node:lastNodes) {
+						node.getStyleClass().removeAll(Collections.singleton("current-operation"));
+					}
+					
+					// Highlight current line in codepanel
+					GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("current-operation");
+					Node operationNode = CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()-1);
+					operationNode.getStyleClass().add("current-operation");
+					
+					// Pause thread if step mode or breakpoint
+					if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
+						try {
+							// Scroll to correct line
+							Platform.runLater(() -> CodePanel.pane.setVvalue(operationNode.getBoundsInParent().getMaxY() / CodePanel.pane.getContent().getBoundsInLocal().getHeight()));
+							// Pause thread
+							System.out.println("Pausing thread...");
+							this.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					// Skip instruction for DECFSZ,INCFSZ etc
+					if(!skipNextInstruction) {
+						// Execute current operation
+						currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
+						GUI_Main.getApp().gui.log("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
+						GUI_Main.getApp().gui.log("Program Counter: " + programCounter);
+						GUI_Main.getApp().gui.log("W = " + String.format("0x%02X, ", registers.getWorking())
+							+ "C = " + registers.getCarryFlag() + ", "
+							+ "DC= " + registers.getDigitCarryFlag() + ", "
+							+ "Z= " + registers.getZeroFlag());
+					} else {
+						this.nop(0);
+						skipNextInstruction = false;
+					}
+					increaseInstructionCycles();
+					
+					// Dont increment program counter for certain operations
+					if(skipProgramCounter)
+					{
+						skipProgramCounter = false;
+					} else {
+						// Wraparound
+						programCounter = programCounter >= 0x3FF ? 0 : programCounter+1;
+						registers.setRegisterDirectly(0, Registers.PCL, programCounter & 0b11111111);
 					}
 				}
-				
-				// Skip instruction for DECFSZ,INCFSZ etc
-				if(!skipNextInstruction) {
-					// Execute current operation
-					currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
-					GUI_Main.getApp().gui.log("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
-					GUI_Main.getApp().gui.log("Program Counter: " + programCounter);
-					GUI_Main.getApp().gui.log("W = " + String.format("0x%02X, ", registers.getWorking())
-						+ "C = " + registers.getCarryFlag() + ", "
-						+ "DC= " + registers.getDigitCarryFlag() + ", "
-						+ "Z= " + registers.getZeroFlag());
-				} else {
-					this.nop(0);
-					skipNextInstruction = false;
-				}
-				increaseInstructionCycles();
-				
-				// Dont increment program counter for certain operations
-				if(skipProgramCounter)
-				{
-					skipProgramCounter = false;
-				} else {
-					// Wraparound
-					programCounter = programCounter >= 0x3FF ? 0 : programCounter+1;
-					registers.setPclDirectly(programCounter & 0b11111111);
+				// Check WDT
+				if(GUI_Main.checkBoxWdt.isSelected()) {
+					wdtCounter++;
+					
+					// Calculate time
+					int timePassed = wdtCounter * 4/frequency; // time passed in micro sec
+					int wdtTime = 18000; // 18ms = 18000micro sec
+					
+					// Check prescaler assignment
+					if(registers.readBit(1, Registers.OPTION, 3)==1) {
+						int prescaler = registers.readRegister(1, Registers.OPTION) & 0b00000111;
+						wdtTime *= Math.pow(2, prescaler);
+					}
+					if(timePassed>=wdtTime) {
+						if(isSleep) {
+							// Wakeup
+							isSleep = false;
+							
+							// Clear PD bit
+							registers.setBit(1, Registers.STATUS, 3, false);
+							
+							// Clear TO bit
+							registers.setBit(1, Registers.STATUS, 4, false);
+							
+							GUI_Main.getApp().gui.log("Watchdog Timer triggered wakeup!");
+						} else {
+							// TODO: properly reset
+							
+						}
+					}
 				}
 			}
 		}
@@ -479,7 +517,7 @@ public class Simulator implements Runnable
 		// Shift 8 more bits so there is 11 bits free for the argument
 		int upperPc = (registers.readRegister(Registers.PCLATH) & 0b11000) << 8;
 		this.programCounter = val | upperPc;
-		registers.setPclDirectly(programCounter & 0b11111111);
+		registers.setRegisterDirectly(0, Registers.PCL, programCounter & 0b11111111);
 		
 		this.skipProgramCounter = true;
 		
@@ -489,7 +527,20 @@ public class Simulator implements Runnable
 
 	public void clrwdt(int val)
 	{
-		// TODO
+		wdtCounter = 0;
+		
+		// Clear prescaler if its assigned to wdt
+		if(registers.readBit(1, Registers.OPTION, 3)==1) {
+			for(int i=0; i<3; i++) {
+				registers.setBit(1, Registers.OPTION, i, false);
+			}
+		}
+		
+		// Set PD bit
+		registers.setBit(1, Registers.STATUS, 3, true);
+		
+		// Set TO bit
+		registers.setBit(1, Registers.STATUS, 4, true);
 	}
 
 	public void goTo(int val)
@@ -497,7 +548,7 @@ public class Simulator implements Runnable
 		// Shift 8 more bits so there is 11 bits free for the argument
 		int upperPc = (registers.readRegister(Registers.PCLATH) & 0b11000) << 8;
 		this.programCounter = val | upperPc;
-		registers.setPclDirectly(programCounter & 0b11111111);
+		registers.setRegisterDirectly(0, Registers.PCL, programCounter & 0b11111111);
 		this.skipProgramCounter = true;
 		
 		// Additional instruction cycle
@@ -543,7 +594,24 @@ public class Simulator implements Runnable
 
 	public void sleep(int val)
 	{
-		// TODO
+		wdtCounter = 0;
+		
+		// Clear prescaler if its assigned to wdt
+		if(registers.readBit(1, Registers.OPTION, 3)==1) {
+			for(int i=0; i<3; i++) {
+				registers.setBit(1, Registers.OPTION, i, false);
+			}
+		}
+		
+		// Clear PD bit
+		registers.setBit(1, Registers.STATUS, 3, false);
+		
+		// Set TO bit
+		registers.setBit(1, Registers.STATUS, 4, true);
+
+		GUI_Main.getApp().gui.log("Sleeping...");
+		
+		isSleep = true;
 	}
 
 	public void sublw(int val)
@@ -582,11 +650,19 @@ public class Simulator implements Runnable
 	}
 	public void increaseInstructionCycles() {
 		this.instructionCycles++;
-		
-		// Check if T0CS is set
-		if(registers.readBit(1, Registers.OPTION, 5)==0) {
-			int val = registers.readRegister(0, Registers.TMR0);
-			registers.setRegister(0, Registers.TMR0, val+1); // TODO: interrupt on overflow
-		} // TODO: Count from RA4 if T0CS is set
+
+		if(skipTmr0Increments>0) {
+			skipTmr0Increments--;
+		} else {
+			// Check if T0CS is set
+			if(registers.readBit(1, Registers.OPTION, 5)==0) {
+				int val = registers.readRegister(0, Registers.TMR0);
+				registers.setRegisterDirectly(0, Registers.TMR0, val+1); // TODO: interrupt on overflow
+			} // TODO: Count from RA4 if T0CS is set
+		}
+	}
+	// Inhibits TMR0 incrementing in timer mode; should be used in registers when TMR0 gets written
+	public void inhibitTmr0Increment(int cycles) {
+		skipTmr0Increments = cycles;
 	}
 }

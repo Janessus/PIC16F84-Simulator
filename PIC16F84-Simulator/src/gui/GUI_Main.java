@@ -33,6 +33,7 @@ public class GUI_Main extends Application
 	
 	public static TextArea mainWindow;
 	public static CheckBox checkBoxStep;
+	public static CheckBox checkBoxWdt;
 	public static CheckBox pins[] = new CheckBox[18];
 	public static LabelWrapper labels[] = new LabelWrapper[20];
 	public static CodePanel codePanel;
@@ -90,6 +91,7 @@ public class GUI_Main extends Application
 		
 		CodePanel.pane = (ScrollPane) namespace.get("CodePane");
 		checkBoxStep = (CheckBox) namespace.get("checkBoxStep");
+		checkBoxWdt = (CheckBox) namespace.get("wdte");
 		console = (TextArea) namespace.get("console");
 		
 		btnRun.setOnAction(event -> this.onRunClicked());
@@ -348,6 +350,6 @@ public class GUI_Main extends Application
 		System.out.println(log);
 		
 		// TODO: for some reason this causes errors
-		//Platform.runLater(() -> console.appendText(log + "\n"));
+		Platform.runLater(() -> console.appendText(log + "\n"));
 	}
 }
