@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import gui.GUI_Main;
 import javafx.application.Platform;
 
@@ -30,7 +33,8 @@ public class Registers
 	public static final int EECON2 = 9;
 	public static final int PCLATH = 10;
 	public static final int INTCON = 11;
-
+	
+	public static ArrayList<Integer> mirroredRegisters = new ArrayList<Integer>(Arrays.asList(INDIRECT_ADDR, PCL, STATUS, FSR, PCLATH, INTCON));
 
 	//indirect = 8 bit -> msb = rp0
 
@@ -46,7 +50,6 @@ public class Registers
 	}
 	
 	// Read RP0 bit for selecting bank for direct adressing
-	// TODO: handle mirrored registers
 	public int getBank()
 	{
 		return readBit(0, 3, 5);
@@ -66,6 +69,10 @@ public class Registers
 	// TODO: implement wraparound
 	public int readRegister(int bank, int address)
 	{
+		// Check for mirrored register
+		if(bank==1 && isMirroredRegister(address)) {
+			return readRegister(0, address);
+		}
 		return banks[bank][address];
 	}
 	
@@ -85,6 +92,12 @@ public class Registers
 	// TODO: same for setRegister
 	public void setRegister(int bank, int address, int value)
 	{
+		// Check for mirrored register
+		if(bank==1 && isMirroredRegister(address)) {
+			setRegister(0, address, value);
+			return;
+		}
+		
 		// Check for PCL manipulation
 		if(address==PCL) {
 			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
@@ -113,6 +126,11 @@ public class Registers
 	
 	public int readBit(int bank, int address, int pos)
 	{
+		// Check for mirrored register
+		if(bank==1 && isMirroredRegister(address)) {
+			return readBit(0, address, pos);
+		}
+		
 		// Get correct register, right shift byte and mask it
 		return (banks[bank][address]>>pos) & 1;
 	}
@@ -132,6 +150,12 @@ public class Registers
 	
 	public void setBit(int bank, int address, int pos, boolean value)
 	{
+		// Check for mirrored register
+		if(bank==1 && isMirroredRegister(address)) {
+			setBit(0, address, pos, value);
+			return;
+		}
+			
 		// Check for PCL manipulation
 		if(address==PCL) {
 			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
@@ -163,7 +187,6 @@ public class Registers
 	public void setCarryFlag(boolean val)
 	{
 		setBit(0, 3, 0, val);
-		setBit(1, 3, 0, val);	
 		
 		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
@@ -178,7 +201,6 @@ public class Registers
 	public void setDigitCarryFlag(boolean val) 
 	{
 		setBit(0, 3, 1, val);
-		setBit(1, 3, 1, val);	
 		
 		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
@@ -193,7 +215,6 @@ public class Registers
 	public void setZeroFlag(boolean val) 
 	{
 		setBit(0, 3, 2, val);
-		setBit(1, 3, 2, val);
 		
 		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
@@ -202,6 +223,13 @@ public class Registers
 	{
 		if(readBit(0, 3, 2) > 0)
 			return true;
+		return false;
+	}
+	
+	public boolean isMirroredRegister(int address) {
+		if(address>11 || mirroredRegisters.contains(address)) {
+			return true;
+		}
 		return false;
 	}
 	

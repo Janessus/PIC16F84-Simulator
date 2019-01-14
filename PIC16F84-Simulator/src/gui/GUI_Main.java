@@ -201,7 +201,6 @@ public class GUI_Main extends Application
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
 				else
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
-				return;
 			}
 		}
 	}
