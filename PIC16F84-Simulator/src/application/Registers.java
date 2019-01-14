@@ -66,7 +66,6 @@ public class Registers
 		// Platform.runLater(() -> GUI_Main.update());
 	}
 	
-	// TODO: implement wraparound
 	public int readRegister(int bank, int address)
 	{
 		// Check for mirrored register
@@ -89,7 +88,6 @@ public class Registers
 		return readRegister((0b10000000 & fsr) >> 7, 0b01111111 & fsr);
 	}
 	
-	// TODO: same for setRegister
 	public void setRegister(int bank, int address, int value)
 	{
 		// Check for mirrored register

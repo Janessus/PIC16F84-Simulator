@@ -134,6 +134,12 @@ public class Simulator implements Runnable
 						} else {
 							// TODO: properly reset
 							System.out.println("WDT trigger..");
+							
+							// Set PD bit
+							registers.setBit(1, Registers.STATUS, 3, true);
+							
+							// Clear TO bit
+							registers.setBit(1, Registers.STATUS, 4, false);
 						}
 					}
 				}
