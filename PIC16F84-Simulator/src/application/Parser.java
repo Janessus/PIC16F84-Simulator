@@ -19,7 +19,7 @@ public class Parser
 	 * @param file the file to be parsed
 	 * @return List of operations as a Hashmap (Line number -> opcode)
 	 */
-	public LinkedHashMap<Integer, Integer> parseFile(File file) {
+	public LinkedHashMap<Integer, ArrayList<Integer>> parseFile(File file) {
 		System.out.println("parsing file");
 		
 		// Create FileInputStream and BufferedReader
@@ -32,7 +32,7 @@ public class Parser
       BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
       
       // Read lines
-      LinkedHashMap<Integer, Integer> operations = new LinkedHashMap<Integer, Integer>();
+      LinkedHashMap<Integer, ArrayList<Integer>> operations = new LinkedHashMap<Integer, ArrayList<Integer>>();
       String line;
       Integer lineNumber = 1;
       try {
@@ -40,7 +40,10 @@ public class Parser
       	{
       		//Display Code in GUI
       		if(line.charAt(5) != ' ') {  // Check if 5th character isn't empty
-         		operations.put(lineNumber, Integer.parseInt(line.substring(5, 9), 16)); // Parse characters 5 to 8
+      			ArrayList<Integer> operation = new ArrayList<Integer>();
+      			operation.add(Integer.parseInt(line.substring(0, 4), 16)); // Parse characters 0 to 3
+      			operation.add(Integer.parseInt(line.substring(5, 9), 16)); // Parse characters 5 to 8
+         		operations.put(lineNumber, operation); 
          		GUI_Main.codePanel.appendText(line + "\n");//Display Code in GUI
          	}
       		else

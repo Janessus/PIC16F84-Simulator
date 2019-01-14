@@ -32,12 +32,14 @@ public class Decoder
 	 * @param instructions
 	 * @return
 	 */
-	public LinkedHashMap<Integer, WrappedOperation> decodeList(LinkedHashMap<Integer, Integer> instructions)
+	public OperationList decodeList(LinkedHashMap<Integer, ArrayList<Integer>> instructions)
 	{
-		LinkedHashMap<Integer, WrappedOperation> operations = new LinkedHashMap<Integer, WrappedOperation>();
+		LinkedHashMap<Integer, WrappedOperation> programMemory = new LinkedHashMap<Integer, WrappedOperation>();
+		LinkedHashMap<Integer, WrappedOperation> lines = new LinkedHashMap<Integer, WrappedOperation>();
 		
-		for(Map.Entry<Integer, Integer> entry:instructions.entrySet()) {
-			int instruction = entry.getValue();
+		for(Map.Entry<Integer, ArrayList<Integer>> entry:instructions.entrySet()) {
+			int address = entry.getValue().get(0);
+			int instruction = entry.getValue().get(1);
 			int lineNumber = entry.getKey();
 			if(!findInstruction(checkFirst, 0b11111110011111, instruction))
 				if(!findInstruction(fullScaleOperation, 0b11111111111111, instruction))
@@ -47,11 +49,12 @@ public class Decoder
 								if(!findInstruction(fourBitOperation, 0b11110000000000, instruction))
 									if(!findInstruction(threeBitOperation, 0b11100000000000, instruction))
 										return null;
-
-			operations.put(lineNumber, new WrappedOperation(tmpOperation, instruction & mask, lineNumber));
+			WrappedOperation operation = new WrappedOperation(tmpOperation, instruction & mask, lineNumber);
+			lines.put(lineNumber, operation);
+			programMemory.put(address, operation);
 		}
 		
-		return operations;
+		return new OperationList(programMemory, lines);
 	}
 	
 	/**

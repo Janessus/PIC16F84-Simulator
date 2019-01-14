@@ -18,7 +18,7 @@ public class Simulator implements Runnable
 	// Properties
 	public Registers registers;
 
-	LinkedHashMap<Integer, WrappedOperation> operations = new LinkedHashMap<Integer, WrappedOperation>();
+	OperationList operationList;
 
 	int programCounter = 0;
 	boolean skipProgramCounter = false;
@@ -44,10 +44,11 @@ public class Simulator implements Runnable
 		synchronized(this) {
 			
 			programCounter = 0;
-			System.out.println("Operations: " + operations.size());
-			while(programCounter < operations.size()) {
+			System.out.println("Operations: " + operationList.getProgramMemory().size());
+			while(true) {
 				// TODO: bad performance, maybe fix
-				WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
+				// WrappedOperation currentOperation = (WrappedOperation) operations.values().toArray()[programCounter];
+				WrappedOperation currentOperation = operationList.getOperationAtAddress(programCounter);
 				
 				// Remove highlighting for old nodes
 				Set<Node> lastNodes = CodePanel.pane.lookupAll(".current-operation");
@@ -99,13 +100,11 @@ public class Simulator implements Runnable
 				}
 			}
 		}
-		System.out.println("Simulation finished");
-		System.out.println("Program Counter: " + programCounter);
 	}
 
-	public void addOperations(LinkedHashMap<Integer, WrappedOperation> operations)
+	public void loadOperationList(OperationList operationList)
 	{
-		this.operations.putAll(operations);
+		this.operationList = operationList;
 	}
 	
 	// Operations implementation
@@ -549,14 +548,14 @@ public class Simulator implements Runnable
 	}
 	
 	public void setBreakpoint(int lineNumber, boolean val) {
-		WrappedOperation operation = operations.get(lineNumber);
+		WrappedOperation operation = operationList.getOperationAtLine(lineNumber);
 		if(operation!=null) {
 			operation.hasBreakPoint = val;
 		}
 	}
 
 	public Boolean hasBreakpoint(int lineNumber) {
-		WrappedOperation operation = operations.get(lineNumber);
+		WrappedOperation operation = operationList.getOperationAtLine(lineNumber);
 		if(operation==null) {
 			return null;
 		}

@@ -13,7 +13,8 @@ public class Application_Main implements Runnable
 	Parser parser;
 	public Simulator simulator;
 	Decoder decoder;
-	LinkedHashMap<Integer, Integer> opcodeList = null;
+	// Map lineNumber -> [address, opcode]
+	LinkedHashMap<Integer, ArrayList<Integer>> opcodeList = null;
 
 	@Override
 	public void run() 
@@ -47,7 +48,6 @@ public class Application_Main implements Runnable
 		opcodeList = parser.parseFile(file);
 		
 		System.out.println("decoding " + opcodeList.size() + " operations...");
-		LinkedHashMap<Integer, WrappedOperation> operations = decoder.decodeList(opcodeList);
-		simulator.addOperations(operations);
+		simulator.loadOperationList(decoder.decodeList(opcodeList));
 	}
 }
