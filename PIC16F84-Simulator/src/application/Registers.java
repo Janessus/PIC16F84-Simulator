@@ -8,11 +8,6 @@ import javafx.application.Platform;
 
 public class Registers
 {	
-	// TODO: implement direct reading/writing of INDF
-	// "Reading INDF itself indirectly (FSR = 0) will produce
-	//  00h. Writing to the INDF register indirectly results in a
-	//  no-operation (although STATUS bits may be affected)."
-	
 	// TODO: implement default values for startup, reset and wakeup
 	
 	//Register addresses
@@ -153,6 +148,11 @@ public class Registers
 	
 	public void setRegister(int bank, int address, int value)
 	{
+		// Check for direct INDF access via FSR
+		if(address==INDIRECT_ADDR)
+		{
+			return;
+		}
 		// Check for mirrored register
 		if(bank==1 && isMirroredRegister(address)) {
 			setRegister(0, address, value);
@@ -211,6 +211,11 @@ public class Registers
 	
 	public void setBit(int bank, int address, int pos, boolean value)
 	{
+		// Check for direct INDF access via FSR
+		if(address==INDIRECT_ADDR)
+		{
+			return;
+		}
 		// Check for mirrored register
 		if(bank==1 && isMirroredRegister(address)) {
 			setBit(0, address, pos, value);
