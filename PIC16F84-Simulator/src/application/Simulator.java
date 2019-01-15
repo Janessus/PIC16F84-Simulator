@@ -21,7 +21,7 @@ public class Simulator implements Runnable
 
 	OperationList operationList;
 
-	int programCounter = 0;
+	public static int programCounter = 0;
 	int instructionCycles = 0;
 	int frequency = 4; // frequency in mhz
 	int wdtCounter = 0; // cycle when the wdt was cleared 

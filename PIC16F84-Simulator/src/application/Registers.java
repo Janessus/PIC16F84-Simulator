@@ -29,6 +29,13 @@ public class Registers
 	public static final int PCLATH = 10;
 	public static final int INTCON = 11;
 	
+	//States for reset(int state)
+	public static final int MCLR_NORMAL_RESET = 0;
+	public static final int MCLR_SLEEP_RESET = 1;
+	public static final int WDT_NORMAL_RESET = 2;
+	public static final int WDT_WAKEUP_RESET = 3;
+	public static final int INTERRUPT_WAKEUP_RESET = 4;
+
 	public static ArrayList<Integer> mirroredRegisters = new ArrayList<Integer>(Arrays.asList(INDIRECT_ADDR, PCL, STATUS, FSR, PCLATH, INTCON));
 
 	//indirect = 8 bit -> msb = rp0
@@ -73,19 +80,21 @@ public class Registers
 		this.setRegister(1, EECON1, 0);
 	}
 	
-	public void reset()
+	public void reset(int state)
 	{
 		this.setRegister(0, PCL, 0);
 		this.setRegister(1, PCL, 0);
 		
-		this.setBit(0, STATUS, 5, false);
-		this.setBit(0, STATUS, 6, false);
-		this.setBit(0, STATUS, 7, false);
-		
-		this.setBit(1, STATUS, 5, false);
-		this.setBit(1, STATUS, 6, false);
-		this.setBit(1, STATUS, 7, false);
-		
+		if(state != WDT_WAKEUP_RESET && state != INTERRUPT_WAKEUP_RESET)
+		{
+			this.setBit(0, STATUS, 5, false);
+			this.setBit(0, STATUS, 6, false);
+			this.setBit(0, STATUS, 7, false);
+			
+			this.setBit(1, STATUS, 5, false);
+			this.setBit(1, STATUS, 6, false);
+			this.setBit(1, STATUS, 7, false);
+		}
 		
 		this.setRegister(0, PCLATH, 0);
 		this.setRegister(1, PCLATH, 0);
@@ -103,7 +112,53 @@ public class Registers
 			this.setBit(0, INTCON, i, false);
 		}
 		
-		
+		//Reset Conditions
+		//EECON1 Condition?????
+		switch (state) {
+		case MCLR_NORMAL_RESET:
+			Simulator.programCounter = 0;
+			break;
+			
+		case MCLR_SLEEP_RESET:
+			Simulator.programCounter = 0;
+			this.setBit(0, STATUS, 3, false);
+			this.setBit(1, STATUS, 3, false);
+			
+			this.setBit(0, STATUS, 4, true);
+			this.setBit(1, STATUS, 4, true);
+			break;
+			
+		case WDT_NORMAL_RESET:
+			Simulator.programCounter = 0;
+			this.setBit(0, STATUS, 3, true);
+			this.setBit(1, STATUS, 3, true);
+			
+			this.setBit(0, STATUS, 4, false);
+			this.setBit(1, STATUS, 4, false);
+			break;
+			
+		case WDT_WAKEUP_RESET:
+			Simulator.programCounter++;
+			this.setBit(0, STATUS, 3, false);
+			this.setBit(1, STATUS, 3, false);
+			
+			this.setBit(0, STATUS, 4, false);
+			this.setBit(1, STATUS, 4, false);
+			break;
+			
+		case INTERRUPT_WAKEUP_RESET:
+			if((this.readBit(0, INTCON, 7)) == 1 && (this.readBit(1, INTCON, 7) == 1)) //p.43 Note 1
+				Simulator.programCounter = 4;
+			else
+				Simulator.programCounter++;
+			
+			this.setBit(0, STATUS, 3, false);
+			this.setBit(1, STATUS, 3, false);
+			
+			this.setBit(0, STATUS, 4, true);
+			this.setBit(1, STATUS, 4, true);
+			break;
+		}
 	}
 	
 	// Read RP0 bit for selecting bank for direct adressing
