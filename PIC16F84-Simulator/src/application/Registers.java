@@ -30,9 +30,7 @@ public class Registers
 	//States for reset(int state)
 	public static final int MCLR_NORMAL_RESET = 0;
 	public static final int MCLR_SLEEP_RESET = 1;
-	public static final int WDT_NORMAL_RESET = 2;
-	public static final int WDT_WAKEUP_RESET = 3;
-	public static final int INTERRUPT_WAKEUP_RESET = 4;
+	public static final int WDT_RESET = 2;
 
 	public static ArrayList<Integer> mirroredRegisters = new ArrayList<Integer>(Arrays.asList(INDIRECT_ADDR, PCL, STATUS, FSR, PCLATH, INTCON));
 
@@ -80,12 +78,9 @@ public class Registers
 		
 		this.setRegister(0, PCL, 0);
 		
-		if(state != WDT_WAKEUP_RESET && state != INTERRUPT_WAKEUP_RESET)
-		{
-			this.setBit(0, STATUS, 5, false);
-			this.setBit(0, STATUS, 6, false);
-			this.setBit(0, STATUS, 7, false);
-		}
+		this.setBit(0, STATUS, 5, false);
+		this.setBit(0, STATUS, 6, false);
+		this.setBit(0, STATUS, 7, false);
 		
 		this.setRegister(0, PCLATH, 0);
 	
@@ -116,13 +111,14 @@ public class Registers
 			this.setBit(0, STATUS, 4, true);
 			break;
 			
-		case WDT_NORMAL_RESET:
+		case WDT_RESET:
 			Simulator.programCounter = 0;
 			this.setBit(0, STATUS, 3, true);
 			
 			this.setBit(0, STATUS, 4, false);
 			break;
 			
+			/* TODO: this doesnt belong in reset, execute this when an interrupt triggers a wakeup
 		case INTERRUPT_WAKEUP_RESET:
 			if((this.readBit(0, INTCON, 7)) == 1 && (this.readBit(1, INTCON, 7) == 1)) //p.43 Note 1
 				Simulator.programCounter = 4;
@@ -135,6 +131,7 @@ public class Registers
 			this.setBit(0, STATUS, 4, true);
 			this.setBit(1, STATUS, 4, true);
 			break;
+			*/
 		}
 	}
 	

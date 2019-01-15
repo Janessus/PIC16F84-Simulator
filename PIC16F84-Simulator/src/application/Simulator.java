@@ -30,6 +30,8 @@ public class Simulator implements Runnable
 	public boolean isSleep = false;
 	boolean skipProgramCounter = false;
 	boolean skipNextInstruction = false;
+	
+	boolean isStopThread = false;
 
 	List<Integer> stack = new ArrayList<Integer>();
 
@@ -52,7 +54,7 @@ public class Simulator implements Runnable
 			
 			programCounter = 0;
 			System.out.println("Operations: " + operationList.getProgramMemory().size());
-			while(true) {
+			while(!isStopThread) {
 				if(!isSleep) {
 					currentOperation = operationList.getOperationAtAddress(programCounter);
 					
@@ -124,8 +126,6 @@ public class Simulator implements Runnable
 							// Wakeup
 							isSleep = false;
 							
-							registers.reset(Registers.WDT_WAKEUP_RESET);
-							
 							// Clear PD bit
 							registers.setBit(1, Registers.STATUS, 3, false);
 							
@@ -133,25 +133,18 @@ public class Simulator implements Runnable
 							registers.setBit(1, Registers.STATUS, 4, false);
 							
 							
-							GUI_Main.getApp().gui.log("Watchdog Timer triggered wakeup!");
+							GUI_Main.getApp().gui.log("WDT triggered wakeup!");
 						} else {
-							// TODO: properly reset
-							System.out.println("WDT trigger..");
+							registers.reset(Registers.WDT_RESET);
 							
-							registers.reset(Registers.WDT_NORMAL_RESET);
-							
-							/*
-							// Set PD bit
-							registers.setBit(1, Registers.STATUS, 3, true);
-							
-							// Clear TO bit
-							registers.setBit(1, Registers.STATUS, 4, false);
-							*/
+							GUI_Main.getApp().gui.log("WDT triggered reset!");
 						}
 					}
 				}
 			}
+			System.out.println("1Simulator object shutting down...");
 		}
+		System.out.println("2Simulator object shutting down...	");
 	}
 
 	public void loadOperationList(OperationList operationList)
@@ -678,5 +671,11 @@ public class Simulator implements Runnable
 	// Inhibits TMR0 incrementing in timer mode; should be used in registers when TMR0 gets written
 	public void inhibitTmr0Increment(int cycles) {
 		skipTmr0Increments = cycles;
+	}
+	public void stopThread() {
+ 		isStopThread = true; 
+	}
+	public OperationList getOperationList() {
+		return operationList;
 	}
 }

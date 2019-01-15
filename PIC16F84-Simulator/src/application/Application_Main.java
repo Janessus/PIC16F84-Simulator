@@ -11,6 +11,9 @@ public class Application_Main implements Runnable
 	Parser parser;
 	public Simulator simulator;
 	Decoder decoder;
+	
+	Thread simulatorThread = null;
+	
 	// Map lineNumber -> [address, opcode]
 	LinkedHashMap<Integer, ArrayList<Integer>> opcodeList = null;
 
@@ -19,7 +22,6 @@ public class Application_Main implements Runnable
 	{
 		com.sun.javafx.application.PlatformImpl.startup(()->{});
 		parser = new Parser();
-		simulator = new Simulator();
 		decoder = new Decoder(this);
 		
 		System.out.println("app running");
@@ -33,7 +35,15 @@ public class Application_Main implements Runnable
 		}
 		
 		System.out.println("Starting simulation");
-		Thread simulatorThread = new Thread(simulator);
+		if(simulatorThread!=null) {
+			simulator.stopThread();
+			// User old operationList to keep breakpoints
+			OperationList operationList = simulator.getOperationList();
+			simulator = new Simulator();
+			simulator.loadOperationList(operationList);
+		}
+		System.out.println("creating new simulator thread");
+		simulatorThread = new Thread(simulator);
 		simulatorThread.start();
 	}
 	
@@ -46,7 +56,12 @@ public class Application_Main implements Runnable
 	public void openFile(File file) {
 		opcodeList = parser.parseFile(file);
 		
+		// Stop simulator if its running
+		if(simulatorThread!=null) {
+			simulator.stopThread();
+		}
 		System.out.println("decoding " + opcodeList.size() + " operations...");
+		simulator = new Simulator();
 		simulator.loadOperationList(decoder.decodeList(opcodeList));
 	}
 }
