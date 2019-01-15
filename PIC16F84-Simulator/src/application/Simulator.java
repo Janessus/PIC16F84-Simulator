@@ -42,7 +42,7 @@ public class Simulator implements Runnable
 	public void init()
 	{
 		registers = new Registers();
-		registers.init();
+		registers.powerOn();
 	}
 
 	@Override

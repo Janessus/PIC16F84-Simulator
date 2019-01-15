@@ -43,15 +43,72 @@ public class Registers
 	// Properties
 	private int working = 0;
 	
-	// Methods
-	public void init() 
+	// Reset P.43 in datasheet:
+	public void powerOn() 
 	{
-		this.setRegister(PCL, 0);
-		this.setBit(STATUS, 3, true);
-		this.setBit(STATUS, 4, true);
-		this.setBit(STATUS, 5, false);
-		this.setBit(STATUS, 6, false);
-		this.setBit(STATUS, 7, false);
+		this.setRegister(0, INDIRECT_ADDR, 0xff);
+		this.setRegister(1, INDIRECT_ADDR, 0xff);
+		
+		this.setRegister(0, PCL, 0);
+		this.setRegister(1, PCL, 0);
+		
+		this.setRegister(1, OPTION, 0xff);
+		
+		this.setBit(0, STATUS, 3, true);
+		this.setBit(0, STATUS, 4, true);
+		this.setBit(0, STATUS, 5, false);
+		this.setBit(0, STATUS, 6, false);
+		this.setBit(0, STATUS, 7, false);
+		
+		this.setBit(1, STATUS, 3, true);
+		this.setBit(1, STATUS, 4, true);
+		this.setBit(1, STATUS, 5, false);
+		this.setBit(1, STATUS, 6, false);
+		this.setBit(1, STATUS, 7, false);
+	
+		this.setRegister(0, PCLATH, 0);
+		this.setRegister(1, PCLATH, 0);
+		
+		this.setRegister(0, INTCON, 0);
+		this.setRegister(1, INTCON, 0);
+		
+		this.setRegister(1, TRISA, 0xff);
+		this.setRegister(1, TRISB, 0xff);
+		
+		this.setRegister(1, EECON1, 0);
+	}
+	
+	public void reset()
+	{
+		this.setRegister(0, PCL, 0);
+		this.setRegister(1, PCL, 0);
+		
+		this.setBit(0, STATUS, 5, false);
+		this.setBit(0, STATUS, 6, false);
+		this.setBit(0, STATUS, 7, false);
+		
+		this.setBit(1, STATUS, 5, false);
+		this.setBit(1, STATUS, 6, false);
+		this.setBit(1, STATUS, 7, false);
+		
+		
+		this.setRegister(0, PCLATH, 0);
+		this.setRegister(1, PCLATH, 0);
+	
+		this.setRegister(1, OPTION, 0xff);
+		
+		this.setRegister(1, TRISA, 0xff);
+		this.setRegister(1, TRISB, 0xff);
+		
+		this.setRegister(1, EECON1, 0);
+		
+		for(int i = 1; i < 8; i++)
+		{
+			this.setBit(0, INTCON, i, false);
+			this.setBit(0, INTCON, i, false);
+		}
+		
+		
 	}
 	
 	// Read RP0 bit for selecting bank for direct adressing
