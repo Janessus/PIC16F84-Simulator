@@ -17,6 +17,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -37,8 +38,12 @@ public class GUI_Main extends Application
 	public static TextArea sramView = null;
 	public static Stage sramViewStage = null;
 	public TextArea console = null;
+	public Pane trisA;
+	public Pane trisB;
 
 	private Parent root;
+	
+	int children;
 	
 	@Override
    public void start(Stage stage) throws Exception 
@@ -90,6 +95,29 @@ public class GUI_Main extends Application
 		checkBoxStep = (CheckBox) namespace.get("checkBoxStep");
 		checkBoxWdt = (CheckBox) namespace.get("wdte");
 		console = (TextArea) namespace.get("console");
+		
+		trisA = (Pane) namespace.get("trisa");
+		trisB = (Pane) namespace.get("trisb");
+		
+		
+		((CheckBox)(trisA.getChildren().get(1))).setOnAction((event) -> trisChanged(0));
+		((CheckBox)(trisA.getChildren().get(2))).setOnAction((event) -> trisChanged(1));
+		((CheckBox)(trisA.getChildren().get(3))).setOnAction((event) -> trisChanged(2));
+		((CheckBox)(trisA.getChildren().get(4))).setOnAction((event) -> trisChanged(3));
+		((CheckBox)(trisA.getChildren().get(5))).setOnAction((event) -> trisChanged(4));
+		((CheckBox)(trisA.getChildren().get(6))).setOnAction((event) -> trisChanged(5));
+		((CheckBox)(trisA.getChildren().get(7))).setOnAction((event) -> trisChanged(6));
+		((CheckBox)(trisA.getChildren().get(8))).setOnAction((event) -> trisChanged(7));
+		
+		((CheckBox)(trisB.getChildren().get(1))).setOnAction((event) -> trisChanged(10));
+		((CheckBox)(trisB.getChildren().get(2))).setOnAction((event) -> trisChanged(11));
+		((CheckBox)(trisB.getChildren().get(3))).setOnAction((event) -> trisChanged(12));
+		((CheckBox)(trisB.getChildren().get(4))).setOnAction((event) -> trisChanged(13));
+		((CheckBox)(trisB.getChildren().get(5))).setOnAction((event) -> trisChanged(14));
+		((CheckBox)(trisB.getChildren().get(6))).setOnAction((event) -> trisChanged(15));
+		((CheckBox)(trisB.getChildren().get(7))).setOnAction((event) -> trisChanged(16));
+		((CheckBox)(trisB.getChildren().get(8))).setOnAction((event) -> trisChanged(17));
+		
 		
 		btnRun.setOnAction(event -> this.onRunClicked());
 		btnStep.setOnAction(event -> this.onStepClicked());
@@ -217,6 +245,20 @@ public class GUI_Main extends Application
 		return ret;
 	}
 	
+	private void trisChanged(int i)
+	{
+		System.out.println("TrisChanged " + i);
+		if(i < 8) //TRISA
+		{
+			app.simulator.registers.setBit(1, Registers.TRISA, i, ((CheckBox)(trisA.getChildren().get(i + 1))).isSelected());
+		}
+		else //TRISB
+		{
+			i -= 10;
+			app.simulator.registers.setBit(1, Registers.TRISB, i, ((CheckBox)(trisB.getChildren().get(i + 1))).isSelected());
+		}
+	}
+	
 	private void pinChanged(int i)
 	{
 		switch (i)
@@ -234,6 +276,15 @@ public class GUI_Main extends Application
 			break;
 			
 		case 4: 
+			if(!pins[i-1].isSelected()) //Pin is Low-Active
+			{
+				if(app.simulator.isSleep)
+					Platform.runLater(() -> app.simulator.registers.reset(Registers.MCLR_SLEEP_RESET));
+				else
+					Platform.runLater(() -> app.simulator.registers.reset(Registers.MCLR_NORMAL_RESET));
+				
+				//TODO reset Line Highlighting
+			}	
 			break;
 			
 		case 5: 
@@ -272,7 +323,6 @@ public class GUI_Main extends Application
 			break;
 			
 		case 14: 
-			
 			break;
 			
 		case 15: 

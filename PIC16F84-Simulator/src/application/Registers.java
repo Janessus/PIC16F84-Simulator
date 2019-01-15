@@ -42,6 +42,12 @@ public class Registers
 
 	private int banks[][] = {new int[128], new int[128]};
 	
+	//TODO properly implement buffers for ports
+	public byte portBufferA = 0;
+	public byte portBufferB = 0;
+	public boolean portBufferAEmpty = true;
+	public boolean portBufferBEmpty = true;
+	
 	// Properties
 	private int working = 0;
 	
@@ -82,6 +88,8 @@ public class Registers
 	
 	public void reset(int state)
 	{
+		System.out.println("Reset called");
+		
 		this.setRegister(0, PCL, 0);
 		this.setRegister(1, PCL, 0);
 		

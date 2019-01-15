@@ -20,6 +20,7 @@ public class Simulator implements Runnable
 	public Registers registers;
 
 	OperationList operationList;
+	public WrappedOperation currentOperation; 
 
 	public static int programCounter = 0;
 	int instructionCycles = 0;
@@ -27,7 +28,7 @@ public class Simulator implements Runnable
 	int wdtCounter = 0; // cycle when the wdt was cleared 
 	int skipTmr0Increments = 0;
 	
-	boolean isSleep = false;
+	public boolean isSleep = false;
 	boolean skipProgramCounter = false;
 	boolean skipNextInstruction = false;
 
@@ -54,7 +55,7 @@ public class Simulator implements Runnable
 			System.out.println("Operations: " + operationList.getProgramMemory().size());
 			while(true) {
 				if(!isSleep) {
-					WrappedOperation currentOperation = operationList.getOperationAtAddress(programCounter);
+					currentOperation = operationList.getOperationAtAddress(programCounter);
 					
 					// Remove highlighting for old nodes
 					Set<Node> lastNodes = CodePanel.pane.lookupAll(".current-operation");
@@ -124,22 +125,30 @@ public class Simulator implements Runnable
 							// Wakeup
 							isSleep = false;
 							
+							registers.reset(registers.WDT_WAKEUP_RESET);
+							
+							/*
 							// Clear PD bit
 							registers.setBit(1, Registers.STATUS, 3, false);
 							
 							// Clear TO bit
 							registers.setBit(1, Registers.STATUS, 4, false);
+							*/
 							
 							GUI_Main.getApp().gui.log("Watchdog Timer triggered wakeup!");
 						} else {
 							// TODO: properly reset
 							System.out.println("WDT trigger..");
 							
+							registers.reset(registers.WDT_NORMAL_RESET);
+							
+							/*
 							// Set PD bit
 							registers.setBit(1, Registers.STATUS, 3, true);
 							
 							// Clear TO bit
 							registers.setBit(1, Registers.STATUS, 4, false);
+							*/
 						}
 					}
 				}
