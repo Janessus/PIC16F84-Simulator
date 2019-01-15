@@ -8,8 +8,6 @@ import javafx.application.Platform;
 
 public class Registers
 {	
-	// TODO: implement default values for startup, reset and wakeup
-	
 	//Register addresses
 	public static final int INDIRECT_ADDR = 0;
 	public static final int TMR0 = 1;
@@ -182,8 +180,7 @@ public class Registers
 	public void setWorking(byte val) {
 		working = val%256;
 		
-		// TODO: show working register value in GUI
-		// Platform.runLater(() -> GUI_Main.update());
+		Platform.runLater(() -> GUI_Main.update());
 	}
 	
 	public int readRegister(int bank, int address)

@@ -2,7 +2,6 @@ package application;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +14,7 @@ public class Simulator implements Runnable
 {
 	// TODO: runtime counter
 	// TODO: fix opening multiple files or pressing run multiple times
-	// TODO: implement reset
+	// TODO: implement reset / Reset implemented, check function calls 
 	// Properties
 	public Registers registers;
 
@@ -125,7 +124,7 @@ public class Simulator implements Runnable
 							// Wakeup
 							isSleep = false;
 							
-							registers.reset(registers.WDT_WAKEUP_RESET);
+							registers.reset(Registers.WDT_WAKEUP_RESET);
 							
 							/*
 							// Clear PD bit
@@ -140,7 +139,7 @@ public class Simulator implements Runnable
 							// TODO: properly reset
 							System.out.println("WDT trigger..");
 							
-							registers.reset(registers.WDT_NORMAL_RESET);
+							registers.reset(Registers.WDT_NORMAL_RESET);
 							
 							/*
 							// Set PD bit
@@ -528,11 +527,11 @@ public class Simulator implements Runnable
 	public void call(int val)
 	{
 		// Add return point to stack
-		this.stack.add((int)this.programCounter);
+		this.stack.add((int)Simulator.programCounter);
 		
 		// Shift 8 more bits so there is 11 bits free for the argument
 		int upperPc = (registers.readRegister(Registers.PCLATH) & 0b11000) << 8;
-		this.programCounter = val | upperPc;
+		Simulator.programCounter = val | upperPc;
 		registers.setRegisterDirectly(0, Registers.PCL, programCounter & 0b11111111);
 		
 		this.skipProgramCounter = true;
@@ -563,7 +562,7 @@ public class Simulator implements Runnable
 	{
 		// Shift 8 more bits so there is 11 bits free for the argument
 		int upperPc = (registers.readRegister(Registers.PCLATH) & 0b11000) << 8;
-		this.programCounter = val | upperPc;
+		Simulator.programCounter = val | upperPc;
 		registers.setRegisterDirectly(0, Registers.PCL, programCounter & 0b11111111);
 		this.skipProgramCounter = true;
 		
@@ -593,7 +592,7 @@ public class Simulator implements Runnable
 	public void retlw(int val)
 	{
 		registers.setWorking((byte) val);
-		this.programCounter = stack.remove(stack.size() -1);
+		Simulator.programCounter = stack.remove(stack.size() -1);
 		
 		// Additional instruction cycle
 		increaseInstructionCycles();
@@ -602,7 +601,7 @@ public class Simulator implements Runnable
 	public void reTurn(int val)
 	{
 		// Get programCounter from stack
-		this.programCounter = stack.remove(stack.size() -1);
+		Simulator.programCounter = stack.remove(stack.size() -1);
 		
 		// Additional instruction cycle
 		increaseInstructionCycles();
@@ -662,7 +661,7 @@ public class Simulator implements Runnable
 	}
 	
 	public void setProgramCounter(int pc) {
-		this.programCounter = pc;
+		Simulator.programCounter = pc;
 	}
 	public void increaseInstructionCycles() {
 		this.instructionCycles++;
