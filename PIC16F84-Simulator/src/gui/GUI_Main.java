@@ -43,7 +43,7 @@ public class GUI_Main extends Application
 
 	private Parent root;
 	
-	int children;
+	static Label lblWorking;
 	
 	@Override
    public void start(Stage stage) throws Exception 
@@ -99,6 +99,7 @@ public class GUI_Main extends Application
 		trisA = (Pane) namespace.get("trisa");
 		trisB = (Pane) namespace.get("trisb");
 		
+		lblWorking = (Label) namespace.get("lblWorking");
 		
 		((CheckBox)(trisA.getChildren().get(1))).setOnAction((event) -> trisChanged(0));
 		((CheckBox)(trisA.getChildren().get(2))).setOnAction((event) -> trisChanged(1));
@@ -208,6 +209,9 @@ public class GUI_Main extends Application
 			else
 				labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
 		}
+		
+		if(lblWorking != null)
+			lblWorking.setText("0x" + String.format("%02X", Registers.working));
 	}
 	
 	public static void update(int address)
@@ -217,11 +221,9 @@ public class GUI_Main extends Application
 			sramView.setText(getSramString());
 		}
 
-		
 		// Update Labels
 		for(int i = 0; i < 20; i++)
 		{
-			
 			if(labels [i] != null && address == labels[i].adress)
 			{
 				if(i < 9 || i == 18 || i == 19)
@@ -230,6 +232,8 @@ public class GUI_Main extends Application
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
 			}
 		}
+		if(lblWorking != null)
+			lblWorking.setText("0x" + String.format("%02X", Registers.working));
 	}
 	
 	public static String getSramString() {

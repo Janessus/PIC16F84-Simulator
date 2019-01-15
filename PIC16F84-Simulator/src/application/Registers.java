@@ -49,7 +49,7 @@ public class Registers
 	public boolean portBufferBEmpty = true;
 	
 	// Properties
-	private int working = 0;
+	public static int working = 0;
 	
 	// Reset P.43 in datasheet:
 	public void powerOn() 

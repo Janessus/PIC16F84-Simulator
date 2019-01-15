@@ -20,8 +20,5 @@ public class Main
 		appThread.start();
 		
 		Application.launch(GUI_Main.class);
-		
-		
-		
 	}
 }
