@@ -19,6 +19,7 @@ public class Application_Main implements Runnable
 	@Override
 	public void run() 
 	{
+		com.sun.javafx.application.PlatformImpl.startup(()->{});
 		parser = new Parser();
 		simulator = new Simulator();
 		decoder = new Decoder(this);

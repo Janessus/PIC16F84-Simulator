@@ -227,6 +227,7 @@ public class Registers
 			banks[bank][address] = value%256;
 			Platform.runLater(() -> GUI_Main.update(address));
 		}
+			
 	}
 	
 	public void setRegister(int address, int value)
@@ -279,21 +280,19 @@ public class Registers
 			setBit(0, address, pos, value);
 			return;
 		}
+
 		
-		if(GUI_Main.getApp().simulator != null)
-		{
-			// Check for PCL manipulation
-			if(address==PCL) {
-				int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
-				int lowerPc = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
-				GUI_Main.getApp().simulator.setProgramCounter(upperPc | lowerPc);
-			} else if (address==TMR0 && bank==0) {
-				// TMR0 manipulation inhibits TMR0 increment for two cycles
-				GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
-			}
-			banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
-			Platform.runLater(() -> GUI_Main.update(address));
+		// Check for PCL manipulation
+		if(address==PCL) {
+			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
+			int lowerPc = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
+			GUI_Main.getApp().simulator.setProgramCounter(upperPc | lowerPc);
+		} else if (address==TMR0 && bank==0) {
+			// TMR0 manipulation inhibits TMR0 increment for two cycles
+			GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 		}
+		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
+		Platform.runLater(() -> GUI_Main.update(address));
 	}
 	
 	public void setBit(int address, int pos, boolean value)

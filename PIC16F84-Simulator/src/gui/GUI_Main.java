@@ -189,10 +189,12 @@ public class GUI_Main extends Application
 			sramView.setText(getSramString());
 		}
 
+		
 		// Update Labels
 		for(int i = 0; i < 20; i++)
 		{
-			if(address == labels[i].adress)
+			
+			if(labels [i] != null && address == labels[i].adress)
 			{
 				if(i < 9 || i == 18 || i == 19)
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
