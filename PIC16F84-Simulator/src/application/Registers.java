@@ -53,10 +53,8 @@ public class Registers
 	public void powerOn() 
 	{
 		this.setRegister(0, INDIRECT_ADDR, 0xff);
-		this.setRegister(1, INDIRECT_ADDR, 0xff);
 		
 		this.setRegister(0, PCL, 0);
-		this.setRegister(1, PCL, 0);
 		
 		this.setRegister(1, OPTION, 0xff);
 		
@@ -65,18 +63,10 @@ public class Registers
 		this.setBit(0, STATUS, 5, false);
 		this.setBit(0, STATUS, 6, false);
 		this.setBit(0, STATUS, 7, false);
-		
-		this.setBit(1, STATUS, 3, true);
-		this.setBit(1, STATUS, 4, true);
-		this.setBit(1, STATUS, 5, false);
-		this.setBit(1, STATUS, 6, false);
-		this.setBit(1, STATUS, 7, false);
 	
 		this.setRegister(0, PCLATH, 0);
-		this.setRegister(1, PCLATH, 0);
 		
 		this.setRegister(0, INTCON, 0);
-		this.setRegister(1, INTCON, 0);
 		
 		this.setRegister(1, TRISA, 0xff);
 		this.setRegister(1, TRISB, 0xff);
@@ -89,21 +79,15 @@ public class Registers
 		System.out.println("Reset called");
 		
 		this.setRegister(0, PCL, 0);
-		this.setRegister(1, PCL, 0);
 		
 		if(state != WDT_WAKEUP_RESET && state != INTERRUPT_WAKEUP_RESET)
 		{
 			this.setBit(0, STATUS, 5, false);
 			this.setBit(0, STATUS, 6, false);
 			this.setBit(0, STATUS, 7, false);
-			
-			this.setBit(1, STATUS, 5, false);
-			this.setBit(1, STATUS, 6, false);
-			this.setBit(1, STATUS, 7, false);
 		}
 		
 		this.setRegister(0, PCLATH, 0);
-		this.setRegister(1, PCLATH, 0);
 	
 		this.setRegister(1, OPTION, 0xff);
 		
@@ -128,28 +112,15 @@ public class Registers
 		case MCLR_SLEEP_RESET:
 			Simulator.programCounter = 0;
 			this.setBit(0, STATUS, 3, false);
-			this.setBit(1, STATUS, 3, false);
 			
 			this.setBit(0, STATUS, 4, true);
-			this.setBit(1, STATUS, 4, true);
 			break;
 			
 		case WDT_NORMAL_RESET:
 			Simulator.programCounter = 0;
 			this.setBit(0, STATUS, 3, true);
-			this.setBit(1, STATUS, 3, true);
 			
 			this.setBit(0, STATUS, 4, false);
-			this.setBit(1, STATUS, 4, false);
-			break;
-			
-		case WDT_WAKEUP_RESET:
-			Simulator.programCounter++;
-			this.setBit(0, STATUS, 3, false);
-			this.setBit(1, STATUS, 3, false);
-			
-			this.setBit(0, STATUS, 4, false);
-			this.setBit(1, STATUS, 4, false);
 			break;
 			
 		case INTERRUPT_WAKEUP_RESET:

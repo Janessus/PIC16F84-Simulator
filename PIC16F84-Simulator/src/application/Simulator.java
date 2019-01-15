@@ -126,13 +126,12 @@ public class Simulator implements Runnable
 							
 							registers.reset(Registers.WDT_WAKEUP_RESET);
 							
-							/*
 							// Clear PD bit
 							registers.setBit(1, Registers.STATUS, 3, false);
 							
 							// Clear TO bit
 							registers.setBit(1, Registers.STATUS, 4, false);
-							*/
+							
 							
 							GUI_Main.getApp().gui.log("Watchdog Timer triggered wakeup!");
 						} else {
