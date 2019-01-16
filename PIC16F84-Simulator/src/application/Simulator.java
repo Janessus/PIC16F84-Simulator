@@ -13,6 +13,7 @@ import javafx.scene.Node;
 public class Simulator implements Runnable
 {
 	// TODO: TMR0 interrupt
+	// TODO: RB0; RB4 - RB7 Interruptss
 	// TODO: implement reset / Reset implemented, check function calls 
 	// Properties
 	public Registers registers;
@@ -30,6 +31,7 @@ public class Simulator implements Runnable
 	boolean skipProgramCounter = false;
 	boolean skipNextInstruction = false;
 	boolean isStopThread = false;
+	boolean interruptWakeup = false;
 
 	//States for pins(int state)
 	int[] pinStates = new int[17];
@@ -61,6 +63,77 @@ public class Simulator implements Runnable
 			System.out.println("Operations: " + operationList.getProgramMemory().size());
 			while(!isStopThread) {
 				if(!isSleep) {
+					// Check for interrupt wakeup from sleep last cycle
+					if(interruptWakeup) {
+						// Add return point to stack
+						this.stack.add((int)Simulator.programCounter);
+						
+						// Jump to ISR
+						Simulator.programCounter = 0x4;
+						
+					}
+					
+					// Interrupt handling
+					if(!skipNextInstruction) {
+						// 1. Set Interrupt flags in INTCON
+						// INTF
+						if(pinStates[5]!=PIN_DEFAULT) {
+							if(pinStates[5]==PIN_RISING) {
+								if(registers.readBit(1, Registers.OPTION, 6)==1);
+								{
+									registers.setBit(0, Registers.INTCON, 1, true);
+								}
+							} else if(registers.readBit(1, Registers.OPTION, 5)==1);
+							{
+								registers.setBit(0, Registers.INTCON, 1, true);
+							}
+							
+							// Reset
+							pinStates[5]=PIN_DEFAULT;
+						}
+						// RBIF
+						// TODO: check if port is set to read
+						for(int i=9; i<13; i++) {
+							if(pinStates[i]!=PIN_DEFAULT) {
+								registers.setBit(0, Registers.INTCON, 0, true);
+								pinStates[i]=PIN_DEFAULT;
+							}
+						}
+						
+						// 2. Check INTCON interrupt flags + enable
+						if((registers.readBit(0, Registers.INTCON, 1)==1 && registers.readBit(0, Registers.INTCON, 4)==1) // INT interrupt
+								|| (registers.readBit(0, Registers.INTCON, 2)==1 && registers.readBit(0, Registers.INTCON, 5)==1) // TMR0 interrupt
+								|| (registers.readBit(0, Registers.INTCON, 0)==1 && registers.readBit(0, Registers.INTCON, 3)==1)) { // RB interrupt
+							
+							// Check GIE
+							if(registers.readBit(0, Registers.INTCON, 7)==1) {
+								if(isSleep) {
+									interruptWakeup = true; // Set this flag to execute one more operation, then execute ISR
+									
+									// Status bits
+									registers.setBit(0, registers.STATUS, 3, false);
+									
+									registers.setBit(0, registers.STATUS, 4, true);
+								} else {
+									// Add return point to stack
+									this.stack.add((int)Simulator.programCounter);
+									
+									// Jump to ISR
+									Simulator.programCounter = 0x4;
+								}
+								// Clear GIE bit so program doesnt get stuck
+								registers.setBit(0, Registers.INTCON, 7, false);
+							}
+						} else if(isSleep) {
+							// Just wake up without jumping to ISR
+							isSleep = false;
+							// Status bits
+							registers.setBit(0, registers.STATUS, 3, false);
+							
+							registers.setBit(0, registers.STATUS, 4, true);
+						}
+					}
+					
 					currentOperation = operationList.getOperationAtAddress(programCounter);
 					
 					// Remove highlighting for old nodes
@@ -147,9 +220,7 @@ public class Simulator implements Runnable
 					}
 				}
 			}
-			System.out.println("1Simulator object shutting down...");
 		}
-		System.out.println("2Simulator object shutting down...	");
 	}
 
 	public void loadOperationList(OperationList operationList)
@@ -581,7 +652,12 @@ public class Simulator implements Runnable
 
 	public void retfie(int val)
 	{
-		// TODO
+		// Set GIE bit again
+		registers.setBit(0, Registers.INTCON, 7, true);
+		
+		// Get programCounter from stack
+		Simulator.programCounter = stack.remove(stack.size() -1);
+			
 		// Additional instruction cycle
 		increaseInstructionCycles();
 	}
@@ -675,8 +751,10 @@ public class Simulator implements Runnable
 				int t0se = registers.readBit(1, Registers.OPTION, 5);
 				if(t0se==0 && pinStates[2]==PIN_RISING) {
 					tmr0Tick();
+					pinStates[2]=PIN_DEFAULT;
 				} else if(t0se==0 && pinStates[2]==PIN_RISING) {
 					tmr0Tick();
+					pinStates[2]=PIN_DEFAULT;
 				}
 			}
 		}
@@ -691,8 +769,15 @@ public class Simulator implements Runnable
 			int prescaler = registers.readRegister(1, Registers.OPTION) & 0b00000111;
 			increment *= Math.pow(2, prescaler+1);
 		}
+		int result = val + increment;
 		
-		registers.setRegisterDirectly(0, Registers.TMR0, val+increment); // TODO: interrupt on overflow
+		//  Overflow
+		if(result>0xFF) {
+			result = result % 256;
+			registers.setBit(0, Registers.INTCON, 2, true);
+		}
+		
+		registers.setRegisterDirectly(0, Registers.TMR0, result); // TODO: interrupt on overflow
 	}
 	// Inhibits TMR0 incrementing in timer mode; should be used in registers when TMR0 gets written
 	public void inhibitTmr0Increment(int cycles) {
