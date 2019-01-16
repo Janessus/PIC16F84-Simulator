@@ -12,8 +12,6 @@ import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
-	// TODO: RB0; RB4 - RB7 Interruptss
-	// TODO: implement reset / Reset implemented, check function calls 
 	// Properties
 	public Registers registers;
 
@@ -769,7 +767,7 @@ public class Simulator implements Runnable
 			registers.setBit(0, Registers.INTCON, 2, true);
 		}
 		
-		registers.setRegisterDirectly(0, Registers.TMR0, result); // TODO: interrupt on overflow
+		registers.setRegisterDirectly(0, Registers.TMR0, result);
 	}
 	// Inhibits TMR0 incrementing in timer mode; should be used in registers when TMR0 gets written
 	public void inhibitTmr0Increment(int cycles) {
