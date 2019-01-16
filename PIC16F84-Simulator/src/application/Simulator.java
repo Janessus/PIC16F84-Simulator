@@ -12,6 +12,7 @@ import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
+	// TODO: TMR0 interrupt
 	// TODO: implement reset / Reset implemented, check function calls 
 	// Properties
 	public Registers registers;
@@ -28,9 +29,15 @@ public class Simulator implements Runnable
 	public boolean isSleep = false;
 	boolean skipProgramCounter = false;
 	boolean skipNextInstruction = false;
-	
 	boolean isStopThread = false;
 
+	//States for pins(int state)
+	int[] pinStates = new int[17];
+	public static final int PIN_DEFAULT = 0;
+	public static final int PIN_RISING = 1;
+	public static final int PIN_FALLING = 2;
+	
+	
 	List<Integer> stack = new ArrayList<Integer>();
 
 	public Simulator()
@@ -662,10 +669,30 @@ public class Simulator implements Runnable
 		} else {
 			// Check if T0CS is set
 			if(registers.readBit(1, Registers.OPTION, 5)==0) {
-				int val = registers.readRegister(0, Registers.TMR0);
-				registers.setRegisterDirectly(0, Registers.TMR0, val+1); // TODO: interrupt on overflow
-			} // TODO: Count from RA4 if T0CS is set
+				tmr0Tick();
+			} else  { // Check for RA4 impulse
+				// Check T0SE for source edge
+				int t0se = registers.readBit(1, Registers.OPTION, 5);
+				if(t0se==0 && pinStates[2]==PIN_RISING) {
+					tmr0Tick();
+				} else if(t0se==0 && pinStates[2]==PIN_RISING) {
+					tmr0Tick();
+				}
+			}
 		}
+	}
+	// Increment tmr0, respecting the prescaler
+	public void tmr0Tick() {
+		int val = registers.readRegister(0, Registers.TMR0);
+		int increment = 1;
+		
+		// Check prescaler assignment
+		if(registers.readBit(1, Registers.OPTION, 3)==0) {
+			int prescaler = registers.readRegister(1, Registers.OPTION) & 0b00000111;
+			increment *= Math.pow(2, prescaler+1);
+		}
+		
+		registers.setRegisterDirectly(0, Registers.TMR0, val+increment); // TODO: interrupt on overflow
 	}
 	// Inhibits TMR0 incrementing in timer mode; should be used in registers when TMR0 gets written
 	public void inhibitTmr0Increment(int cycles) {
@@ -679,5 +706,8 @@ public class Simulator implements Runnable
 	}
 	public int getInstrouctionCycleCount() {
 		return instructionCycles;
+	}
+	public void setPinState(int pin, int state) {
+		pinStates[pin] = state;
 	}
 }

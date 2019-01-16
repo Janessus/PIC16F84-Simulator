@@ -9,6 +9,7 @@ import java.util.Map;
 
 import application.Application_Main;
 import application.Registers;
+import application.Simulator;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -287,6 +288,13 @@ public class GUI_Main extends Application
 	
 	private void pinChanged(int i)
 	{
+		// Set pin states for simulator
+		if(pins[i-1].isSelected()) {
+			Platform.runLater(() -> app.simulator.setPinState(i, Simulator.PIN_RISING));
+		} else {
+			Platform.runLater(() -> app.simulator.setPinState(i, Simulator.PIN_FALLING));
+		}
+		
 		switch (i)
 		{
 		case 1:
@@ -299,6 +307,7 @@ public class GUI_Main extends Application
 			
 		case 3: 
 			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 4, pins[i-1].isSelected()));
+			
 			break;
 			
 		case 4: 
