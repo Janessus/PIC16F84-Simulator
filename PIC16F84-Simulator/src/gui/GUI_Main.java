@@ -223,10 +223,38 @@ public class GUI_Main extends Application
 		}
 		for(int i = 0; i < 20; i++)
 		{
-			if(i < 9 || i == 18 || i == 19)
+			if(i == 18) { // PORTA
+				int portRegister = app.simulator.registers.readBit(0, Registers.PORTA);
+				int trisRegister = app.simulator.registers.readBit(1, Registers.PORTB);
+				for(int j=0; j<5; j++) {
+					boolean tris = (trisRegister & (1 << j)) !=0;
+					if(!tris) { // Cleared tris bit means output mode
+						boolean port = (portRegister & (1 << j)) !=0;
+						
+						// Set pin
+						pins[5+j].setSelected(port);
+					}
+				}
+			}
+			else if(i==19) { // PORTB
+				int portRegister = app.simulator.registers.readBit(0, Registers.PORTB);
+				int trisRegister = app.simulator.registers.readBit(1, Registers.TRISB);
+				for(int j=0; j<8; j++) {
+					boolean tris = (trisRegister & (1 << j)) !=0;
+					if(!tris) { // Cleared tris bit means output mode
+						boolean port = (portRegister & (1 << j)) !=0;
+						
+						// Set pin
+						pins[5+j].setSelected(port);
+					}
+				}
+			}
+			else if(i < 9) {
 				labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
-			else
+			}
+			else {
 				labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
+			}
 		}
 		
 	}
@@ -289,7 +317,6 @@ public class GUI_Main extends Application
 			return;
 		}
 		int cycles = app.simulator.getInstrouctionCycleCount();
-		double frequency = spinnerFreq.getValue();
 		lblCycles.setText("" + cycles);
 		lblTime.setText("" + (cycles * 4/spinnerFreq.getValue()));
 	}
@@ -328,29 +355,43 @@ public class GUI_Main extends Application
 		}
 		
 		// Set pin states for simulator
-		if(pins[i-1].isSelected()) {
-			app.simulator.setPinState(i-1, Simulator.PIN_RISING);
-		} else {
-			app.simulator.setPinState(i-1, Simulator.PIN_FALLING);
-		}
+		int pinState=pins[i-1].isSelected()?Simulator.PIN_RISING:Simulator.PIN_FALLING;
+		boolean isSelected = pins[i-1].isSelected();
 		
 		switch (i)
 		{
 		case 1:
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 2, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISA, 2)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 2, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
+			
 			break;
 			
 		case 2:
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 3, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISA, 3)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 3, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
+			
 			break;
 			
 		case 3: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 4, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISA, 4)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 4, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			
 			break;
 			
 		case 4: 
-			if(!pins[i-1].isSelected()) //Pin is Low-Active
+			if(!isSelected) //Pin is Low-Active
 			{
 				if(app.simulator.isSleep)
 					Platform.runLater(() -> app.simulator.registers.reset(Registers.MCLR_SLEEP_RESET));
@@ -363,35 +404,75 @@ public class GUI_Main extends Application
 			break;
 			
 		case 6: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 0, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISB, 0)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 0, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
 		case 7: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 1, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISB, 1)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 1, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
 		case 8: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 2, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISB, 2)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 2, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
 		case 9: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 3, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISB, 3)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 3, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
 		case 10: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 4, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISB, 4)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 4, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
 		case 11: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 5, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISB, 5)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 5, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
-		case 12: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 6, pins[i-1].isSelected()));
+		case 12:
+			if(app.simulator.registers.readBit(1, Registers.TRISB, 6)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 6, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
 		case 13: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 7, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISB, 7)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 7, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
 		case 14: 
@@ -405,11 +486,21 @@ public class GUI_Main extends Application
 			break;
 			
 		case 17: 
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 0, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISA, 0)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 0, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 			
 		case 18:
-			Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 1, pins[i-1].isSelected()));
+			if(app.simulator.registers.readBit(1, Registers.TRISA, 1)==1) {
+				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 1, isSelected));
+			} else {
+				pins[i-1].setSelected(isSelected);
+			}
 			break;
 		}
 	}
