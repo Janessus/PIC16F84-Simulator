@@ -12,8 +12,6 @@ import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
-	// TODO: runtime counter
-	// TODO: fix opening multiple files or pressing run multiple times
 	// TODO: implement reset / Reset implemented, check function calls 
 	// Properties
 	public Registers registers;
@@ -657,6 +655,7 @@ public class Simulator implements Runnable
 	}
 	public void increaseInstructionCycles() {
 		this.instructionCycles++;
+		Platform.runLater(() -> GUI_Main.updateInstructionCycles());
 
 		if(skipTmr0Increments>0) {
 			skipTmr0Increments--;
@@ -677,5 +676,8 @@ public class Simulator implements Runnable
 	}
 	public OperationList getOperationList() {
 		return operationList;
+	}
+	public int getInstrouctionCycleCount() {
+		return instructionCycles;
 	}
 }

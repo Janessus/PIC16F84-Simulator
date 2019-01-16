@@ -2,6 +2,8 @@ package gui;
 
 import java.io.File;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Spinner;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -36,13 +38,17 @@ public class GUI_Main extends Application
 	public static CodePanel codePanel;
 	public static TextArea sramView = null;
 	public static Stage sramViewStage = null;
+	public static Spinner<Double> spinnerFreq;
 	public TextArea console = null;
 	public Pane trisA;
 	public Pane trisB;
+	
 
 	private Parent root;
 	
 	static Label lblWorking;
+	static Label lblCycles;
+	static Label lblTime;
 	
 	@Override
    public void start(Stage stage) throws Exception 
@@ -94,11 +100,21 @@ public class GUI_Main extends Application
 		checkBoxStep = (CheckBox) namespace.get("checkBoxStep");
 		checkBoxWdt = (CheckBox) namespace.get("wdte");
 		console = (TextArea) namespace.get("console");
+		spinnerFreq = (Spinner<Double>) namespace.get("spinnerFreq");
+		spinnerFreq.valueProperty().addListener((obs, oldValue, newValue) -> {
+			updateInstructionCycles();
+		});
+		// Update while typing
+		spinnerFreq.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+			updateInstructionCycles();
+		});
 		
 		trisA = (Pane) namespace.get("trisa");
 		trisB = (Pane) namespace.get("trisb");
 		
 		lblWorking = (Label) namespace.get("lblWorking");
+		lblCycles = (Label) namespace.get("lblCycles");
+		lblTime = (Label) namespace.get("lblTime");
 		
 		((CheckBox)(trisA.getChildren().get(1))).setOnAction((event) -> trisChanged(0));
 		((CheckBox)(trisA.getChildren().get(2))).setOnAction((event) -> trisChanged(1));
@@ -233,6 +249,13 @@ public class GUI_Main extends Application
 		}
 		if(lblWorking != null)
 			lblWorking.setText("0x" + String.format("%02X", Registers.working));
+	}
+	
+	public static void updateInstructionCycles() {
+		int cycles = app.simulator.getInstrouctionCycleCount();
+		double frequency = spinnerFreq.getValue();
+		lblCycles.setText("" + cycles);
+		lblTime.setText("" + (cycles * 4/spinnerFreq.getValue()));
 	}
 	
 	public static String getSramString() {
