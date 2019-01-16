@@ -688,7 +688,7 @@ public class Simulator implements Runnable
 		// Set TO bit
 		registers.setBit(1, Registers.STATUS, 4, true);
 
-		GUI_Main.getApp().gui.log("Sleeping...");
+		GUI_Main.log("Sleeping...");
 		
 		isSleep = true;
 	}

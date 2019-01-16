@@ -11,7 +11,7 @@ import javafx.scene.Node;
 public class Registers
 {	
 	// TODO: Port output to GUI
-	// TODO: TRIS Buffer
+	// TODO: TRIS Output Buffer
 	//Register addresses
 	public static final int INDIRECT_ADDR = 0;
 	public static final int TMR0 = 1;
