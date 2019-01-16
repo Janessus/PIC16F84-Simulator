@@ -148,7 +148,7 @@ public class Registers
 	public void setWorking(byte val) {
 		working = val%256;
 		
-		Platform.runLater(() -> GUI_Main.update());
+		Platform.runLater(() -> GUI_Main.updateWorking());
 	}
 	
 	public int readRegister(int bank, int address)

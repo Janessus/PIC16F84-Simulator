@@ -226,8 +226,6 @@ public class GUI_Main extends Application
 				labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
 		}
 		
-		if(lblWorking != null)
-			lblWorking.setText("0x" + String.format("%02X", Registers.working));
 	}
 	
 	public static void update(int address)
@@ -248,6 +246,9 @@ public class GUI_Main extends Application
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
 			}
 		}
+	}
+	
+	public static void updateWorking() {
 		if(lblWorking != null)
 			lblWorking.setText("0x" + String.format("%02X", Registers.working));
 	}
