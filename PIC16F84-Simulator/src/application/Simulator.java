@@ -12,9 +12,6 @@ import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
-	// TODO: TMR0 interrupt
-	// TODO: RB0; RB4 - RB7 Interruptss
-	// TODO: implement reset / Reset implemented, check function calls 
 	// Properties
 	public Registers registers;
 
@@ -136,21 +133,14 @@ public class Simulator implements Runnable
 					
 					currentOperation = operationList.getOperationAtAddress(programCounter);
 					
-					// Remove highlighting for old nodes
-					Set<Node> lastNodes = CodePanel.pane.lookupAll(".current-operation");
-					for(Node node:lastNodes) {
-						node.getStyleClass().removeAll(Collections.singleton("current-operation"));
-					}
-					
-					// Highlight current line in codepanel
-					GUI_Main.codePanel.lineNumbers.getChildren().get(currentOperation.getLineNumber()).getStyleClass().add("current-operation");
-					Node operationNode = CodePanel.codePane.getChildren().get(currentOperation.getLineNumber()-1);
-					operationNode.getStyleClass().add("current-operation");
+					int lineNumber = currentOperation.getLineNumber();
+					GUI_Main.highlightLine(lineNumber);
 					
 					// Pause thread if step mode or breakpoint
 					if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
 						try {
 							// Scroll to correct line
+							Node operationNode = CodePanel.codePane.getChildren().get(lineNumber-1);
 							Platform.runLater(() -> CodePanel.pane.setVvalue(operationNode.getBoundsInParent().getMaxY() / CodePanel.pane.getContent().getBoundsInLocal().getHeight()));
 							// Pause thread
 							System.out.println("Pausing thread...");
@@ -164,9 +154,9 @@ public class Simulator implements Runnable
 					if(!skipNextInstruction) {
 						// Execute current operation
 						currentOperation.getOperation().getCallbackFunction().execute(currentOperation.getArguments(), this);
-						GUI_Main.getApp().gui.log("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
-						GUI_Main.getApp().gui.log("Program Counter: " + programCounter);
-						GUI_Main.getApp().gui.log("W = " + String.format("0x%02X, ", registers.getWorking())
+						GUI_Main.log("Executing " + currentOperation.getOperation().name() + " with param " + String.format("0x%02X", currentOperation.getArguments()));
+						GUI_Main.log("Program Counter: " + programCounter);
+						GUI_Main.log("W = " + String.format("0x%02X, ", registers.getWorking())
 							+ "C = " + registers.getCarryFlag() + ", "
 							+ "DC= " + registers.getDigitCarryFlag() + ", "
 							+ "Z= " + registers.getZeroFlag());
@@ -211,11 +201,11 @@ public class Simulator implements Runnable
 							registers.setBit(1, Registers.STATUS, 4, false);
 							
 							
-							GUI_Main.getApp().gui.log("WDT triggered wakeup!");
+							GUI_Main.log("WDT triggered wakeup!");
 						} else {
 							registers.reset(Registers.WDT_RESET);
 							
-							GUI_Main.getApp().gui.log("WDT triggered reset!");
+							GUI_Main.log("WDT triggered reset!");
 						}
 					}
 				}
@@ -777,7 +767,7 @@ public class Simulator implements Runnable
 			registers.setBit(0, Registers.INTCON, 2, true);
 		}
 		
-		registers.setRegisterDirectly(0, Registers.TMR0, result); // TODO: interrupt on overflow
+		registers.setRegisterDirectly(0, Registers.TMR0, result);
 	}
 	// Inhibits TMR0 incrementing in timer mode; should be used in registers when TMR0 gets written
 	public void inhibitTmr0Increment(int cycles) {
