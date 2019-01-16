@@ -292,11 +292,15 @@ public class GUI_Main extends Application
 	
 	private void pinChanged(int i)
 	{
+		if(app.simulator==null) {
+			return;
+		}
+		
 		// Set pin states for simulator
 		if(pins[i-1].isSelected()) {
-			Platform.runLater(() -> app.simulator.setPinState(i, Simulator.PIN_RISING));
+			app.simulator.setPinState(i-1, Simulator.PIN_RISING);
 		} else {
-			Platform.runLater(() -> app.simulator.setPinState(i, Simulator.PIN_FALLING));
+			app.simulator.setPinState(i-1, Simulator.PIN_FALLING);
 		}
 		
 		switch (i)

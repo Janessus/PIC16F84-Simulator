@@ -117,21 +117,6 @@ public class Registers
 			
 			this.setBit(0, STATUS, 4, false);
 			break;
-			
-			/* TODO: this doesnt belong in reset, execute this when an interrupt triggers a wakeup
-		case INTERRUPT_WAKEUP_RESET:
-			if((this.readBit(0, INTCON, 7)) == 1 && (this.readBit(1, INTCON, 7) == 1)) //p.43 Note 1
-				Simulator.programCounter = 4;
-			else
-				Simulator.programCounter++;
-			
-			this.setBit(0, STATUS, 3, false);
-			this.setBit(1, STATUS, 3, false);
-			
-			this.setBit(0, STATUS, 4, true);
-			this.setBit(1, STATUS, 4, true);
-			break;
-			*/
 		}
 	}
 	
