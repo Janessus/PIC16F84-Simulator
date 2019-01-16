@@ -11,7 +11,7 @@ import javafx.scene.Node;
 public class Registers
 {	
 	// TODO: Port output to GUI
-	// TOD: TRIS Buffer
+	// TODO: TRIS Buffer
 	//Register addresses
 	public static final int INDIRECT_ADDR = 0;
 	public static final int TMR0 = 1;
@@ -193,6 +193,7 @@ public class Registers
 				GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 			}
 			banks[bank][address] = value%256;
+			
 			Platform.runLater(() -> GUI_Main.update(address));
 		}
 			
@@ -249,7 +250,6 @@ public class Registers
 			return;
 		}
 
-		
 		// Check for PCL manipulation
 		if(address==PCL) {
 			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;

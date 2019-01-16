@@ -243,10 +243,38 @@ public class GUI_Main extends Application
 		{
 			if(labels [i] != null && address == labels[i].adress)
 			{
-				if(i < 9 || i == 18 || i == 19)
+				if(i == 18) { // PORTA
+					int portRegister = app.simulator.registers.readBit(0, Registers.PORTA);
+					int trisRegister = app.simulator.registers.readBit(1, Registers.PORTB);
+					for(int j=0; j<5; j++) {
+						boolean tris = (trisRegister & (1 << j)) !=0;
+						if(!tris) { // Cleared tris bit means output mode
+							boolean port = (portRegister & (1 << j)) !=0;
+							
+							// Set pin
+							pins[5+j].setSelected(port);
+						}
+					}
+				}
+				else if(i==19) { // PORTB
+					int portRegister = app.simulator.registers.readBit(0, Registers.PORTB);
+					int trisRegister = app.simulator.registers.readBit(1, Registers.TRISB);
+					for(int j=0; j<8; j++) {
+						boolean tris = (trisRegister & (1 << j)) !=0;
+						if(!tris) { // Cleared tris bit means output mode
+							boolean port = (portRegister & (1 << j)) !=0;
+							
+							// Set pin
+							pins[5+j].setSelected(port);
+						}
+					}
+				}
+				else if(i < 9) {
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
-				else
+				}
+				else {
 					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
+				}
 			}
 		}
 	}

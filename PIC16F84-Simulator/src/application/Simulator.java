@@ -13,6 +13,7 @@ import javafx.scene.Node;
 public class Simulator implements Runnable
 {
 	// Properties
+	// TODO: fix MCLR reset
 	public Registers registers;
 
 	OperationList operationList;
