@@ -54,7 +54,7 @@
                 <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="200.0">
                      <children>
                         <Label layoutX="14.0" layoutY="8.0" text="Instruction Cycles:" />
-                        <Label fx:id="lblCycles" layoutX="116.0" layoutY="8.0" text="0" />
+                        <Label fx:id="lblCycles" layoutX="140.0" layoutY="8.0" text="0" />
                         <Label layoutX="14.0" layoutY="25.0" text="Runtime in μs:" />
                         <Label fx:id="lblTime" layoutX="116.0" layoutY="25.0" text="0" />
                         <Spinner fx:id="spinnerFreq" editable="true" layoutX="16.0" layoutY="89.0">
@@ -291,7 +291,7 @@
                                                 </Pane>
                                                 <CheckBox fx:id="wdte" layoutX="14.0" layoutY="281.0" mnemonicParsing="false" text="Watchdog Timer" />
                                                 <Label layoutX="14.0" layoutY="812.0" text="Working Register:" />
-                                                <Label fx:id="lblWorking" layoutX="110.0" layoutY="812.0" text="0" />
+                                                <Label fx:id="lblWorking" layoutX="150.0" layoutY="812.0" text="0" />
                                              </children>
                                           </AnchorPane>
                                        </content>
