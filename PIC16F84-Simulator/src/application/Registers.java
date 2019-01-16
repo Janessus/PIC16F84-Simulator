@@ -3,11 +3,15 @@ package application;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import gui.CodePanel;
 import gui.GUI_Main;
 import javafx.application.Platform;
+import javafx.scene.Node;
 
 public class Registers
 {	
+	// TODO: Port output to GUI
+	// TOD: TRIS Buffer
 	//Register addresses
 	public static final int INDIRECT_ADDR = 0;
 	public static final int TMR0 = 1;
@@ -118,6 +122,12 @@ public class Registers
 			this.setBit(0, STATUS, 4, false);
 			break;
 		}
+		
+		// Line highlighting
+		int firstLine = GUI_Main.getApp().simulator.operationList.getLines().entrySet().iterator().next().getKey();
+		GUI_Main.highlightLine(firstLine);
+		Node operationNode = CodePanel.codePane.getChildren().get(firstLine);
+		Platform.runLater(() -> CodePanel.pane.setVvalue(operationNode.getBoundsInParent().getMaxY() / CodePanel.pane.getContent().getBoundsInLocal().getHeight()));
 	}
 	
 	// Read RP0 bit for selecting bank for direct adressing

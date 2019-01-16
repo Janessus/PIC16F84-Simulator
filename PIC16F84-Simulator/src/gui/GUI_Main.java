@@ -5,7 +5,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import application.Application_Main;
 import application.Registers;
@@ -13,6 +15,7 @@ import application.Simulator;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -40,7 +43,7 @@ public class GUI_Main extends Application
 	public static TextArea sramView = null;
 	public static Stage sramViewStage = null;
 	public static Spinner<Double> spinnerFreq;
-	public TextArea console = null;
+	public static TextArea console = null;
 	public Pane trisA;
 	public Pane trisB;
 	
@@ -325,8 +328,6 @@ public class GUI_Main extends Application
 					Platform.runLater(() -> app.simulator.registers.reset(Registers.MCLR_SLEEP_RESET));
 				else
 					Platform.runLater(() -> app.simulator.registers.reset(Registers.MCLR_NORMAL_RESET));
-				
-				//TODO reset Line Highlighting
 			}	
 			break;
 			
@@ -385,6 +386,19 @@ public class GUI_Main extends Application
 		}
 	}
 	
+	public static void highlightLine(int lineNumber) {
+		// Remove highlighting for old nodes
+		Set<Node> lastNodes = CodePanel.pane.lookupAll(".current-operation");
+		for(Node node:lastNodes) {
+			node.getStyleClass().removeAll(Collections.singleton("current-operation"));
+		}
+		
+		// Highlight current line in codepanel
+		GUI_Main.codePanel.lineNumbers.getChildren().get(lineNumber).getStyleClass().add("current-operation");
+		Node operationNode = CodePanel.codePane.getChildren().get(lineNumber-1);
+		operationNode.getStyleClass().add("current-operation");
+	}
+	
 	private void onRunClicked()
 	{
 		app.runProgram();
@@ -434,10 +448,9 @@ public class GUI_Main extends Application
 	{
 		return GUI_Main.app;
 	}
-	public void log(String log) {
+	public static void log(String log) {
 		System.out.println(log);
 		
-		// TODO: for some reason this causes errors
 		Platform.runLater(() -> console.appendText(log + "\n"));
 	}
 }
