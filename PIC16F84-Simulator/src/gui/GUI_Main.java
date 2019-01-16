@@ -253,6 +253,9 @@ public class GUI_Main extends Application
 	}
 	
 	public static void updateInstructionCycles() {
+		if(app.simulator == null) {
+			return;
+		}
 		int cycles = app.simulator.getInstrouctionCycleCount();
 		double frequency = spinnerFreq.getValue();
 		lblCycles.setText("" + cycles);
