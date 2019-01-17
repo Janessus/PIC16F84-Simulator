@@ -7,7 +7,6 @@ import gui.CodePanel;
 import gui.GUI_Main;
 import javafx.application.Platform;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
 
 public class Registers
 {	
