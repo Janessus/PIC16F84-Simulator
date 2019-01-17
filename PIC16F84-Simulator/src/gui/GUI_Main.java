@@ -44,8 +44,8 @@ public class GUI_Main extends Application
 	public static Stage sramViewStage = null;
 	public static Spinner<Double> spinnerFreq;
 	public static TextArea console = null;
-	public Pane trisA;
-	public Pane trisB;
+	public static Pane trisA;
+	public static Pane trisB;
 	
 
 	private Parent root;
@@ -120,23 +120,23 @@ public class GUI_Main extends Application
 		lblCycles = (Label) namespace.get("lblCycles");
 		lblTime = (Label) namespace.get("lblTime");
 		
-		((CheckBox)(trisA.getChildren().get(1))).setOnAction((event) -> trisChanged(0));
-		((CheckBox)(trisA.getChildren().get(2))).setOnAction((event) -> trisChanged(1));
-		((CheckBox)(trisA.getChildren().get(3))).setOnAction((event) -> trisChanged(2));
-		((CheckBox)(trisA.getChildren().get(4))).setOnAction((event) -> trisChanged(3));
-		((CheckBox)(trisA.getChildren().get(5))).setOnAction((event) -> trisChanged(4));
-		((CheckBox)(trisA.getChildren().get(6))).setOnAction((event) -> trisChanged(5));
-		((CheckBox)(trisA.getChildren().get(7))).setOnAction((event) -> trisChanged(6));
-		((CheckBox)(trisA.getChildren().get(8))).setOnAction((event) -> trisChanged(7));
+		((CheckBox)(trisA.getChildren().get(1))).setOnAction((event) -> trisChanged(7));
+		((CheckBox)(trisA.getChildren().get(2))).setOnAction((event) -> trisChanged(6));
+		((CheckBox)(trisA.getChildren().get(3))).setOnAction((event) -> trisChanged(5));
+		((CheckBox)(trisA.getChildren().get(4))).setOnAction((event) -> trisChanged(4));
+		((CheckBox)(trisA.getChildren().get(5))).setOnAction((event) -> trisChanged(3));
+		((CheckBox)(trisA.getChildren().get(6))).setOnAction((event) -> trisChanged(2));
+		((CheckBox)(trisA.getChildren().get(7))).setOnAction((event) -> trisChanged(1));
+		((CheckBox)(trisA.getChildren().get(8))).setOnAction((event) -> trisChanged(0));
 		
-		((CheckBox)(trisB.getChildren().get(1))).setOnAction((event) -> trisChanged(10));
-		((CheckBox)(trisB.getChildren().get(2))).setOnAction((event) -> trisChanged(11));
-		((CheckBox)(trisB.getChildren().get(3))).setOnAction((event) -> trisChanged(12));
-		((CheckBox)(trisB.getChildren().get(4))).setOnAction((event) -> trisChanged(13));
-		((CheckBox)(trisB.getChildren().get(5))).setOnAction((event) -> trisChanged(14));
-		((CheckBox)(trisB.getChildren().get(6))).setOnAction((event) -> trisChanged(15));
-		((CheckBox)(trisB.getChildren().get(7))).setOnAction((event) -> trisChanged(16));
-		((CheckBox)(trisB.getChildren().get(8))).setOnAction((event) -> trisChanged(17));
+		((CheckBox)(trisB.getChildren().get(1))).setOnAction((event) -> trisChanged(17));
+		((CheckBox)(trisB.getChildren().get(2))).setOnAction((event) -> trisChanged(16));
+		((CheckBox)(trisB.getChildren().get(3))).setOnAction((event) -> trisChanged(15));
+		((CheckBox)(trisB.getChildren().get(4))).setOnAction((event) -> trisChanged(14));
+		((CheckBox)(trisB.getChildren().get(5))).setOnAction((event) -> trisChanged(13));
+		((CheckBox)(trisB.getChildren().get(6))).setOnAction((event) -> trisChanged(12));
+		((CheckBox)(trisB.getChildren().get(7))).setOnAction((event) -> trisChanged(11));
+		((CheckBox)(trisB.getChildren().get(8))).setOnAction((event) -> trisChanged(10));
 		
 		
 		btnRun.setOnAction(event -> this.onRunClicked());
@@ -223,11 +223,12 @@ public class GUI_Main extends Application
 		}
 		for(int i = 0; i < 20; i++)
 		{
-			if(i == 18) { // PORTA
-				int portRegister = app.simulator.registers.readBit(0, Registers.PORTA);
-				int trisRegister = app.simulator.registers.readBit(1, Registers.PORTB);
+			if(i == 18) { // PORTA + TRISA
+				int portRegister = app.simulator.registers.readRegister(0, Registers.PORTA);
+				int trisRegister = app.simulator.registers.readRegister(1, Registers.TRISA);
 				for(int j=0; j<5; j++) {
 					boolean tris = (trisRegister & (1 << j)) !=0;
+					((CheckBox)trisA.getChildren().get(8-j)).setSelected(tris);
 					if(!tris) { // Cleared tris bit means output mode
 						boolean port = (portRegister & (1 << j)) !=0;
 						
@@ -236,11 +237,12 @@ public class GUI_Main extends Application
 					}
 				}
 			}
-			else if(i==19) { // PORTB
-				int portRegister = app.simulator.registers.readBit(0, Registers.PORTB);
-				int trisRegister = app.simulator.registers.readBit(1, Registers.TRISB);
+			else if(i==19) { // PORTB + TRISB
+				int portRegister = app.simulator.registers.readRegister(0, Registers.PORTB);
+				int trisRegister = app.simulator.registers.readRegister(1, Registers.TRISB);
 				for(int j=0; j<8; j++) {
 					boolean tris = (trisRegister & (1 << j)) !=0;
+					((CheckBox)trisB.getChildren().get(8-j)).setSelected(tris);
 					if(!tris) { // Cleared tris bit means output mode
 						boolean port = (portRegister & (1 << j)) !=0;
 						
@@ -259,52 +261,10 @@ public class GUI_Main extends Application
 		
 	}
 	
+	// TODO: legacy, remove this
 	public static void update(int address)
 	{
-		// Populate Sram Viewer
-		if(sramViewStage!=null && sramViewStage.isShowing()) {
-			sramView.setText(getSramString());
-		}
-
-		// Update Labels
-		for(int i = 0; i < 20; i++)
-		{
-			if(labels [i] != null && address == labels[i].adress)
-			{
-				if(i == 18) { // PORTA
-					int portRegister = app.simulator.registers.readBit(0, Registers.PORTA);
-					int trisRegister = app.simulator.registers.readBit(1, Registers.PORTB);
-					for(int j=0; j<5; j++) {
-						boolean tris = (trisRegister & (1 << j)) !=0;
-						if(!tris) { // Cleared tris bit means output mode
-							boolean port = (portRegister & (1 << j)) !=0;
-							
-							// Set pin
-							pins[5+j].setSelected(port);
-						}
-					}
-				}
-				else if(i==19) { // PORTB
-					int portRegister = app.simulator.registers.readBit(0, Registers.PORTB);
-					int trisRegister = app.simulator.registers.readBit(1, Registers.TRISB);
-					for(int j=0; j<8; j++) {
-						boolean tris = (trisRegister & (1 << j)) !=0;
-						if(!tris) { // Cleared tris bit means output mode
-							boolean port = (portRegister & (1 << j)) !=0;
-							
-							// Set pin
-							pins[5+j].setSelected(port);
-						}
-					}
-				}
-				else if(i < 9) {
-					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(0, labels[i].adress)));
-				}
-				else {
-					labels[i].label.setText("0x" + String.format("%02X", app.simulator.registers.readRegister(1, labels[i].adress)));
-				}
-			}
-		}
+		update();
 	}
 	
 	public static void updateWorking() {
@@ -334,7 +294,7 @@ public class GUI_Main extends Application
 		return ret;
 	}
 	
-	private void trisChanged(int i)
+	private static void trisChanged(int i)
 	{
 		System.out.println("TrisChanged " + i);
 		if(i < 8) //TRISA
@@ -353,39 +313,36 @@ public class GUI_Main extends Application
 		if(app.simulator==null) {
 			return;
 		}
+		boolean isSelected = pins[i-1].isSelected();
 		
 		// Set pin states for simulator
-		int pinState=pins[i-1].isSelected()?Simulator.PIN_RISING:Simulator.PIN_FALLING;
-		boolean isSelected = pins[i-1].isSelected();
+		if(isSelected) {
+			Platform.runLater(() -> app.simulator.setPinState(i-1, Simulator.PIN_RISING));
+		} else {
+			Platform.runLater(() -> app.simulator.setPinState(i-1, Simulator.PIN_FALLING));
+		}
+		
 		
 		switch (i)
 		{
 		case 1:
 			if(app.simulator.registers.readBit(1, Registers.TRISA, 2)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
+				
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 2, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			
 			break;
 			
 		case 2:
 			if(app.simulator.registers.readBit(1, Registers.TRISA, 3)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 3, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			
 			break;
 			
 		case 3: 
 			if(app.simulator.registers.readBit(1, Registers.TRISA, 4)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 4, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			
 			break;
@@ -405,73 +362,49 @@ public class GUI_Main extends Application
 			
 		case 6: 
 			if(app.simulator.registers.readBit(1, Registers.TRISB, 0)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 0, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			break;
 			
 		case 7: 
 			if(app.simulator.registers.readBit(1, Registers.TRISB, 1)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 1, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			break;
 			
 		case 8: 
 			if(app.simulator.registers.readBit(1, Registers.TRISB, 2)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 2, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
-			}
+			} 
 			break;
 			
 		case 9: 
 			if(app.simulator.registers.readBit(1, Registers.TRISB, 3)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 3, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			break;
 			
 		case 10: 
 			if(app.simulator.registers.readBit(1, Registers.TRISB, 4)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 4, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			break;
 			
 		case 11: 
 			if(app.simulator.registers.readBit(1, Registers.TRISB, 5)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 5, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
-			}
+			} 
 			break;
 			
 		case 12:
 			if(app.simulator.registers.readBit(1, Registers.TRISB, 6)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 6, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			break;
 			
 		case 13: 
 			if(app.simulator.registers.readBit(1, Registers.TRISB, 7)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTB, 7, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			break;
 			
@@ -487,19 +420,13 @@ public class GUI_Main extends Application
 			
 		case 17: 
 			if(app.simulator.registers.readBit(1, Registers.TRISA, 0)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 0, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			break;
 			
 		case 18:
 			if(app.simulator.registers.readBit(1, Registers.TRISA, 1)==1) {
-				Platform.runLater(() -> app.simulator.setPinState(i-1, pinState));
 				Platform.runLater(() -> app.simulator.registers.setBit(0, Registers.PORTA, 1, isSelected));
-			} else {
-				pins[i-1].setSelected(isSelected);
 			}
 			break;
 		}

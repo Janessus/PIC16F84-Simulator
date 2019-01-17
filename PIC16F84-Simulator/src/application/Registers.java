@@ -12,6 +12,7 @@ public class Registers
 {	
 	// TODO: Port output to GUI
 	// TODO: TRIS Output Buffer
+	// TODO: Writing to a port clears RBIF
 	//Register addresses
 	public static final int INDIRECT_ADDR = 0;
 	public static final int TMR0 = 1;
@@ -54,51 +55,51 @@ public class Registers
 	// Reset P.43 in datasheet:
 	public void powerOn() 
 	{
-		this.setRegister(0, INDIRECT_ADDR, 0xff);
+		this.setRegisterDirectly(0, INDIRECT_ADDR, 0xff);
 		
-		this.setRegister(0, PCL, 0);
+		this.setRegisterDirectly(0, PCL, 0);
 		
-		this.setRegister(1, OPTION, 0xff);
+		this.setRegisterDirectly(1, OPTION, 0xff);
 		
-		this.setBit(0, STATUS, 3, true);
-		this.setBit(0, STATUS, 4, true);
-		this.setBit(0, STATUS, 5, false);
-		this.setBit(0, STATUS, 6, false);
-		this.setBit(0, STATUS, 7, false);
+		this.setBitDirectly(0, STATUS, 3, true);
+		this.setBitDirectly(0, STATUS, 4, true);
+		this.setBitDirectly(0, STATUS, 5, false);
+		this.setBitDirectly(0, STATUS, 6, false);
+		this.setBitDirectly(0, STATUS, 7, false);
 	
-		this.setRegister(0, PCLATH, 0);
+		this.setRegisterDirectly(0, PCLATH, 0);
 		
-		this.setRegister(0, INTCON, 0);
+		this.setRegisterDirectly(0, INTCON, 0);
 		
-		this.setRegister(1, TRISA, 0xff);
-		this.setRegister(1, TRISB, 0xff);
+		this.setRegisterDirectly(1, TRISA, 0xff);
+		this.setRegisterDirectly(1, TRISB, 0xff);
 		
-		this.setRegister(1, EECON1, 0);
+		this.setRegisterDirectly(1, EECON1, 0);
 	}
 	
 	public void reset(int state)
 	{
 		System.out.println("Reset called");
 		
-		this.setRegister(0, PCL, 0);
+		this.setRegisterDirectly(0, PCL, 0);
 		
-		this.setBit(0, STATUS, 5, false);
-		this.setBit(0, STATUS, 6, false);
-		this.setBit(0, STATUS, 7, false);
+		this.setBitDirectly(0, STATUS, 5, false);
+		this.setBitDirectly(0, STATUS, 6, false);
+		this.setBitDirectly(0, STATUS, 7, false);
 		
-		this.setRegister(0, PCLATH, 0);
+		this.setRegisterDirectly(0, PCLATH, 0);
 	
-		this.setRegister(1, OPTION, 0xff);
+		this.setRegisterDirectly(1, OPTION, 0xff);
 		
-		this.setRegister(1, TRISA, 0xff);
-		this.setRegister(1, TRISB, 0xff);
+		this.setRegisterDirectly(1, TRISA, 0xff);
+		this.setRegisterDirectly(1, TRISB, 0xff);
 		
-		this.setRegister(1, EECON1, 0);
+		this.setRegisterDirectly(1, EECON1, 0);
 		
 		for(int i = 1; i < 8; i++)
 		{
-			this.setBit(0, INTCON, i, false);
-			this.setBit(0, INTCON, i, false);
+			this.setBitDirectly(0, INTCON, i, false);
+			this.setBitDirectly(0, INTCON, i, false);
 		}
 		
 		//Reset Conditions
@@ -110,16 +111,16 @@ public class Registers
 			
 		case MCLR_SLEEP_RESET:
 			Simulator.programCounter = 0;
-			this.setBit(0, STATUS, 3, false);
+			this.setBitDirectly(0, STATUS, 3, false);
 			
-			this.setBit(0, STATUS, 4, true);
+			this.setBitDirectly(0, STATUS, 4, true);
 			break;
 			
 		case WDT_RESET:
 			Simulator.programCounter = 0;
-			this.setBit(0, STATUS, 3, true);
+			this.setBitDirectly(0, STATUS, 3, true);
 			
-			this.setBit(0, STATUS, 4, false);
+			this.setBitDirectly(0, STATUS, 4, false);
 			break;
 		}
 		
@@ -193,7 +194,6 @@ public class Registers
 				GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 			}
 			banks[bank][address] = value%256;
-			
 			Platform.runLater(() -> GUI_Main.update(address));
 		}
 			
@@ -280,7 +280,7 @@ public class Registers
 	// Helpers
 	public void setCarryFlag(boolean val)
 	{
-		setBit(0, 3, 0, val);
+		setBitDirectly(0, 3, 0, val);
 		
 		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
@@ -294,7 +294,7 @@ public class Registers
 	
 	public void setDigitCarryFlag(boolean val) 
 	{
-		setBit(0, 3, 1, val);
+		setBitDirectly(0, 3, 1, val);
 		
 		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
@@ -308,7 +308,7 @@ public class Registers
 	
 	public void setZeroFlag(boolean val) 
 	{
-		setBit(0, 3, 2, val);
+		setBitDirectly(0, 3, 2, val);
 		
 		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
 	}
@@ -330,6 +330,11 @@ public class Registers
 	// Set a register without triggering checks; e.g.: set PCL without manipulating the PC
 	public void setRegisterDirectly(int bank, int address, int value) {
 		banks[bank][address] = value%256;
+		Platform.runLater(() -> GUI_Main.update(address));
+	}
+	public void setBitDirectly(int bank, int address, int pos, boolean value)
+	{
+		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
 		Platform.runLater(() -> GUI_Main.update(address));
 	}
 }

@@ -1,9 +1,7 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import gui.CodePanel;
 import gui.GUI_Main;
@@ -13,7 +11,9 @@ import javafx.scene.Node;
 public class Simulator implements Runnable
 {
 	// Properties
-	// TODO: fix MCLR reset
+	// TODO: check tmr0 RA4 handling with trist
+	// TODO: fix tris view in frontend(should be initialised with 1 
+	// TODO: check option register T0cs and t0se
 	public Registers registers;
 
 	OperationList operationList;
@@ -30,6 +30,7 @@ public class Simulator implements Runnable
 	boolean skipNextInstruction = false;
 	boolean isStopThread = false;
 	boolean interruptWakeup = false;
+	boolean mclrReset = false;
 
 	//States for pins(int state)
 	int[] pinStates = new int[17];
@@ -48,6 +49,7 @@ public class Simulator implements Runnable
 	// Methods
 	public void init()
 	{
+		
 		registers = new Registers();
 		registers.powerOn();
 	}
@@ -77,12 +79,12 @@ public class Simulator implements Runnable
 						// INTF
 						if(pinStates[5]!=PIN_DEFAULT) {
 							if(pinStates[5]==PIN_RISING) {
-								if(registers.readBit(1, Registers.OPTION, 6)==1);
+								// Check INTEDG flag
+								if(registers.readBit(1, Registers.OPTION, 6)==1)
 								{
 									registers.setBit(0, Registers.INTCON, 1, true);
 								}
-							} else if(registers.readBit(1, Registers.OPTION, 5)==1);
-							{
+							} else if(registers.readBit(1, Registers.OPTION, 6)==0) {
 								registers.setBit(0, Registers.INTCON, 1, true);
 							}
 							
@@ -92,7 +94,9 @@ public class Simulator implements Runnable
 						// RBIF
 						// TODO: check if port is set to read
 						for(int i=9; i<13; i++) {
-							if(pinStates[i]!=PIN_DEFAULT) {
+							if(pinStates[i]!=PIN_DEFAULT && registers.readBit(1, Registers.TRISB, i-5)==1) {
+								System.out.println("RB4-7 Interrupt detected!!!");
+								System.out.println("Bit: " + (i-5));
 								registers.setBit(0, Registers.INTCON, 0, true);
 								pinStates[i]=PIN_DEFAULT;
 							}
@@ -109,9 +113,9 @@ public class Simulator implements Runnable
 									interruptWakeup = true; // Set this flag to execute one more operation, then execute ISR
 									
 									// Status bits
-									registers.setBit(0, registers.STATUS, 3, false);
+									registers.setBit(0, Registers.STATUS, 3, false);
 									
-									registers.setBit(0, registers.STATUS, 4, true);
+									registers.setBit(0, Registers.STATUS, 4, true);
 								} else {
 									// Add return point to stack
 									this.stack.add((int)Simulator.programCounter);
@@ -126,9 +130,9 @@ public class Simulator implements Runnable
 							// Just wake up without jumping to ISR
 							isSleep = false;
 							// Status bits
-							registers.setBit(0, registers.STATUS, 3, false);
+							registers.setBit(0, Registers.STATUS, 3, false);
 							
-							registers.setBit(0, registers.STATUS, 4, true);
+							registers.setBit(0, Registers.STATUS, 4, true);
 						}
 					}
 					
@@ -784,6 +788,8 @@ public class Simulator implements Runnable
 		return instructionCycles;
 	}
 	public void setPinState(int pin, int state) {
+		System.out.println("===========================================");
+		System.out.println("Setting pinstate for pin " + pin + " = " + state );
 		pinStates[pin] = state;
 	}
 }
