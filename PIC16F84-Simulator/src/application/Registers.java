@@ -44,8 +44,8 @@ public class Registers
 	// Properties
 	public static int working = 0;
 	
-	public Boolean[] portABuffer = new Boolean[4];
-	public Boolean[] portBBuffer = new Boolean[7];
+	public Boolean[] portABuffer = new Boolean[5];
+	public Boolean[] portBBuffer = new Boolean[8];
 	
 	// Reset P.43 in datasheet:
 	public void powerOn() 
@@ -136,9 +136,10 @@ public class Registers
 		return working;	
 	}
 	
-	public void setWorking(byte val) {
-		working = val%256;
+	public void setWorking(int val) {
+		working = val&0b11111111;
 		
+		System.out.println("Working set to " + working);
 		Platform.runLater(() -> GUI_Main.updateWorking());
 	}
 	
@@ -191,12 +192,12 @@ public class Registers
 			// Check for PCL manipulation
 			if(address==PCL) {
 				int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
-				GUI_Main.getApp().simulator.setProgramCounter(upperPc | value); //nullptr at startup
+				GUI_Main.getApp().simulator.setProgramCounter(upperPc | value);
 			} else if (address==TMR0 && bank==0) {
 				// TMR0 manipulation inhibits TMR0 increment for two cycles
 				GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 			}
-			banks[bank][address] = value%256;
+			banks[bank][address] = value & 0b11111111;
 			Platform.runLater(() -> GUI_Main.update());
 		}
 			
@@ -283,7 +284,8 @@ public class Registers
 			// TMR0 manipulation inhibits TMR0 increment for two cycles
 			GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 		}
-		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
+		int result = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
+		banks[bank][address] = result%256;
 		Platform.runLater(() -> GUI_Main.update());
 	}
 	
@@ -353,7 +355,7 @@ public class Registers
 	
 	// Set a register without triggering checks; e.g.: set PCL without manipulating the PC
 	public void setRegisterDirectly(int bank, int address, int value) {
-		banks[bank][address] = value%256;
+		banks[bank][address] = value&0b11111111;
 		Platform.runLater(() -> GUI_Main.update());
 	}
 	public void setBitDirectly(int bank, int address, int pos, boolean value)

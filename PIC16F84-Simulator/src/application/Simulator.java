@@ -10,6 +10,10 @@ import javafx.scene.Node;
 
 public class Simulator implements Runnable
 {
+	// TODO: Fix gui console for multiple programs
+	// TODO: Fix gui freezing
+	// TODO: Fix MCLR in sleep
+	// TODO: Check for spare logs
 	// Properties
 	public Registers registers;
 
@@ -21,6 +25,7 @@ public class Simulator implements Runnable
 	int frequency = 4; // frequency in mhz
 	int wdtCounter = 0; // cycle when the wdt was cleared 
 	int skipTmr0Increments = 0;
+	int tmr0Ticks = 0;
 	
 	public boolean isSleep = false;
 	boolean skipProgramCounter = false;
@@ -156,6 +161,10 @@ public class Simulator implements Runnable
 					
 					currentOperation = operationList.getOperationAtAddress(programCounter);
 					
+					if(currentOperation==null) {
+						GUI_Main.log("Critical Error! No operation at address " + String.format("0x%02X", programCounter) + " found!");
+					}
+					
 					int lineNumber = currentOperation.getLineNumber();
 					GUI_Main.highlightLine(lineNumber);
 					
@@ -257,7 +266,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		// Set status
@@ -280,7 +289,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		registers.setZeroFlag(result==0);
@@ -294,7 +303,7 @@ public class Simulator implements Runnable
 
 	public void clrw(int val)
 	{
-		this.registers.setWorking((byte)0);
+		this.registers.setWorking(0);
 		this.registers.setZeroFlag(true);
 	}
 
@@ -304,13 +313,14 @@ public class Simulator implements Runnable
 		byte f = (byte)(0b01111111 & val);
 		
 		// Build complement
-		int result = ~ this.registers.readRegister(f);
+		int result = (~ this.registers.readRegister(f)) & 0b11111111;
+		System.out.println("BUILT COMPLEMENT: " + result);
 		
 		// Write to correct register
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		registers.setZeroFlag(result==0);
@@ -328,7 +338,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		registers.setZeroFlag(result==0);
@@ -346,10 +356,9 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
-		registers.setZeroFlag(result==0);
 		this.skipNextInstruction = result == 0;
 	}
 
@@ -365,7 +374,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		registers.setZeroFlag(result==0);
@@ -384,10 +393,9 @@ public class Simulator implements Runnable
 			System.out.println("saving " + result);
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
-		registers.setZeroFlag(result==0);
 		this.skipNextInstruction = result == 0;
 	}
 
@@ -403,7 +411,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		registers.setZeroFlag(result==0);
@@ -421,7 +429,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		registers.setZeroFlag(result==0);
@@ -454,7 +462,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		// Set carry flag
@@ -482,7 +490,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 	}
 
@@ -501,7 +509,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		// Set status
@@ -523,7 +531,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 	}
 
@@ -539,7 +547,7 @@ public class Simulator implements Runnable
 		if(d == 1) {
 			this.registers.setRegister(f, result);
 		} else {
-			this.registers.setWorking((byte)result);
+			this.registers.setWorking(result);
 		}
 		
 		registers.setZeroFlag(result==0);
@@ -593,7 +601,7 @@ public class Simulator implements Runnable
 	{
 		int result = registers.getWorking() + val;
 		registers.setDigitCarryFlag((0x00000001 & registers.getWorking()) + (0x00000001 & val) > 0xF);
-		registers.setWorking((byte) result);
+		registers.setWorking(result);
 		registers.setZeroFlag(result==0);
 		registers.setCarryFlag(result>0xFF);
 	}
@@ -601,7 +609,7 @@ public class Simulator implements Runnable
 	public void andlw(int val)
 	{
 		int result = registers.getWorking() & val;
-		registers.setWorking((byte) result);
+		registers.setWorking(result);
 		registers.setZeroFlag(result==0);
 	}
 
@@ -612,7 +620,9 @@ public class Simulator implements Runnable
 		
 		// Shift 8 more bits so there is 11 bits free for the argument
 		int upperPc = (registers.readRegister(Registers.PCLATH) & 0b11000) << 8;
+		System.out.println("PC Before call: " + programCounter);
 		Simulator.programCounter = val | upperPc;
+		System.out.println("Setting PCL from call: " + (programCounter & 0b11111111));
 		registers.setRegisterDirectly(0, Registers.PCL, programCounter & 0b11111111);
 		
 		this.skipProgramCounter = true;
@@ -654,13 +664,13 @@ public class Simulator implements Runnable
 	public void iorlw(int val)
 	{
 		int result = registers.getWorking() | val;
-		registers.setWorking((byte) result);
+		registers.setWorking(result);
 		registers.setZeroFlag(result==0);
 	}
 
 	public void movlw(int val)
 	{
-		registers.setWorking((byte)val);
+		registers.setWorking(val);
 	}
 
 	public void retfie(int val)
@@ -677,7 +687,7 @@ public class Simulator implements Runnable
 
 	public void retlw(int val)
 	{
-		registers.setWorking((byte) val);
+		registers.setWorking(val);
 		Simulator.programCounter = stack.remove(stack.size() -1);
 		
 		// Additional instruction cycle
@@ -719,7 +729,7 @@ public class Simulator implements Runnable
 	{
 		int result = val - registers.getWorking();
 		registers.setDigitCarryFlag((0x00000001 & val) >= (0x00000001 & registers.getWorking()));
-		registers.setWorking((byte) result);
+		registers.setWorking(result);
 		registers.setZeroFlag(result==0);
 		registers.setCarryFlag(result>0);
 	}
@@ -727,7 +737,7 @@ public class Simulator implements Runnable
 	public void xorlw(int val)
 	{
 		int result = registers.getWorking() ^ val;
-		registers.setWorking((byte) result);
+		registers.setWorking(result);
 		registers.setZeroFlag(result==0);
 	}
 	
@@ -765,7 +775,7 @@ public class Simulator implements Runnable
 				if(t0se==0 && pinStates[2]==PIN_RISING) {
 					tmr0Tick();
 					pinStates[2]=PIN_DEFAULT;
-				} else if(t0se==0 && pinStates[2]==PIN_RISING) {
+				} else if(t0se==1 && pinStates[2]==PIN_FALLING) {
 					tmr0Tick();
 					pinStates[2]=PIN_DEFAULT;
 				}
@@ -774,23 +784,27 @@ public class Simulator implements Runnable
 	}
 	// Increment tmr0, respecting the prescaler
 	public void tmr0Tick() {
-		int val = registers.readRegister(0, Registers.TMR0);
-		int increment = 1;
+		tmr0Ticks++;
+		int ticksNeeded = 1;
 		
 		// Check prescaler assignment
 		if(registers.readBit(1, Registers.OPTION, 3)==0) {
 			int prescaler = registers.readRegister(1, Registers.OPTION) & 0b00000111;
-			increment *= Math.pow(2, prescaler+1);
+			ticksNeeded *= Math.pow(2, prescaler+1);
 		}
-		int result = val + increment;
-		
-		//  Overflow
-		if(result>0xFF) {
-			result = result % 256;
-			registers.setBit(0, Registers.INTCON, 2, true);
+		if(tmr0Ticks>=ticksNeeded) {
+			int result = registers.readRegister(0, Registers.TMR0) + 1;
+			
+			//  Overflow
+			if(result>0xFF) {
+				result = result % 256;
+				registers.setBit(0, Registers.INTCON, 2, true);
+			}
+			
+			registers.setRegisterDirectly(0, Registers.TMR0, result);
+			
+			tmr0Ticks=0;
 		}
-		
-		registers.setRegisterDirectly(0, Registers.TMR0, result);
 	}
 	// Inhibits TMR0 incrementing in timer mode; should be used in registers when TMR0 gets written
 	public void inhibitTmr0Increment(int cycles) {
