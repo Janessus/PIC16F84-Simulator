@@ -11,9 +11,6 @@ import javafx.scene.Node;
 public class Simulator implements Runnable
 {
 	// Properties
-	// TODO: check tmr0 RA4 handling with trist
-	// TODO: fix tris view in frontend(should be initialised with 1 
-	// TODO: check option register T0cs and t0se
 	public Registers registers;
 
 	OperationList operationList;
@@ -49,9 +46,11 @@ public class Simulator implements Runnable
 	// Methods
 	public void init()
 	{
-		
 		registers = new Registers();
 		registers.powerOn();
+		
+		// Scroll back up
+		Platform.runLater(() -> CodePanel.pane.setVvalue(0));
 	}
 
 	@Override
@@ -73,6 +72,26 @@ public class Simulator implements Runnable
 						
 					}
 					
+					// Handle PORTA buffer
+					for(int i=0; i<5; i++) {
+						if(registers.portABuffer[i]!=null) {
+							// Write buffered value
+							registers.setBitDirectly(0, Registers.PORTA, i, registers.portABuffer[i]);
+							// Empty buffer
+							registers.portABuffer[i]=null;
+						}
+					}
+					
+					// Handle PORTB buffer
+					for(int i=0; i<8; i++) {
+						if(registers.portBBuffer[i]!=null) {
+							// Write buffered value
+							registers.setBitDirectly(0, Registers.PORTB, i, registers.portBBuffer[i]);
+							// Empty buffer
+							registers.portBBuffer[i]=null;
+						}
+					}
+					
 					// Interrupt handling
 					if(!skipNextInstruction) {
 						// 1. Set Interrupt flags in INTCON
@@ -92,7 +111,6 @@ public class Simulator implements Runnable
 							pinStates[5]=PIN_DEFAULT;
 						}
 						// RBIF
-						// TODO: check if port is set to read
 						for(int i=9; i<13; i++) {
 							if(pinStates[i]!=PIN_DEFAULT && registers.readBit(1, Registers.TRISB, i-5)==1) {
 								System.out.println("RB4-7 Interrupt detected!!!");
@@ -125,15 +143,15 @@ public class Simulator implements Runnable
 								}
 								// Clear GIE bit so program doesnt get stuck
 								registers.setBit(0, Registers.INTCON, 7, false);
+							}	else if(isSleep) {
+								// Just wake up without jumping to ISR
+								isSleep = false;
+								// Status bits
+								registers.setBit(0, Registers.STATUS, 3, false);
+								
+								registers.setBit(0, Registers.STATUS, 4, true);
 							}
-						} else if(isSleep) {
-							// Just wake up without jumping to ISR
-							isSleep = false;
-							// Status bits
-							registers.setBit(0, Registers.STATUS, 3, false);
-							
-							registers.setBit(0, Registers.STATUS, 4, true);
-						}
+						} 
 					}
 					
 					currentOperation = operationList.getOperationAtAddress(programCounter);

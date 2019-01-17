@@ -7,12 +7,10 @@ import gui.CodePanel;
 import gui.GUI_Main;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 
 public class Registers
 {	
-	// TODO: Port output to GUI
-	// TODO: TRIS Output Buffer
-	// TODO: Writing to a port clears RBIF
 	//Register addresses
 	public static final int INDIRECT_ADDR = 0;
 	public static final int TMR0 = 1;
@@ -43,14 +41,11 @@ public class Registers
 
 	private int banks[][] = {new int[128], new int[128]};
 	
-	//TODO properly implement buffers for ports
-	public byte portBufferA = 0;
-	public byte portBufferB = 0;
-	public boolean portBufferAEmpty = true;
-	public boolean portBufferBEmpty = true;
-	
 	// Properties
 	public static int working = 0;
+	
+	public Boolean[] portABuffer = new Boolean[4];
+	public Boolean[] portBBuffer = new Boolean[7];
 	
 	// Reset P.43 in datasheet:
 	public void powerOn() 
@@ -153,7 +148,7 @@ public class Registers
 		if(bank==1 && isMirroredRegister(address)) {
 			return readRegister(0, address);
 		}
-
+		
 		return banks[bank][address];
 	}
 	
@@ -182,6 +177,14 @@ public class Registers
 			setRegister(0, address, value);
 			return;
 		}
+		// Check for PORTA/PORTB access
+		if(bank==0 && (address==PORTA || address==PORTB)) {
+			// Set bits seperately, so each bit can be checked independently
+			for(int i=0; i<8; i++) {
+				boolean val = (value & (1 << i)) !=0;
+				setBit(bank, address, i, val);
+			}
+		}
 		
 		if(GUI_Main.getApp().simulator != null)
 		{
@@ -194,7 +197,7 @@ public class Registers
 				GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 			}
 			banks[bank][address] = value%256;
-			Platform.runLater(() -> GUI_Main.update(address));
+			Platform.runLater(() -> GUI_Main.update());
 		}
 			
 	}
@@ -244,12 +247,33 @@ public class Registers
 		{
 			return;
 		}
+		
 		// Check for mirrored register
 		if(bank==1 && isMirroredRegister(address)) {
 			setBit(0, address, pos, value);
 			return;
 		}
 
+		// Check for PORTA access
+		if(bank==0 && address==PORTA) {
+			// Check if port is set as input
+			if(readBit(1, TRISA, pos)==1) {
+				// Buffer value and return, dont write to PORTA
+				portABuffer[pos] = value;
+				return;
+			}
+		}
+		
+		// Check for PORTB access
+		if(bank==0 && address==PORTB) {
+			// Check if port is set as input
+			if(readBit(1, TRISB, pos)==1) {
+				// Buffer value and return, dont write to PORTA
+				portBBuffer[pos] = value;
+				return;
+			}
+		}
+		
 		// Check for PCL manipulation
 		if(address==PCL) {
 			int upperPc = (this.readRegister(PCLATH) & 0b11111) << 8;
@@ -260,7 +284,7 @@ public class Registers
 			GUI_Main.getApp().simulator.inhibitTmr0Increment(2);
 		}
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
-		Platform.runLater(() -> GUI_Main.update(address));
+		Platform.runLater(() -> GUI_Main.update());
 	}
 	
 	public void setBit(int address, int pos, boolean value)
@@ -282,7 +306,7 @@ public class Registers
 	{
 		setBitDirectly(0, 3, 0, val);
 		
-		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
+		Platform.runLater(() -> GUI_Main.update());
 	}
 	
 	public boolean getCarryFlag() 
@@ -296,7 +320,7 @@ public class Registers
 	{
 		setBitDirectly(0, 3, 1, val);
 		
-		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
+		Platform.runLater(() -> GUI_Main.update());
 	}
 	
 	public boolean getDigitCarryFlag() 
@@ -310,7 +334,7 @@ public class Registers
 	{
 		setBitDirectly(0, 3, 2, val);
 		
-		Platform.runLater(() -> GUI_Main.update(Registers.STATUS));
+		Platform.runLater(() -> GUI_Main.update());
 	}
 	
 	public boolean getZeroFlag() 
@@ -330,11 +354,11 @@ public class Registers
 	// Set a register without triggering checks; e.g.: set PCL without manipulating the PC
 	public void setRegisterDirectly(int bank, int address, int value) {
 		banks[bank][address] = value%256;
-		Platform.runLater(() -> GUI_Main.update(address));
+		Platform.runLater(() -> GUI_Main.update());
 	}
 	public void setBitDirectly(int bank, int address, int pos, boolean value)
 	{
 		banks[bank][address] = value ? banks[bank][address] | (1 << pos) : banks[bank][address] & ~(1 << pos);
-		Platform.runLater(() -> GUI_Main.update(address));
+		Platform.runLater(() -> GUI_Main.update());
 	}
 }

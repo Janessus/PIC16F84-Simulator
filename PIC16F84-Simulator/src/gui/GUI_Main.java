@@ -261,12 +261,6 @@ public class GUI_Main extends Application
 		
 	}
 	
-	// TODO: legacy, remove this
-	public static void update(int address)
-	{
-		update();
-	}
-	
 	public static void updateWorking() {
 		if(lblWorking != null)
 			lblWorking.setText("0x" + String.format("%02X", Registers.working));
