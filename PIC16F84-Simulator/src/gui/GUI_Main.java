@@ -219,7 +219,7 @@ public class GUI_Main extends Application
 	{
 		// Populate Sram Viewer
 		if(sramViewStage.isShowing()) {
-			sramView.setText(getSramString());
+			Platform.runLater(() -> sramView.setText(getSramString()));
 		}
 		for(int i = 0; i < 20; i++)
 		{
@@ -228,12 +228,14 @@ public class GUI_Main extends Application
 				int trisRegister = app.simulator.registers.readRegister(1, Registers.TRISA);
 				for(int j=0; j<5; j++) {
 					boolean tris = (trisRegister & (1 << j)) !=0;
-					((CheckBox)trisA.getChildren().get(8-j)).setSelected(tris);
+					CheckBox trisCheck = ((CheckBox)trisA.getChildren().get(8-j));
+					Platform.runLater(() -> trisCheck.setSelected(tris));
 					if(!tris) { // Cleared tris bit means output mode
 						boolean port = (portRegister & (1 << j)) !=0;
 						
 						// Set pin
-						pins[5+j].setSelected(port);
+						CheckBox pin = pins[5+j];
+						Platform.runLater(() -> pin.setSelected(port));
 					}
 				}
 			}
@@ -242,12 +244,14 @@ public class GUI_Main extends Application
 				int trisRegister = app.simulator.registers.readRegister(1, Registers.TRISB);
 				for(int j=0; j<8; j++) {
 					boolean tris = (trisRegister & (1 << j)) !=0;
-					((CheckBox)trisB.getChildren().get(8-j)).setSelected(tris);
+					CheckBox trisCheck = ((CheckBox)trisB.getChildren().get(8-j));
+					Platform.runLater(() -> trisCheck.setSelected(tris));
 					if(!tris) { // Cleared tris bit means output mode
 						boolean port = (portRegister & (1 << j)) !=0;
 						
 						// Set pin
-						pins[5+j].setSelected(port);
+						CheckBox pin = pins[5+j];
+						Platform.runLater(() -> pin.setSelected(port));
 					}
 				}
 			}
@@ -263,7 +267,7 @@ public class GUI_Main extends Application
 	
 	public static void updateWorking() {
 		if(lblWorking != null)
-			lblWorking.setText("0x" + String.format("%02X", Registers.working));
+			Platform.runLater(() -> lblWorking.setText("0x" + String.format("%02X", Registers.working)));
 	}
 	
 	public static void updateInstructionCycles() {
@@ -271,8 +275,8 @@ public class GUI_Main extends Application
 			return;
 		}
 		int cycles = app.simulator.getInstrouctionCycleCount();
-		lblCycles.setText("" + cycles);
-		lblTime.setText("" + (cycles * 4/spinnerFreq.getValue()));
+		Platform.runLater(() -> lblCycles.setText("" + cycles));
+		Platform.runLater(() -> lblTime.setText("" + (cycles * 4/spinnerFreq.getValue())));
 	}
 	
 	public static String getSramString() {
@@ -430,13 +434,13 @@ public class GUI_Main extends Application
 		// Remove highlighting for old nodes
 		Set<Node> lastNodes = CodePanel.pane.lookupAll(".current-operation");
 		for(Node node:lastNodes) {
-			node.getStyleClass().removeAll(Collections.singleton("current-operation"));
+			Platform.runLater(() -> node.getStyleClass().removeAll(Collections.singleton("current-operation")));
 		}
 		
 		// Highlight current line in codepanel
-		GUI_Main.codePanel.lineNumbers.getChildren().get(lineNumber).getStyleClass().add("current-operation");
+		Platform.runLater(() -> GUI_Main.codePanel.lineNumbers.getChildren().get(lineNumber).getStyleClass().add("current-operation"));
 		Node operationNode = CodePanel.codePane.getChildren().get(lineNumber-1);
-		operationNode.getStyleClass().add("current-operation");
+		Platform.runLater(() -> operationNode.getStyleClass().add("current-operation"));
 	}
 	
 	private void onRunClicked()
@@ -453,14 +457,14 @@ public class GUI_Main extends Application
 
 	private void onViewSramClicked()
 	{
-		sramViewStage.show();
+		Platform.runLater(() -> sramViewStage.show());
 		// Force window in foreground
-		sramViewStage.setAlwaysOnTop(true);
-		sramViewStage.setAlwaysOnTop(false);
+		Platform.runLater(() -> sramViewStage.setAlwaysOnTop(true));
+		Platform.runLater(() -> sramViewStage.setAlwaysOnTop(false));
 		update();
 	}
 
-	private Object onOpenDocument()
+	private void onOpenDocument()
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
@@ -476,8 +480,6 @@ public class GUI_Main extends Application
 			app.openFile(selectedFile);
 		}
 		
-		
-		return null;
 	}
 	
 	public static void setApp(Application_Main app)

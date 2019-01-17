@@ -165,7 +165,7 @@ public class Simulator implements Runnable
 					}
 					
 					int lineNumber = currentOperation.getLineNumber();
-					GUI_Main.highlightLine(lineNumber);
+					Platform.runLater(() -> GUI_Main.highlightLine(lineNumber));
 					
 					// Pause thread if step mode or breakpoint
 					if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
