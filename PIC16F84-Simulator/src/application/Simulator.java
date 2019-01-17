@@ -32,7 +32,6 @@ public class Simulator implements Runnable
 	boolean skipNextInstruction = false;
 	boolean isStopThread = false;
 	boolean interruptWakeup = false;
-	boolean mclrReset = false;
 
 	//States for pins(int state)
 	int[] pinStates = new int[17];
