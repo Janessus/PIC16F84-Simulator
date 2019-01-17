@@ -1,7 +1,9 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import gui.CodePanel;
 import gui.GUI_Main;
@@ -165,12 +167,12 @@ public class Simulator implements Runnable
 					}
 					
 					int lineNumber = currentOperation.getLineNumber();
-					Platform.runLater(() -> GUI_Main.highlightLine(lineNumber));
 					
 					// Pause thread if step mode or breakpoint
 					if(!skipNextInstruction && (GUI_Main.checkBoxStep.isSelected() || currentOperation.hasBreakPoint)) {
 						try {
-							// Scroll to correct line
+							// Line highlighting
+							GUI_Main.highlightLine(lineNumber);
 							Node operationNode = CodePanel.codePane.getChildren().get(lineNumber-1);
 							Platform.runLater(() -> CodePanel.pane.setVvalue(operationNode.getBoundsInParent().getMaxY() / CodePanel.pane.getContent().getBoundsInLocal().getHeight()));
 							// Pause thread
